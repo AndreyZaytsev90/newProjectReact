@@ -1,5 +1,6 @@
 import './App.css';
 import {Button} from "./Button";
+import {JSX} from "react";
 
 export interface TasksType {
     id: string,
@@ -15,6 +16,15 @@ interface TodolistType {
 
 export const Todolist = ({title, tasks, removeTask}: TodolistType) => {
     console.log(tasks)
+
+    const listItems:Array<JSX.Element> = tasks.map((task:TasksType) => (
+        <li key={task.id}>
+            <input type="checkbox" checked={task.isDone}/>
+            <span>{task.title}</span>
+            <Button name="X" callback={() => removeTask(task.id)}/>
+        </li>
+    ))
+
     return (
         <div className="todolist">
             <h3>{title}</h3>
@@ -27,13 +37,7 @@ export const Todolist = ({title, tasks, removeTask}: TodolistType) => {
                 <p>Тасок нет</p>
             ) : (
                 <ul>
-                    {tasks.map(task => (
-                        <li key={task.id}>
-                            <input type="checkbox" checked={task.isDone}/>
-                            <span>{task.title}</span>
-                            <Button name="X" callback={() =>removeTask(task.id)}/>
-                        </li>
-                    ))}
+                    {listItems}
                 </ul>
             )}
             <div>
