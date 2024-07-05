@@ -4,7 +4,10 @@ import {v4 as v4} from 'uuid';
 import {useState} from "react";
 
 
-// C-(R)-U-(D) - create, read, update, delete
+// (C)-create
+// (R)- read (filter, sort, search, pagination, view-mode)
+// (U)- update
+// (D) - delete
 function App() {
 
     let [tasks, setTasks] = useState<Array<TasksType>>([
@@ -16,7 +19,7 @@ function App() {
     // Локальный стэйт для хранения информации по фильтрации
     const [filter, setFilter] = useState<FilterType>("all")
 
-   /* let [newTask, setNewTask] = useState<TasksType>()*/
+    /* let [newTask, setNewTask] = useState<TasksType>()*/
 
     const filteredTasks: Array<TasksType> =
         (filter === "active")
