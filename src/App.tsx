@@ -4,7 +4,7 @@ import {v4 as v4} from 'uuid';
 import {useState} from "react";
 
 
-
+// C-(R)-U-(D) - create, read, update, delete
 function App() {
 
     let [tasks, setTasks] = useState<Array<TasksType>>([
@@ -16,7 +16,9 @@ function App() {
     // Локальный стэйт для хранения информации по фильтрации
     const [filter, setFilter] = useState<FilterType>("all")
 
-    const filteredTasks : Array<TasksType> =
+   /* let [newTask, setNewTask] = useState<TasksType>()*/
+
+    const filteredTasks: Array<TasksType> =
         (filter === "active")
             ? tasks.filter(task => !task.isDone)
             : (filter === "completed")
@@ -25,7 +27,6 @@ function App() {
 
 
     const removeTask = (taskId: string) => {
-        console.log("deleted task")
         tasks = tasks.filter(t => t.id !== taskId)
         setTasks(tasks)
     }
@@ -34,12 +35,18 @@ function App() {
         setFilter(filteredTasks)
     }
 
+    const addTask = (title: string) => {
+        let newTask: TasksType = {id: v4(), title, isDone: false}
+        setTasks([newTask, ...tasks])
+    }
+
     return (
         <div className="App">
             <Todolist title="What to learn"
                       tasks={filteredTasks}
                       removeTask={removeTask}
                       changeTodolistFilter={changeTodolistFilter}
+                      addTask={addTask}
             />
             {/* <Todolist title="What to buy" tasks={tasks_2}/>*/}
         </div>

@@ -1,7 +1,9 @@
 import './App.css';
 import {Button} from "./Button";
+import {useRef, useState} from "react";
 
 export type FilterType = "all" | "active" | "completed"
+
 export interface TasksType {
     id: string,
     title: string,
@@ -13,11 +15,12 @@ interface TodolistType {
     tasks: Array<TasksType>,
     removeTask: (taskId: string) => void
     changeTodolistFilter: (filteredTasks: FilterType) => void
+    addTask: (title: string) => void
 }
 
 
-export const Todolist = ({title, tasks, removeTask, changeTodolistFilter}: TodolistType) => {
-    console.log(tasks)
+export const Todolist = ({title, tasks, removeTask, changeTodolistFilter, addTask}: TodolistType) => {
+    const [taskTitle, setTaskTitle] = useState()
 
     const removeTaskHandler = (id: string) => {
         return () => removeTask(id)
@@ -27,12 +30,20 @@ export const Todolist = ({title, tasks, removeTask, changeTodolistFilter}: Todol
         return () => changeTodolistFilter(filteredTasks)
     }
 
+    const inputRef = useRef<HTMLInputElement>(null)
+    const addTaskHandler = () => {
+        if (inputRef.current){
+            addTask(inputRef.current.value)
+            inputRef.current.value = ""
+        }
+    }
+
     return (
         <div className="todolist">
             <h3>{title}</h3>
             <div>
-                <input/>
-                <Button name="+"/>
+                <input ref={inputRef}/>
+                <Button name="+" callback={addTaskHandler}/>
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
