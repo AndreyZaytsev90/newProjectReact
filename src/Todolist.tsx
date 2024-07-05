@@ -1,6 +1,6 @@
 import './App.css';
 import {Button} from "./Button";
-import {useRef, useState} from "react";
+import {ChangeEvent, KeyboardEvent, useState} from "react";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -20,30 +20,43 @@ interface TodolistType {
 
 
 export const Todolist = ({title, tasks, removeTask, changeTodolistFilter, addTask}: TodolistType) => {
-    const [taskTitle, setTaskTitle] = useState()
+    let [taskTitle, setTaskTitle] = useState<string>('')
+    let [disabled, setDisabled] = useState<boolean>(true)
+    /*const inputRef = useRef<HTMLInputElement>(null)*/
 
     const removeTaskHandler = (id: string) => {
         return () => removeTask(id)
     }
-
     const filterTaskHandler = (filteredTasks: FilterType) => {
         return () => changeTodolistFilter(filteredTasks)
     }
-
-    const inputRef = useRef<HTMLInputElement>(null)
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        e.currentTarget.value.length > 0 ? setDisabled(false) : setDisabled(true)
+        setTaskTitle(e.currentTarget.value)
+    }
     const addTaskHandler = () => {
-        if (inputRef.current){
-            addTask(inputRef.current.value)
-            inputRef.current.value = ""
+        if (taskTitle.trim()) {
+            addTask(taskTitle.trim())
+            setTaskTitle('')
+            setDisabled(true)
         }
     }
+    const onKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === "Enter" && taskTitle) {
+            addTaskHandler()
+        }}
 
     return (
         <div className="todolist">
             <h3>{title}</h3>
             <div>
-                <input ref={inputRef}/>
-                <Button name="+" callback={addTaskHandler}/>
+                <input
+                    /*ref={inputRef} */
+                    onChange={onChangeHandler}
+                    value={taskTitle}
+                    onKeyUp={onKeyUpHandler}
+                />
+                <Button name="+" callback={addTaskHandler} isDisabled={disabled}/>
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
