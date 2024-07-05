@@ -1,11 +1,14 @@
 interface ButtonType {
-    name :string
-    callback: ()=> void
+    name: string
+    callback?: () => void | undefined
 }
+
 export const Button = ({name, callback}: ButtonType) => {
 
-    const onClickHandler =()=> {
-        callback()
+    const onClickHandler = () => {
+        if (callback) {
+            callback()
+        }
     }
 
     return (
