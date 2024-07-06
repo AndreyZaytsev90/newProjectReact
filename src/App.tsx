@@ -1,7 +1,8 @@
 import './App.css';
 import { FilterType, TasksType, Todolist } from "./Todolist";
-import { v4 as v4 } from 'uuid';
+import { v4 } from 'uuid';
 import { useState } from "react";
+
 
 
 // (C)-create
@@ -27,7 +28,6 @@ function App() {
       : (filter === "completed")
         ? tasks.filter(task => task.isDone)
         : tasks
-
 
   const removeTask = (taskId: string) => {
     tasks = tasks.filter(t => t.id !== taskId)
