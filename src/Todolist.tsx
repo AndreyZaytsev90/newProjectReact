@@ -16,10 +16,11 @@ interface TodolistType {
   removeTask: (taskId: string) => void
   changeTodolistFilter: (filteredTasks: FilterType) => void
   addTask: (title: string) => void
+  changeTaskStatus: (taskId: string, taskStatus: boolean) => void
 }
 
 
-export const Todolist = ({ title, tasks, removeTask, changeTodolistFilter, addTask }: TodolistType) => {
+export const Todolist = ({ title, tasks, removeTask, changeTodolistFilter, addTask, changeTaskStatus }: TodolistType) => {
   let [taskTitle, setTaskTitle] = useState<string>('')
   let [disabled, setDisabled] = useState<boolean>(true)
   /*const inputRef = useRef<HTMLInputElement>(null)*/
@@ -47,6 +48,11 @@ export const Todolist = ({ title, tasks, removeTask, changeTodolistFilter, addTa
     }
   }
 
+  const onChangeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>, taskId: string) => {
+    const newStatusValue = event.currentTarget.checked
+    changeTaskStatus(taskId, newStatusValue)
+  }
+
   return (
     <div className="todolist">
       <h3>{title}</h3>
@@ -65,7 +71,9 @@ export const Todolist = ({ title, tasks, removeTask, changeTodolistFilter, addTa
         <ul>
           {tasks.map((task: TasksType) => (
             <li key={task.id}>
-              <input type="checkbox" checked={task.isDone} />
+              <input
+                type="checkbox" checked={task.isDone}
+                onChange={(event) => onChangeTaskStatusHandler(event, task.id)} />
               <span>{task.title}</span>
               <Button name="X" callback={() => removeTaskHandler(task.id)} />
             </li>
