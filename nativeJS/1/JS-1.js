@@ -12,7 +12,7 @@ console.log(10 * undefined) // NaN
 
 console.log(10 + "0") // 100
 
-console.log(10/0) // Infinity
+console.log(10 / 0) // Infinity
 
 //Symbol
 console.log(typeof Symbol) // function
@@ -20,9 +20,10 @@ console.log(typeof Symbol) // function
 console.log(typeof BigInt) // function
 
 let number  //undefined
-const func = () => {}
+const func = () => {
+}
 console.log(func()) // undefined (нет явного return у функции func) 
-    
+
 // Объекты:
 
 // ARRAYS => "object" => Array.isArray([]) => true || false
@@ -104,7 +105,7 @@ const todos = [
         "title": "et porro tempora",
         "completed": true
     },
-    
+
 ]
 
 //CRUD
@@ -113,16 +114,22 @@ const todos = [
 
 /*const copy = structuredClone(todos)*/
 const newTodo = {"userId": 1, "id": 5, "title": "newTodo", "completed": false}
-const copy1_todos = [...todos,newTodo]
+const copy1_todos = [...todos, newTodo]
 
 // delete todo
 
-const copy2_todos  = todos.filter(t => t.id !== 4) //оставь только те todo, у которых id не равно выбранному
+const copy2_todos = todos.filter(t => t.id !== 4) //оставь только те todo, у которых id не равно выбранному
 
 // update todo
 
-const copy3_todos = todos.map(t => t.id === 2 ? {...t, title: "SPARTAK!!",completed: true, address: "Russia"} : t)
-const copy1_user = user.map(el => el.id === 1 ? {...el, address: {...el.address, city: "Moscow"}, company: {...el.company, name: "Yandex"}}: el)
+const copy3_todos = todos.map(t => t.id === 2
+    ? {...t, title: "SPARTAK!!", completed: true, address: "Russia"}
+    : t
+)
+const copy1_user = user.map(el => el.id === 1
+    ? {...el, address: {...el.address, city: "Moscow"}, company: {...el.company, name: "Yandex"}}
+    : el
+)
 
 // read todo
 
