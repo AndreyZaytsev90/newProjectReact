@@ -26,7 +26,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "startserver": "http-server ./nativeJS/1 -p 8080",
-    "startbrowsersync": "yarn startserver & browser-sync start --proxy http://127.0.0.1:8080 --files \"nativeJS/1/*.html, nativeJS/1/*.js\""
+    "startbrowsersync": "yarn startserver & browser-sync start --proxy http://127.0.0.1:8080 --files \"nativeJS/**/*.html, nativeJS/**/*.js\""
   },
   "eslintConfig": {
     "extends": [
