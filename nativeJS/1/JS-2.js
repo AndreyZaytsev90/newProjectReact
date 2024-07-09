@@ -108,7 +108,7 @@ console.log(students.myFilter(st => st.name !== "Alex"))
 
 //Find
 
-Array.prototype.myFind = function find(callback) {
+Array.prototype.myFindWithCopy = function find(callback) {
     const result = new Array()
     for (let i = 0; i < this.length; i++) {
         if (callback(this[i]) === true){
@@ -119,5 +119,15 @@ Array.prototype.myFind = function find(callback) {
     return result.length > 0 ? result : undefined
 }
 
+Array.prototype.myFind = function find(callback) {
+    for (let i = 0; i < this.length; i++) {
+        if (callback(this[i]) === true){
+            return this[i]
+        }
+    }
+    return undefined
+}
 
+
+console.log(students.myFindWithCopy(st => st.name === "Alex"))
 console.log(students.myFind(st => st.name === "Alex"))
