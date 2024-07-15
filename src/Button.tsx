@@ -2,9 +2,10 @@ interface ButtonType {
     name: string
     callback?: () => void
     isDisabled?: boolean
+    className?: string
 }
 
-export const Button = ({name, callback, isDisabled}: ButtonType) => {
+export const Button = ({name, callback, isDisabled, className}: ButtonType) => {
 
     const onClickHandler = () => {
         if (callback) {
@@ -13,6 +14,6 @@ export const Button = ({name, callback, isDisabled}: ButtonType) => {
     }
 
     return (
-        <button disabled={isDisabled} onClick={onClickHandler}>{name}</button>
+        <button className={className} disabled={isDisabled} onClick={onClickHandler}>{name}</button>
     );
 };
