@@ -32,6 +32,7 @@ export const Todolist = ({
                          }: TodolistType) => {
     let [taskTitle, setTaskTitle] = useState<string>('')
     let [disabled, setDisabled] = useState<boolean>(true)
+    let [inputError, setInputError] = useState<boolean>(false)
     /*const inputRef = useRef<HTMLInputElement>(null)*/
 
     const removeTaskHandler = (id: string) => {
@@ -47,9 +48,12 @@ export const Todolist = ({
     const addTaskHandler = () => {
         if (taskTitle.trim()) {
             addTask(taskTitle.trim())
-            setTaskTitle('')
             setDisabled(true)
+            setInputError(false)
+        } else {
+            setInputError(true)
         }
+        setTaskTitle('')
     }
     const onKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter" && taskTitle) {
@@ -71,8 +75,10 @@ export const Todolist = ({
                     onChange={onChangeHandler}
                     value={taskTitle}
                     onKeyUp={onKeyUpHandler}
+                    className={inputError? "error": ''}
                 />
                 <Button name="+" callback={addTaskHandler} isDisabled={disabled}/>
+                {inputError? <div className="error-message">Title is required!</div>: ''}
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
@@ -91,15 +97,15 @@ export const Todolist = ({
             )}
             <div>
                 <Button
-                    className={filter === 'all' ? 'btn-active' : ''}
+                    className={filter === 'all' ? 'btn-active' : 'btn'}
                     name="All"
                     callback={() => filterTaskHandler('all')}/>
                 <Button
-                    className={filter === 'active' ? 'btn-active' : ''}
+                    className={filter === 'active' ? 'btn-active' : 'btn'}
                     name="Active"
                     callback={() => filterTaskHandler('active')}/>
                 <Button
-                    className={filter === 'completed' ? 'btn-active' : ''}
+                    className={filter === 'completed' ? 'btn-active' : 'btn'}
                     name="Completed"
                     callback={() => filterTaskHandler('completed')}/>
             </div>
