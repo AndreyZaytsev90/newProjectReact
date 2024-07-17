@@ -44,6 +44,7 @@ export const Todolist = ({
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.currentTarget.value.length > 0 ? setDisabled(false) : setDisabled(true)
         setTaskTitle(e.currentTarget.value)
+        inputError && setInputError(false)
     }
     const addTaskHandler = () => {
         if (taskTitle.trim()) {
@@ -78,7 +79,7 @@ export const Todolist = ({
                     className={inputError? "error": ''}
                 />
                 <Button name="+" callback={addTaskHandler} isDisabled={disabled}/>
-                {inputError? <div className="error-message">Title is required!</div>: ''}
+                {inputError && <div className="error-message">Title is required!</div>}
             </div>
             {tasks.length === 0 ? (
                 <p>Тасок нет</p>
