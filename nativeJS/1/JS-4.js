@@ -36,6 +36,8 @@ const todolist = [
     }
 ]
 
+console.log(todolist[0]["title"])
+
 /*const tasks = [
     {id: Id(), todolistId: todolistId1, title: "HTML", isDone: true},
     {id: Id(), todolistId: todolistId1, title: "CSS", isDone: true},
@@ -99,3 +101,21 @@ const filteredTasks3 = todolistTasks3.map((t)=> t.id === '5'? {...t, isDone: tru
 newCopyTasks[todolistId1] = filteredTasks3*/
 
 console.log({...copyTasks, [todolistId1]: todolistTasks3.map((t)=> t.id === '5'? {...t, "isDone": true}: t)})
+
+/*console.log(tasks[todolistId1][0]['isDone'])*/
+
+
+const arrayOfObjects = [
+    { id: 1, name: 'Andrey', age: 34 },
+    { id: 2, name: 'Olga', age: 36 },
+    { id: 3, name: 'Petr', age: 5 }
+];
+
+
+const newObject = {}
+// Преобразование массива arrayOfObjects в объект для ускорения поиска по ключам
+for (let i = 0; i <arrayOfObjects.length ; i++) {
+    newObject[arrayOfObjects[i].id + "-" + [Id()]] = arrayOfObjects[i]
+}
+
+console.log(newObject) // {1-7S2KXKzWFDuc: {id: 1, name: 'Andrey', age: 34}, 2-xN7NyAdyK22t: {id: 2, name: 'Olga', age: 36}, 3-R4siF1sNsSnF: {id: 3, name: 'Petr', age: 5}}
