@@ -22,7 +22,7 @@ function App() {
     { id: v4(), title: 'What to buy', filter: 'all' },
   ])
   // Локальный стэйт для хранения информации по фильтрации
-  //const [filter, setFilter] = useState<FilterType>("all") - у каждого дутулиста свой фильтр
+  //const [filter, setFilter] = useState<FilterType>("all") - у каждого тудулиста свой фильтр
 
   /* let [newTask, setNewTask] = useState<TasksType>()*/
 
@@ -38,13 +38,19 @@ function App() {
     setTasks(tasks)
   }
 
+  console.log(todolists) // массив с 2мя объектами
+  console.log(...todolists) // Деструктуризация. Видим просто 2 объекта, без массива (без ящика)
+  console.log([...todolists]) // копия массива todolists
+
   const changeTodolistFilter = (todolistId: string, filteredTasks: FilterType) => {
     //setFilter(filteredTasks)
-    const currentTodolist = todolists.find((el) => el.id === todolistId)
+    // этот код не работает с редаксом
+   /* const currentTodolist = todolists.find((el) => el.id === todolistId)
     if (currentTodolist) {
       currentTodolist.filter = filteredTasks
       setTodolists([...todolists])
-    }
+    }*/
+    setTodolists([...todolists, todolists.map((el) => el.id === todolistId ? {...el , filter: filteredTasks} : el)])
   }
 
   const addTask = (title: string) => {
@@ -58,17 +64,16 @@ function App() {
     setTasks(tasksWithNewStatus)
   }
 
-
   return (
     <div className="App">
       {todolists.map((el) => {
 
-        const filteredTasks: Array<TasksType> =
+        /*const filteredTasks: Array<TasksType> =
           (el.filter === "active")
             ? tasks.filter(task => !task.isDone)
             : (el.filter === "completed")
               ? tasks.filter(task => task.isDone)
-              : tasks
+              : tasks*/
 
 
         return (
@@ -76,7 +81,7 @@ function App() {
             key={el.id} // для VirtualDOM
             todolistId={el.id}
             title={el.title}
-            tasks={filteredTasks}
+            tasks={tasks}
             removeTask={removeTask}
             changeTodolistFilter={changeTodolistFilter}
             addTask={addTask}

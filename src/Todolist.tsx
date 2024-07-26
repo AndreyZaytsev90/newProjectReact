@@ -37,12 +37,12 @@ export const Todolist = ({
   let [inputError, setInputError] = useState<boolean>(false)
   /*const inputRef = useRef<HTMLInputElement>(null)*/
 
-  // const filteredTasks: Array<TasksType> =
-  //   (filter === "active")
-  //     ? tasks.filter(task => !task.isDone)
-  //     : (filter === "completed")
-  //       ? tasks.filter(task => task.isDone)
-  //       : tasks
+  const filteredTodolistTasks: Array<TasksType> =
+      (filter === "active")
+          ? tasks.filter(task => !task.isDone)
+          : (filter === "completed")
+              ? tasks.filter(task => task.isDone)
+              : tasks
 
   const removeTaskHandler = (id: string) => {
     removeTask(id)
@@ -75,6 +75,9 @@ export const Todolist = ({
       const newStatusValue = event.currentTarget.checked
       changeTaskStatus(taskId, newStatusValue)
     }*/
+  const onAllClickHandler = () => filterTaskHandler(todolistId, 'all')
+  const onActiveClickHandler = () => filterTaskHandler(todolistId, 'active')
+  const onCompletedClickHandler = () => filterTaskHandler(todolistId, 'completed')
 
   return (
     <div className="todolist">
@@ -90,11 +93,11 @@ export const Todolist = ({
         <Button name="+" callback={addTaskHandler} isDisabled={disabled} />
         {inputError && <div className="error-message">Title is required!</div>}
       </div>
-      {tasks.length === 0 ? (
+      {filteredTodolistTasks.length === 0 ? (
         <p>Тасок нет</p>
       ) : (
         <ul>
-          {tasks.map((task: TasksType) => (
+          {filteredTodolistTasks.map((task: TasksType) => (
             <li key={task.id} className={task.isDone ? "task-done" : "task"}>
               <input
                 type="checkbox" checked={task.isDone}
@@ -109,15 +112,15 @@ export const Todolist = ({
         <Button
           className={filter === 'all' ? 'btn-active' : 'btn'}
           name="All"
-          callback={() => filterTaskHandler(todolistId, 'all')} />
+          callback={onAllClickHandler} />
         <Button
           className={filter === 'active' ? 'btn-active' : 'btn'}
           name="Active"
-          callback={() => filterTaskHandler(todolistId, 'active')} />
+          callback={onActiveClickHandler} />
         <Button
           className={filter === 'completed' ? 'btn-active' : 'btn'}
           name="Completed"
-          callback={() => filterTaskHandler(todolistId, 'completed')} />
+          callback={onCompletedClickHandler} />
       </div>
     </div>
   );
