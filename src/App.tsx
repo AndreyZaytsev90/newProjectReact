@@ -10,12 +10,6 @@ type TodolistsType = { id: string, title: string, filter: FilterType }
 // (D) - delete
 function App() {
 
-	// let [tasks, setTasks] = useState<Array<TasksType>>([
-	// 	{ id: v4(), title: "HTML", isDone: true },
-	// 	{ id: v4(), title: "CSS", isDone: true },
-	// 	{ id: v4(), title: "ES6/TS", isDone: false },
-	// 	{ id: v4(), title: "REACT", isDone: false },
-	// ])
 	let todolistID1 = v4()
 	let todolistID2 = v4()
 
@@ -23,9 +17,6 @@ function App() {
 		{ id: todolistID1, title: 'What to learn', filter: 'all' },
 		{ id: todolistID2, title: 'What to buy', filter: 'all' },
 	])
-	// Локальный стэйт для хранения информации по фильтрации
-	//const [filter, setFilter] = useState<FilterType>("all") - у каждого тудулиста свой фильтр
-
 
 	let [tasks, setTasks] = useState({
 		[todolistID1]: [
@@ -43,6 +34,15 @@ function App() {
 			{ id: v4(), title: "GraphQL2", isDone: false },]
 
 	})
+	// Локальный стэйт для хранения информации по фильтрации
+	//const [filter, setFilter] = useState<FilterType>("all") - у каждого тудулиста свой фильтр
+
+	// let [tasks, setTasks] = useState<Array<TasksType>>([
+	// 	{ id: v4(), title: "HTML", isDone: true },
+	// 	{ id: v4(), title: "CSS", isDone: true },
+	// 	{ id: v4(), title: "ES6/TS", isDone: false },
+	// 	{ id: v4(), title: "REACT", isDone: false },
+	// ])
 
 	/* let [newTask, setNewTask] = useState<TasksType>()*/
 
@@ -53,14 +53,19 @@ function App() {
 	//       ? tasks.filter(task => task.isDone)
 	//       : tasks
 
+	// console.log(todolists) // массив с 2мя объектами
+	// console.log(...todolists) // Деструктуризация. Видим просто 2 объекта, без массива (без ящика)
+	// console.log([...todolists]) // копия массива todolists
+
 	const removeTask = (taskId: string) => {
 		// tasks = tasks.filter(t => t.id !== taskId)
 		// setTasks(tasks)
 	}
 
-	console.log(todolists) // массив с 2мя объектами
-	console.log(...todolists) // Деструктуризация. Видим просто 2 объекта, без массива (без ящика)
-	console.log([...todolists]) // копия массива todolists
+	const addTask = (title: string) => {
+		// let newTask: TasksType = { id: v4(), title, isDone: false }
+		// setTasks([newTask, ...tasks])
+	}
 
 	const changeTodolistFilter = (todolistId: string, filteredTasks: FilterType) => {
 		//setFilter(filteredTasks)
@@ -73,15 +78,10 @@ function App() {
 		setTodolists(todolists.map((el) => el.id === todolistId ? { ...el, filter: filteredTasks } : el))
 	}
 
-	const addTask = (title: string) => {
-		// let newTask: TasksType = { id: v4(), title, isDone: false }
-		// setTasks([newTask, ...tasks])
-	}
-
 	const changeTaskStatus = (taskId: string, taskStatus: boolean) => {
 		// { ...t, isDone: taskStatus } - спрэд оператор убивает типизацию этого объекта и его можно изменять как угодно. Это косяк TS
-		const tasksWithNewStatus = tasks.map((t) => t.id === taskId ? { ...t, isDone: taskStatus } : t)
-		setTasks(tasksWithNewStatus)
+		// const tasksWithNewStatus = tasks.map((t) => t.id === taskId ? { ...t, isDone: taskStatus } : t)
+		// setTasks(tasksWithNewStatus)
 	}
 
 	return (
@@ -101,7 +101,7 @@ function App() {
 						key={el.id} // для VirtualDOM
 						todolistId={el.id}
 						title={el.title}
-						tasks={tasks}
+						tasks={tasks[todolistID1]}
 						removeTask={removeTask}
 						changeTodolistFilter={changeTodolistFilter}
 						addTask={addTask}
