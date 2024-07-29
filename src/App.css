@@ -45,3 +45,8 @@
 .error-message {
   color: red;
 }
+
+.todolist-title-container {
+  display: flex;
+  align-items: center;
+}
