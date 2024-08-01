@@ -2,6 +2,7 @@ import './App.css';
 import { FilterType, TasksType, Todolist } from "./Todolist";
 import { v4 } from 'uuid';
 import { useState } from "react";
+import {AddItemForm} from "./AddItemForm";
 
 type TodolistsType = { id: string, title: string, filter: FilterType }
 // (C)-create
@@ -100,6 +101,7 @@ function App() {
 
 	return (
 		<div className="App">
+			<AddItemForm todolistId={''}/>
 			{todolists.map((el) => {
 
 				/*const filteredTasks: Array<TasksType> =

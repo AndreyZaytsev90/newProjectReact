@@ -1,6 +1,7 @@
 import './App.css';
 import {Button} from "./Button";
 import {ChangeEvent, KeyboardEvent, useState} from "react";
+import {AddItemForm} from "./AddItemForm";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -34,9 +35,9 @@ export const Todolist = ({
                              removeTodolist,
                              filter
                          }: TodolistType) => {
-    let [taskTitle, setTaskTitle] = useState<string>('')
+   /* let [taskTitle, setTaskTitle] = useState<string>('')
     let [disabled, setDisabled] = useState<boolean>(true)
-    let [inputError, setInputError] = useState<boolean>(false)
+    let [inputError, setInputError] = useState<boolean>(false)*/
     /*const inputRef = useRef<HTMLInputElement>(null)*/
 
     const filteredTodolistTasks: Array<TasksType> =
@@ -52,7 +53,7 @@ export const Todolist = ({
     const filterTaskHandler = (todolistId: string, filteredTasks: FilterType) => {
         changeTodolistFilter(todolistId, filteredTasks)
     }
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    /*const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         e.currentTarget.value.length > 0 ? setDisabled(false) : setDisabled(true)
         setTaskTitle(e.currentTarget.value)
         inputError && setInputError(false)
@@ -71,7 +72,7 @@ export const Todolist = ({
         if (event.key === "Enter" && taskTitle) {
             addTaskHandler()
         }
-    }
+    }*/
 
     /*  const onChangeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>, taskId: string) => {
             const newStatusValue = event.currentTarget.checked
@@ -93,15 +94,15 @@ export const Todolist = ({
                 <Button name={'x'} callback={() => removeTodolistHandler(todolistId)} />
             </div>
             <div>
-                <input
-                    /*ref={inputRef} */
+               {/* <input
                     onChange={onChangeHandler}
                     value={taskTitle}
                     onKeyUp={onKeyUpHandler}
                     className={inputError ? "error" : ''}
                 />
                 <Button name="+" callback={addTaskHandler} isDisabled={disabled}/>
-                {inputError && <div className="error-message">Title is required!</div>}
+                {inputError && <div className="error-message">Title is required!</div>}*/}
+                <AddItemForm todolistId={todolistId} addTask={addTask}/>
             </div>
             {filteredTodolistTasks.length === 0 ? (
                 <p>Тасок нет</p>
