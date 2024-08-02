@@ -40,6 +40,8 @@ export const Todolist = ({
     let [inputError, setInputError] = useState<boolean>(false)*/
     /*const inputRef = useRef<HTMLInputElement>(null)*/
 
+    //let [taskTitle, setTaskTitle] = useState<string>('')
+
     const filteredTodolistTasks: Array<TasksType> =
         (filter === "active")
             ? tasks.filter(task => !task.isDone)
@@ -87,6 +89,10 @@ export const Todolist = ({
         removeTodolist(todolistId)
     }
 
+    const addTaskHandler = (title: string) => {
+        addTask(todolistId, title)
+    }
+
     return (
         <div className="todolist">
             <div className={'todolist-title-container'}>
@@ -102,7 +108,7 @@ export const Todolist = ({
                 />
                 <Button name="+" callback={addTaskHandler} isDisabled={disabled}/>
                 {inputError && <div className="error-message">Title is required!</div>}*/}
-                <AddItemForm todolistId={todolistId} addTask={addTask}/>
+                <AddItemForm addItem={addTaskHandler}/>
             </div>
             {filteredTodolistTasks.length === 0 ? (
                 <p>Тасок нет</p>

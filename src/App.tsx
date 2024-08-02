@@ -42,7 +42,6 @@ function App() {
 	})
 	// Локальный стэйт для хранения информации по фильтрации
 	//const [filter, setFilter] = useState<FilterType>("all") - у каждого тудулиста свой фильтр
-
 	// let [tasks, setTasks] = useState<Array<TasksType>>([
 	// 	{ id: v4(), title: "HTML", isDone: true },
 	// 	{ id: v4(), title: "CSS", isDone: true },
@@ -58,7 +57,6 @@ function App() {
 	//     : (filter === "completed")
 	//       ? tasks.filter(task => task.isDone)
 	//       : tasks
-
 	// console.log(todolists) // массив с 2мя объектами
 	// console.log(...todolists) // Деструктуризация. Видим просто 2 объекта, без массива (без ящика)
 	// console.log([...todolists]) // копия массива todolists
@@ -99,9 +97,16 @@ function App() {
 		delete tasks[todolistId]
 	}
 
+	const addTodolist = (title: string) => {
+		const todolistId = v4()
+		const newTodolist: TodolistsType = { id: todolistId, title: title, filter: 'all' }
+		setTodolists([newTodolist, ...todolists])
+		setTasks({ ...tasks, [todolistId]: [] })
+	}
+
 	return (
 		<div className="App">
-			<AddItemForm todolistId={''}/>
+			<AddItemForm addItem={addTodolist}/>
 			{todolists.map((el) => {
 
 				/*const filteredTasks: Array<TasksType> =
