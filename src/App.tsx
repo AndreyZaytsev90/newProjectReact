@@ -2,7 +2,7 @@ import './App.css';
 import { FilterType, TasksType, Todolist } from "./Todolist";
 import { v4 } from 'uuid';
 import { useState } from "react";
-import {AddItemForm} from "./AddItemForm";
+import { AddItemForm } from "./AddItemForm";
 
 type TodolistsType = { id: string, title: string, filter: FilterType }
 // (C)-create
@@ -67,13 +67,11 @@ function App() {
 		//console.log(todolistId, taskId)
 		setTasks({ ...tasks, [todolistId]: tasks[todolistId].filter((el) => el.id !== taskId) })
 	}
-
 	const addTask = (todolistId: string, title: string) => {
 		let newTask: TasksType = { id: v4(), title, isDone: false }
 		// setTasks([newTask, ...tasks])
 		setTasks({ ...tasks, [todolistId]: [newTask, ...tasks[todolistId]] })
 	}
-
 	const changeTodolistFilter = (todolistId: string, filteredTasks: FilterType) => {
 		//setFilter(filteredTasks)
 		// этот код не работает с редаксом
@@ -84,29 +82,37 @@ function App() {
 		 }*/
 		setTodolists(todolists.map((el) => el.id === todolistId ? { ...el, filter: filteredTasks } : el))
 	}
-
 	const changeTaskStatus = (todolistId: string, taskId: string, taskStatus: boolean) => {
 		// { ...t, isDone: taskStatus } - спрэд оператор убивает типизацию этого объекта и его можно изменять как угодно. Это косяк TS
 		// const tasksWithNewStatus = tasks.map((t) => t.id === taskId ? { ...t, isDone: taskStatus } : t)
 		// setTasks(tasksWithNewStatus)
 		setTasks({ ...tasks, [todolistId]: tasks[todolistId].map((t) => t.id === taskId ? { ...t, isDone: taskStatus } : t) })
 	}
-
 	const removeTodolist = (todolistId: string) => {
 		setTodolists(todolists.filter((t) => t.id !== todolistId))
 		delete tasks[todolistId]
 	}
-
 	const addTodolist = (title: string) => {
 		const todolistId = v4()
 		const newTodolist: TodolistsType = { id: todolistId, title: title, filter: 'all' }
 		setTodolists([newTodolist, ...todolists])
-		setTasks({ ...tasks, [todolistId]: [] })
+		setTasks({
+			...tasks, [todolistId]: [
+				{ id: v4(), title: "HTML&CSS", isDone: false },
+				{ id: v4(), title: "JS", isDone: false },
+			]
+		})
+	}
+	const updateTask = (todolistId: string, taskId: string, title: string) => {
+		setTasks({
+			...tasks,
+			[todolistId]: tasks[todolistId].map((el) => el.id === taskId ? { ...el, title } : el)
+		})
 	}
 
 	return (
 		<div className="App">
-			<AddItemForm addItem={addTodolist}/>
+			<AddItemForm addItem={addTodolist} />
 			{todolists.map((el) => {
 
 				/*const filteredTasks: Array<TasksType> =
