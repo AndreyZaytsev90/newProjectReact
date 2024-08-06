@@ -4,6 +4,8 @@ import Button from '@mui/material/Button';
 //import { ChangeEvent, KeyboardEvent, useState } from "react";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from './EditableSpan';
+import {IconButton} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -118,9 +120,9 @@ export const Todolist = ({
                 {/*<h3>{title}</h3>*/}
                 <h3><EditableSpan globalTitle={title} callback={updateTodolistHandler}/></h3>
                 {/*<Button name={'x'} callback={() => removeTodolistHandler(todolistId)}/>*/}
-                <Button variant="outlined" color="error">
-                    Error
-                </Button>
+                <IconButton aria-label="delete" size="small" onClick={() => removeTodolistHandler(todolistId)}>
+                    <DeleteIcon fontSize="small" />
+                </IconButton>
             </div>
             <div>
                 {/* <input
