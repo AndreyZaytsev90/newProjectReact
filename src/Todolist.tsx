@@ -1,5 +1,6 @@
 import './App.css';
-import {Button} from "./Button";
+import {Button as SuperButton} from "./Button";
+import Button from '@mui/material/Button';
 //import { ChangeEvent, KeyboardEvent, useState } from "react";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from './EditableSpan';
@@ -21,7 +22,8 @@ interface TodolistType {
     addTask: (todolistId: string, title: string) => void
     changeTaskStatus: (todolistId: string, taskId: string, taskStatus: boolean) => void
     removeTodolist: (todolistId: string) => void
-    updateTask: (todolistId: string, taskId: string, title: string) => void
+    updateTaskTitle: (todolistId: string, taskId: string, title: string) => void
+    updateTodolistTitle:(todolistId: string, title: string) => void
     filter: FilterType
 }
 
@@ -35,7 +37,8 @@ export const Todolist = ({
                              addTask,
                              changeTaskStatus,
                              removeTodolist,
-                             updateTask,
+                             updateTaskTitle,
+                             updateTodolistTitle,
                              filter
                          }: TodolistType) => {
     /* let [taskTitle, setTaskTitle] = useState<string>('')
@@ -101,14 +104,23 @@ export const Todolist = ({
     }*/
 
     const updateTaskHandler = (taskId: string, newTitle: string) => {
-        updateTask(todolistId, taskId, newTitle)
+        updateTaskTitle(todolistId, taskId, newTitle)
     }
+
+    const updateTodolistHandler = (newTitle: string) => {
+        updateTodolistTitle(todolistId, newTitle)
+    }
+
 
     return (
         <div className="todolist">
             <div className={'todolist-title-container'}>
-                <h3>{title}</h3>
-                <Button name={'x'} callback={() => removeTodolistHandler(todolistId)}/>
+                {/*<h3>{title}</h3>*/}
+                <h3><EditableSpan globalTitle={title} callback={updateTodolistHandler}/></h3>
+                {/*<Button name={'x'} callback={() => removeTodolistHandler(todolistId)}/>*/}
+                <Button variant="outlined" color="error">
+                    Error
+                </Button>
             </div>
             <div>
                 {/* <input
@@ -140,21 +152,21 @@ export const Todolist = ({
                                 <EditableSpan globalTitle={task.title}
                                               callback={(newTitle) => updateTaskHandler(task.id, newTitle)}
                                 />
-                                <Button name="X" callback={() => removeTaskHandler(todolistId, task.id)}/>
+                                <SuperButton name="X" callback={() => removeTaskHandler(todolistId, task.id)}/>
                             </li>
                         )})}
                 </ul>
             )}
             <div>
-                <Button
+                <SuperButton
                     className={filter === 'all' ? 'btn-active' : 'btn'}
                     name="All"
                     callback={onAllClickHandler}/>
-                <Button
+                <SuperButton
                     className={filter === 'active' ? 'btn-active' : 'btn'}
                     name="Active"
                     callback={onActiveClickHandler}/>
-                <Button
+                <SuperButton
                     className={filter === 'completed' ? 'btn-active' : 'btn'}
                     name="Completed"
                     callback={onCompletedClickHandler}/>

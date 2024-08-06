@@ -5,10 +5,7 @@ type EditableSpanType = {
     callback: (title: string) => void
 }
 
-export const EditableSpan: React.FC<EditableSpanType> = ({
-                                                             globalTitle,
-                                                             callback
-                                                         }) => {
+export const EditableSpan: React.FC<EditableSpanType> = ({globalTitle, callback}) => {
 
     const [edit, setEdit] = useState(false)
     let [newTitle, setNewTitle] = useState<string>(globalTitle)
