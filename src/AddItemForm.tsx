@@ -1,5 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import {Button} from "./Button";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+//import {Button} from "./Button";
 
 
 export type AddItemFormType = {
@@ -33,15 +35,40 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
         }
     }
 
+    const styles = {
+        maxWidth: '40px',
+        maxHeight: '40px',
+        minWidth: '40px',
+        minHeight: '40px'
+    }
+
     return (
         <div>
-            <input
+            {/*   <input
                 onChange={onChangeHandler}
                 value={title}
                 onKeyUp={onKeyUpHandler}
                 className={inputError ? "error" : ''}
+            />*/}
+
+            <TextField
+                error={inputError}
+                id="outlined-basic"
+                value={title}
+                label={inputError ? "Error" : "New Task"}
+                variant="outlined"
+                onChange={onChangeHandler}
+                onKeyUp={onKeyUpHandler}
+                size={"small"}
             />
-            <Button name="+" callback={addItemHandler} isDisabled={disabled}/>
+
+
+            {/*<Button name="+" callback={addItemHandler} isDisabled={disabled}/>*/}
+            <Button variant="contained"
+                    color="success"
+                    onClick={addItemHandler}
+                    disabled={disabled}
+                    style={styles}>+</Button> {/*из materialUI*/}
             {inputError && <div className="error-message">Title is required!</div>}
         </div>
     );

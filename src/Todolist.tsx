@@ -4,8 +4,11 @@ import Button from '@mui/material/Button';
 //import { ChangeEvent, KeyboardEvent, useState } from "react";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from './EditableSpan';
-import {IconButton} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -120,8 +123,8 @@ export const Todolist = ({
                 {/*<h3>{title}</h3>*/}
                 <h3><EditableSpan globalTitle={title} callback={updateTodolistHandler}/></h3>
                 {/*<Button name={'x'} callback={() => removeTodolistHandler(todolistId)}/>*/}
-                <IconButton aria-label="delete" size="small" onClick={() => removeTodolistHandler(todolistId)}>
-                    <DeleteIcon fontSize="small" />
+                <IconButton aria-label="delete" size="small"  onClick={() => removeTodolistHandler(todolistId)}>
+                    <DeleteIcon  style={{color: '#B00909FF'}}/>
                 </IconButton>
             </div>
             <div>
@@ -147,20 +150,26 @@ export const Todolist = ({
 
                         return (
                             <li key={task.id} className={task.isDone ? "task-done" : "task"}>
-                                <input
+                          {/*      <input
                                     type="checkbox" checked={task.isDone}
-                                    onChange={(event) => changeTaskStatus(todolistId, task.id, event.currentTarget.checked)}/>
+                                    onChange={(event) => changeTaskStatus(todolistId, task.id, event.currentTarget.checked)}/>*/}
+                                <Checkbox checked={task.isDone}
+                                          onChange={(event) => changeTaskStatus(todolistId, task.id, event.currentTarget.checked)}
+                                />
                                 {/* <span>{task.title}</span> */}
                                 <EditableSpan globalTitle={task.title}
                                               callback={(newTitle) => updateTaskHandler(task.id, newTitle)}
                                 />
-                                <SuperButton name="X" callback={() => removeTaskHandler(todolistId, task.id)}/>
+                                {/*<SuperButton name="X" callback={() => removeTaskHandler(todolistId, task.id)}/>*/}
+                                <IconButton aria-label="delete" size="small"  onClick={() => removeTaskHandler(todolistId, task.id)}>
+                                    <DeleteIcon fontSize={"small"} style={{color: '#B00909FF'}}/>
+                                </IconButton>
                             </li>
                         )})}
                 </ul>
             )}
             <div>
-                <SuperButton
+                {/*<SuperButton
                     className={filter === 'all' ? 'btn-active' : 'btn'}
                     name="All"
                     callback={onAllClickHandler}/>
@@ -171,7 +180,19 @@ export const Todolist = ({
                 <SuperButton
                     className={filter === 'completed' ? 'btn-active' : 'btn'}
                     name="Completed"
-                    callback={onCompletedClickHandler}/>
+                    callback={onCompletedClickHandler}/>*/}
+
+                <ButtonGroup aria-label="Basic button group" size={"small"}>
+                    <Button color='primary'
+                            variant={filter === 'all' ? 'contained' : 'outlined'}
+                            onClick={onAllClickHandler}>All</Button>
+                    <Button color='warning'
+                            variant={filter === 'active' ? 'contained' : 'outlined'}
+                            onClick={onActiveClickHandler}>Active</Button>
+                    <Button color='success'
+                            variant={filter === 'completed' ? 'contained' : 'outlined'}
+                            onClick={onCompletedClickHandler}>Completed</Button>
+                </ButtonGroup>
             </div>
         </div>
     );
