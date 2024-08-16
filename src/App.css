@@ -1,9 +1,9 @@
 .App {
-  padding: 30px;
-  display: flex;
+/*  padding: 30px;
+  display: flex;*/
 }
 
-.App > div {
+/*.App > div {
   margin-right: 50px;
 }
 
@@ -36,7 +36,7 @@
   border: none;
   border-radius: 3px;
   margin: 2px;
-}
+}*/
 
 .error {
   border: red 2px solid;

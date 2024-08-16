@@ -55,7 +55,7 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
                 error={inputError}
                 id="outlined-basic"
                 value={title}
-                label={inputError ? "Error" : "New Task"}
+                label={inputError ? "Title is required" : "New Task"}
                 variant="outlined"
                 onChange={onChangeHandler}
                 onKeyUp={onKeyUpHandler}
@@ -69,7 +69,9 @@ export const AddItemForm: React.FC<AddItemFormType> = ({addItem}) => {
                     onClick={addItemHandler}
                     disabled={disabled}
                     style={styles}>+</Button> {/*из materialUI*/}
-            {inputError && <div className="error-message">Title is required!</div>}
+
+            {/*{inputError && <div className="error-message">Title is required!</div>}*/}
+
         </div>
     );
 };

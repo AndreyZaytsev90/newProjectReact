@@ -182,7 +182,7 @@ export const Todolist = ({
                     name="Completed"
                     callback={onCompletedClickHandler}/>*/}
 
-                <ButtonGroup aria-label="Basic button group" size={"small"}>
+                <ButtonGroup aria-label="Basic button group" size={"small"} style={{padding: '0 0 0 29px'}}>
                     <Button color='primary'
                             variant={filter === 'all' ? 'contained' : 'outlined'}
                             onClick={onAllClickHandler}>All</Button>
