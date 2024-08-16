@@ -1,167 +1,57 @@
+import React, {useState} from 'react';
 import './App.css';
-import {FilterType, TasksType, Todolist} from "./Todolist";
-import {v4} from 'uuid';
-import {useState} from "react";
-import {AddItemForm} from "./AddItemForm";
-import ButtonAppBar from "./ButtonAppBar";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
+import {Todolist} from './Todolist';
+import { v1 } from 'uuid';
 
-type TodolistsType = { id: string, title: string, filter: FilterType }
-// (C)-create
-// (R)- read (filter, sort, search, pagination, view-mode)
-// (U)- update
-// (D) - delete
-
-export type TasksStateType = {
-    [key: string]: TasksType[]
-}
+export type FilterValuesType = "all" | "active" | "completed";
 
 function App() {
 
-    let todolistID1 = v4()
-    let todolistID2 = v4()
+    let [tasks, setTasks] = useState([
+        { id: v1(), title: "HTML&CSS", isDone: true },
+        { id: v1(), title: "JS", isDone: true },
+        { id: v1(), title: "ReactJS", isDone: false },
+        { id: v1(), title: "Rest API", isDone: false },
+        { id: v1(), title: "GraphQL", isDone: false },
+    ]);
 
-    let [todolists, setTodolists] = useState<Array<TodolistsType>>([
-        {id: todolistID1, title: 'What to learn', filter: 'all'},
-        {id: todolistID2, title: 'What to buy', filter: 'all'},
-    ])
-
-    let [tasks, setTasks] = useState<TasksStateType>({
-        [todolistID1]: [
-            {id: v4(), title: "HTML&CSS", isDone: true},
-            {id: v4(), title: "JS", isDone: true},
-            {id: v4(), title: "ReactJS", isDone: false},
-            {id: v4(), title: "Rest API", isDone: false},
-            {id: v4(), title: "GraphQL", isDone: false},
-        ],
-        [todolistID2]: [
-            {id: v4(), title: "HTML&CSS2", isDone: true},
-            {id: v4(), title: "JS2", isDone: true},
-            {id: v4(), title: "ReactJS2", isDone: false},
-            {id: v4(), title: "Rest API2", isDone: false},
-            {id: v4(), title: "GraphQL2", isDone: false},
-        ]
-    })
-    // Локальный стэйт для хранения информации по фильтрации
-    //const [filter, setFilter] = useState<FilterType>("all") - у каждого тудулиста свой фильтр
-    // let [tasks, setTasks] = useState<Array<TasksType>>([
-    // 	{ id: v4(), title: "HTML", isDone: true },
-    // 	{ id: v4(), title: "CSS", isDone: true },
-    // 	{ id: v4(), title: "ES6/TS", isDone: false },
-    // 	{ id: v4(), title: "REACT", isDone: false },
-    // ])
-
-    /* let [newTask, setNewTask] = useState<TasksType>()*/
-
-    // const filteredTasks: Array<TasksType> =
-    //   (filter === "active")
-    //     ? tasks.filter(task => !task.isDone)
-    //     : (filter === "completed")
-    //       ? tasks.filter(task => task.isDone)
-    //       : tasks
-    // console.log(todolists) // массив с 2мя объектами
-    // console.log(...todolists) // Деструктуризация. Видим просто 2 объекта, без массива (без ящика)
-    // console.log([...todolists]) // копия массива todolists
-
-    const removeTask = (todolistId: string, taskId: string) => {
-        // tasks = tasks.filter(t => t.id !== taskId)
-        // setTasks(tasks)
-        //console.log(todolistId, taskId)
-        setTasks({...tasks, [todolistId]: tasks[todolistId].filter((el) => el.id !== taskId)})
-    }
-    const addTask = (todolistId: string, title: string) => {
-        let newTask: TasksType = {id: v4(), title, isDone: false}
-        // setTasks([newTask, ...tasks])
-        setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
-    }
-    const changeTodolistFilter = (todolistId: string, filteredTasks: FilterType) => {
-        //setFilter(filteredTasks)
-        // этот код не работает с редаксом
-        /* const currentTodolist = todolists.find((el) => el.id === todolistId)
-         if (currentTodolist) {
-                 currentTodolist.filter = filteredTasks
-                 setTodolists([...todolists])
-         }*/
-        setTodolists(todolists.map((el) => el.id === todolistId ? {...el, filter: filteredTasks} : el))
-    }
-    const changeTaskStatus = (todolistId: string, taskId: string, taskStatus: boolean) => {
-        // { ...t, isDone: taskStatus } - спрэд оператор убивает типизацию этого объекта и его можно изменять как угодно. Это косяк TS
-        // const tasksWithNewStatus = tasks.map((t) => t.id === taskId ? { ...t, isDone: taskStatus } : t)
-        // setTasks(tasksWithNewStatus)
-        setTasks({
-            ...tasks,
-            [todolistId]: tasks[todolistId].map((t) => t.id === taskId ? {...t, isDone: taskStatus} : t)
-        })
-    }
-    const removeTodolist = (todolistId: string) => {
-        setTodolists(todolists.filter((t) => t.id !== todolistId))
-        delete tasks[todolistId]
-    }
-    const addTodolist = (title: string) => {
-        const todolistId = v4()
-        const newTodolist: TodolistsType = {id: todolistId, title: title, filter: 'all'}
-        setTodolists([newTodolist, ...todolists])
-        setTasks({
-            ...tasks, [todolistId]: [
-                {id: v4(), title: "HTML&CSS", isDone: false},
-                {id: v4(), title: "JS", isDone: false},
-            ]
-        })
-    }
-    const updateTaskTitle = (todolistId: string, taskId: string, title: string) => {
-        setTasks({
-            ...tasks,
-            [todolistId]: tasks[todolistId].map((el) => el.id === taskId ? {...el, title} : el)
-        })
-    }
-    const updateTodolistTitle = (todolistId: string, title: string) => {
-        setTodolists(todolists.map((el) => el.id === todolistId ? {...el, title} : el))
+    function removeTask(id: string) {
+        let filteredTasks = tasks.filter(t => t.id != id);
+        setTasks(filteredTasks);
     }
 
-    return <Grid item>
+    function addTask(title: string) {
+        let task = { id: v1(), title: title, isDone: false };
+        let newTasks = [task, ...tasks];
+        setTasks(newTasks);
+    }
+
+    let [filter, setFilter] = useState<FilterValuesType>("all");
+
+    let tasksForTodolist = tasks;
+
+    if (filter === "active") {
+        tasksForTodolist = tasks.filter(t => t.isDone === false);
+    }
+    if (filter === "completed") {
+        tasksForTodolist = tasks.filter(t => t.isDone === true);
+    }
+
+    function changeFilter(value: FilterValuesType) {
+        setFilter(value);
+    }
+
+
+
+    return (
         <div className="App">
-            <ButtonAppBar/>
-            <Container fixed>
-                <Grid container style={{padding: '10px', margin: '10px'}}>
-
-						<AddItemForm addItem={addTodolist}/>
-
-                </Grid>
-                <Grid container spacing={3}>
-                    {todolists.map((el) => {
-
-                        /*const filteredTasks: Array<TasksType> =
-                                (el.filter === "active")
-                                        ? tasks.filter(task => !task.isDone)
-                                        : (el.filter === "completed")
-                                                ? tasks.filter(task => task.isDone)
-                                                : tasks*/
-
-                        return <Grid item>
-							<Paper elevation={3} style={{padding: '10px', margin: '10px'}}>
-								<Todolist
-									key={el.id} // для VirtualDOM
-									todolistId={el.id}
-									title={el.title}
-									tasks={tasks[el.id]}
-									removeTask={removeTask}
-									changeTodolistFilter={changeTodolistFilter}
-									addTask={addTask}
-									changeTaskStatus={changeTaskStatus}
-									removeTodolist={removeTodolist}
-									updateTaskTitle={updateTaskTitle}
-									updateTodolistTitle={updateTodolistTitle}
-									filter={el.filter}
-								/>
-							</Paper>
-						</Grid>
-                    })}
-                </Grid>
-            </Container>
+            <Todolist title="What to learn"
+                      tasks={tasksForTodolist}
+                      removeTask={removeTask}
+                      changeFilter={changeFilter}
+                      addTask={addTask} />
         </div>
-    </Grid>
+    );
 }
 
 export default App;
