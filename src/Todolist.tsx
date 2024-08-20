@@ -28,7 +28,7 @@ interface TodolistType {
     changeTaskStatus: (todolistId: string, taskId: string, taskStatus: boolean) => void
     removeTodolist: (todolistId: string) => void
     updateTaskTitle: (todolistId: string, taskId: string, title: string) => void
-    updateTodolistTitle:(todolistId: string, title: string) => void
+    updateTodolistTitle: (todolistId: string, title: string) => void
     filter: FilterType
 }
 
@@ -90,8 +90,8 @@ export const Todolist = ({
 
                 <h3><EditableSpan globalTitle={title} callback={updateTodolistHandler}/></h3>
 
-                <IconButton aria-label="delete" size="small"  onClick={() => removeTodolistHandler(todolistId)}>
-                    <DeleteIcon  style={{color: '#B00909FF'}}/>
+                <IconButton aria-label="delete" size="small" onClick={() => removeTodolistHandler(todolistId)}>
+                    <DeleteIcon style={{color: '#B00909FF'}}/>
                 </IconButton>
             </div>
             <div>
@@ -105,7 +105,6 @@ export const Todolist = ({
                     {filteredTodolistTasks.map((task: TasksType) => {
 
 
-
                         return (
                             <li key={task.id} className={task.isDone ? "task-done" : "task"}>
 
@@ -117,11 +116,13 @@ export const Todolist = ({
                                               callback={(newTitle) => updateTaskHandler(task.id, newTitle)}
                                 />
 
-                                <IconButton aria-label="delete" size="small"  onClick={() => removeTaskHandler(todolistId, task.id)}>
+                                <IconButton aria-label="delete" size="small"
+                                            onClick={() => removeTaskHandler(todolistId, task.id)}>
                                     <DeleteIcon fontSize={"small"} style={{color: '#B00909FF'}}/>
                                 </IconButton>
                             </li>
-                        )})}
+                        )
+                    })}
                 </ul>
             )}
             <div>
