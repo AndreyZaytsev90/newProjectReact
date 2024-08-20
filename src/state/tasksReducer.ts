@@ -3,7 +3,7 @@ import {v4} from "uuid";
 import {TasksType} from "../Todolist";
 
 
-export const tasksReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
+export const tasksReducer = (state: TasksStateType, action: ActionTasksType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK' :
             return {
@@ -32,11 +32,16 @@ export const tasksReducer = (state: TasksStateType, action: ActionType): TasksSt
                     : task
                 )
             }
+      /*  case "ADD-TODOLIST-TASKS":
+            return {
+                ...state,
+                [action.payload.todolistId]: action.payload.tasks
+            }*/
         default:
             return state
     }
 }
-type ActionType = RemoveTaskType | AddTaskType | ChangeTaskStatusType | UpdateTaskTitleType
+type ActionTasksType = RemoveTaskType | AddTaskType | ChangeTaskStatusType | UpdateTaskTitleType
 
 type RemoveTaskType = ReturnType<typeof removeTaskAC>
 type AddTaskType = ReturnType<typeof addTaskAC>
@@ -66,3 +71,17 @@ export const updateTaskTitleAC = (todolistId: string, taskId: string, title: str
         payload: {todolistId, taskId, title}
     } as const
 }
+
+
+/*export const addTodolistTasks = () => {
+
+    return {
+        type: 'ADD-TODOLIST-TASKS',
+        payload: {
+            todolistId: newTodolistId,
+            tasks: [
+                {id: v4(), title: "HTML&CSS", isDone: false},
+                {id: v4(), title: "JS", isDone: false},
+            ]
+        }
+    }}*/

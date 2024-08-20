@@ -71,6 +71,7 @@ export const Todolist = ({
     }
 
     const addTaskHandler = (title: string) => {
+        //console.log("todolistId", todolistId)
         addTask(todolistId, title)
     }
 
@@ -95,7 +96,6 @@ export const Todolist = ({
                 </IconButton>
             </div>
             <div>
-
                 <AddItemForm addItem={addTaskHandler}/>
             </div>
             {filteredTodolistTasks.length === 0 ? (
