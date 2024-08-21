@@ -32,21 +32,23 @@ export const tasksReducer = (state: TasksStateType, action: ActionTasksType): Ta
                     : task
                 )
             }
-      /*  case "ADD-TODOLIST-TASKS":
+        case "ADD-TODOLIST-TASKS":
+            // @ts-ignore
             return {
                 ...state,
                 [action.payload.todolistId]: action.payload.tasks
-            }*/
+            }
         default:
             return state
     }
 }
-type ActionTasksType = RemoveTaskType | AddTaskType | ChangeTaskStatusType | UpdateTaskTitleType
+type ActionTasksType = RemoveTaskType | AddTaskType | ChangeTaskStatusType | UpdateTaskTitleType | AddTodolistTaskType
 
 type RemoveTaskType = ReturnType<typeof removeTaskAC>
 type AddTaskType = ReturnType<typeof addTaskAC>
 type ChangeTaskStatusType = ReturnType<typeof changeTaskStatusAC>
 type UpdateTaskTitleType = ReturnType<typeof updateTaskTitleAC>
+type AddTodolistTaskType = ReturnType<typeof addTodolistTasksAC>
 export const removeTaskAC = (todolistId: string, taskId: string) => {
     return {
         type: 'REMOVE-TASK',
@@ -72,16 +74,15 @@ export const updateTaskTitleAC = (todolistId: string, taskId: string, title: str
     } as const
 }
 
-
-/*export const addTodolistTasks = () => {
-
+export const addTodolistTasksAC = (todolistId: string) => {
     return {
         type: 'ADD-TODOLIST-TASKS',
         payload: {
-            todolistId: newTodolistId,
+            todolistId: todolistId,
             tasks: [
                 {id: v4(), title: "HTML&CSS", isDone: false},
                 {id: v4(), title: "JS", isDone: false},
             ]
         }
-    }}*/
+    }as const
+}

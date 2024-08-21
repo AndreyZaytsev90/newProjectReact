@@ -14,7 +14,14 @@ import Button from "@mui/material/Button";
 import {createTheme, ThemeProvider} from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
-import {addTaskAC, changeTaskStatusAC, removeTaskAC, tasksReducer, updateTaskTitleAC} from "./state/tasksReducer";
+import {
+    addTaskAC,
+    addTodolistTasksAC,
+    changeTaskStatusAC,
+    removeTaskAC,
+    tasksReducer,
+    updateTaskTitleAC
+} from "./state/tasks-reducer";
 import {
     addTodolistAC,
     changeTodolistFilterAC,
@@ -22,8 +29,9 @@ import {
     todolistsReducer,
     updateTodolistTitleAC
 } from "./state/todolists-reducer";
+import {changeModeAC, changeModeReducer} from "./state/changeMode-reducer";
 
-type ThemeMode = 'dark' | 'light'
+export type ThemeMode = 'dark' | 'light'
 
 export type TodolistsType = { id: string, title: string, filter: FilterType }
 // (C)-create
@@ -37,7 +45,8 @@ export type TasksStateType = {
 
 function App() {
 
-    const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+    //const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+    let [themeMode, dispatchThemeMode] = useReducer(changeModeReducer,'light')
 
     let todolistID1 = v4()
     let todolistID2 = v4()
@@ -98,14 +107,14 @@ function App() {
         dispatchTasks(updateTaskTitleAC(todolistId, taskId, title))
     }
 
-
     const removeTodolist = (todolistId: string) => {
         dispatchTodolists(removeTodolistAC(todolistId))
         delete tasks[todolistId]
     }
     const addTodolist = (title: string) => {
-        dispatchTodolists(addTodolistAC(title))
-        //dispatchTasks(addTaskAC(todolistId, title))
+        const newTodolistId = v4();
+        dispatchTodolists(addTodolistAC(newTodolistId,title))
+        dispatchTasks(addTodolistTasksAC(newTodolistId))
       /*  const todolistId = v4()
         const newTodolist: TodolistsType = {id: todolistId, title: title, filter: 'all'}
         setTodolists([newTodolist, ...todolists])
@@ -123,7 +132,6 @@ function App() {
         dispatchTodolists(updateTodolistTitleAC(todolistId, title))
     }
 
-
     const theme = createTheme({
         palette: {
             mode: themeMode === 'light' ? 'light' : 'dark',
@@ -133,7 +141,7 @@ function App() {
         },
     })
     const changeModeHandler = () => {
-        setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+        dispatchThemeMode(changeModeAC(themeMode))
     }
 
     return <ThemeProvider theme={theme}>
