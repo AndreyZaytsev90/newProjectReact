@@ -16,7 +16,7 @@ import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 import {
 	addTaskAC,
-	addTodolistTasksAC,
+	//addTodolistTasksAC,
 	changeTaskStatusAC,
 	removeTaskAC,
 	tasksReducer,
@@ -33,7 +33,7 @@ import { changeModeAC, changeModeReducer } from "./state/changeMode-reducer";
 
 export type ThemeMode = 'dark' | 'light'
 
-export type TodolistsType = { id: string, title: string, filter: FilterType }
+export type  TodolistsType = { id: string, title: string, filter: FilterType }
 // (C)-create
 // (R)- read (filter, sort, search, pagination, view-mode)
 // (U)- update
@@ -55,7 +55,6 @@ function App() {
 			 {id: todolistID1, title: 'What to learn', filter: 'all'},
 			 {id: todolistID2, title: 'What to buy', filter: 'all'},
 	 ])*/
-
 	let [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
 		{ id: todolistID1, title: 'What to learn', filter: 'all' },
 		{ id: todolistID2, title: 'What to buy', filter: 'all' },
@@ -112,9 +111,9 @@ function App() {
 		delete tasks[todolistId]
 	}
 	const addTodolist = (title: string) => {
-		const newTodolistId = v4();
-		dispatchTodolists(addTodolistAC(newTodolistId, title))
-		dispatchTasks(addTodolistTasksAC(newTodolistId))
+		//const newTodolistId = v4();
+		dispatchTodolists(addTodolistAC(title))
+		//dispatchTasks(addTodolistAC())
 		/*  const todolistId = v4()
 			const newTodolist: TodolistsType = {id: todolistId, title: title, filter: 'all'}
 			setTodolists([newTodolist, ...todolists])
