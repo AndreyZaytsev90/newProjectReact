@@ -1,7 +1,7 @@
 import './App.css';
 import { FilterType, TasksType, Todolist } from "./Todolist";
 import { v4 } from 'uuid';
-import { useReducer } from "react";
+import {Reducer, useReducer} from "react";
 import { AddItemForm } from "./AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Switch from '@mui/material/Switch'
 import CssBaseline from '@mui/material/CssBaseline'
 import {
+	ActionTasksType,
 	addTaskAC,
 	//addTodolistTasksAC,
 	changeTaskStatusAC,
@@ -23,13 +24,14 @@ import {
 	updateTaskTitleAC
 } from "./state/tasks-reducer";
 import {
+	ActionTodolistsType,
 	addTodolistAC,
 	changeTodolistFilterAC,
 	removeTodolistAC,
 	todolistsReducer,
 	updateTodolistTitleAC
 } from "./state/todolists-reducer";
-import { changeModeAC, changeModeReducer } from "./state/changeMode-reducer";
+import {ActionModeType, changeModeAC, changeModeReducer} from "./state/changeMode-reducer";
 
 export type ThemeMode = 'dark' | 'light'
 
@@ -46,7 +48,7 @@ export type TasksStateType = {
 function App() {
 
 	//const [themeMode, setThemeMode] = useState<ThemeMode>('light')
-	let [themeMode, dispatchThemeMode] = useReducer(changeModeReducer, 'light')
+	let [themeMode, dispatchThemeMode] = useReducer<Reducer<ThemeMode, ActionModeType>>(changeModeReducer, 'light')
 
 	let todolistID1 = v4()
 	let todolistID2 = v4()
@@ -55,7 +57,7 @@ function App() {
 			 {id: todolistID1, title: 'What to learn', filter: 'all'},
 			 {id: todolistID2, title: 'What to buy', filter: 'all'},
 	 ])*/
-	let [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
+	let [todolists, dispatchTodolists] = useReducer<Reducer<TodolistsType[], ActionTodolistsType>>(todolistsReducer, [
 		{ id: todolistID1, title: 'What to learn', filter: 'all' },
 		{ id: todolistID2, title: 'What to buy', filter: 'all' },
 	])
@@ -76,7 +78,7 @@ function App() {
 						{id: v4(), title: "GraphQL2", isDone: false},
 				]
 		})*/
-	let [tasks, dispatchTasks] = useReducer(tasksReducer, {
+	let [tasks, dispatchTasks] = useReducer<Reducer<TasksStateType, ActionTasksType>>(tasksReducer, {
 		[todolistID1]: [
 			{ id: v4(), title: "HTML&CSS", isDone: true },
 			{ id: v4(), title: "JS", isDone: true },
@@ -107,22 +109,15 @@ function App() {
 	}
 
 	const removeTodolist = (todolistId: string) => {
-		dispatchTodolists(removeTodolistAC(todolistId))
-		delete tasks[todolistId]
+		let action = removeTodolistAC(todolistId)
+		dispatchTodolists(action)
+		dispatchTasks(action)
 	}
 	const addTodolist = (title: string) => {
 		//const newTodolistId = v4();
-		dispatchTodolists(addTodolistAC(title))
-		//dispatchTasks(addTodolistAC())
-		/*  const todolistId = v4()
-			const newTodolist: TodolistsType = {id: todolistId, title: title, filter: 'all'}
-			setTodolists([newTodolist, ...todolists])
-			setTasks({
-					...tasks, [todolistId]: [
-							{id: v4(), title: "HTML&CSS", isDone: false},
-							{id: v4(), title: "JS", isDone: false},
-					]
-			})*/
+		let action = addTodolistAC(title)
+		dispatchTodolists(action)
+		dispatchTasks(action)
 	}
 	const changeTodolistFilter = (todolistId: string, filteredTasks: FilterType) => {
 		dispatchTodolists(changeTodolistFilterAC(todolistId, filteredTasks))

@@ -7,7 +7,7 @@ export const changeModeReducer = (state: ThemeMode, action: ActionModeType) => {
     }
 }
 
-type ActionModeType = ReturnType<typeof changeModeAC>
+export type ActionModeType = ReturnType<typeof changeModeAC>
 export const changeModeAC = (themeMode: ThemeMode) => {
     return {
         type: "CHANGE-MODE",

@@ -15,7 +15,8 @@ export const tasksReducer = (state: TasksStateType, action: ActionTasksType): Ta
             let newTask: TasksType = {id: v4(), title: action.payload.title, isDone: false}
             return {
                 ...state,
-                [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
+                /*[action.payload.todolistId]: [newTask, ...state[action.payload.todolistId] || []]*/
+                    [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
             }
         case "CHANGE-TASK-STATUS":
             return {
@@ -57,7 +58,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionTasksType): Ta
 }
 
 
-type ActionTasksType =
+export type ActionTasksType =
     RemoveTaskType |
     AddTaskType |
     ChangeTaskStatusType |
