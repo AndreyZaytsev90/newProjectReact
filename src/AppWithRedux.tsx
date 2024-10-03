@@ -52,8 +52,8 @@ function AppWithRedux() {
 	let themeMode = useSelector<RootStateType, ThemeModeType>(state => state.themes)
 	/*let [themeMode, dispatchThemeMode] = useReducer<Reducer<ThemeMode, ActionModeType>>(changeModeReducer, 'light')*/
 
-	let todolistID1 = v4()
-	let todolistID2 = v4()
+	/*let todolistID1 = v4()
+	let todolistID2 = v4()*/
 
 	let todolists = useSelector<RootStateType, TodolistsType[]>(state => state.todolists)
 
@@ -99,6 +99,7 @@ function AppWithRedux() {
 
 	const removeTodolist = (todolistId: string) => {
 		let action = removeTodolistAC(todolistId)
+		// dispatch передает action во все reducers
 		dispatch(action)
 		//dispatchTodolists(action)
 		//dispatchTasks(action)
@@ -106,6 +107,7 @@ function AppWithRedux() {
 	const addTodolist = (title: string) => {
 		//const newTodolistId = v4();
 		let action = addTodolistAC(title)
+		// dispatch передает action во все reducers
 		dispatch(action)
 		//dispatchTodolists(action)
 		//dispatchTasks(action)
@@ -159,7 +161,7 @@ function AppWithRedux() {
 										key={el.id} // для VirtualDOM
 										todolistId={el.id}
 										title={el.title}
-										tasks={tasks[el.id]|| []}
+										tasks={tasks[el.id]}
 										removeTask={removeTask}
 										changeTodolistFilter={changeTodolistFilter}
 										addTask={addTask}

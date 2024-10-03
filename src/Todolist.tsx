@@ -51,10 +51,10 @@ export const Todolist = ({
 
     const filteredTodolistTasks: Array<TasksType> =
         (filter === "active")
-            ? tasks.filter(task => !task.isDone) || []
+            ? tasks.filter(task => !task.isDone)
             : (filter === "completed")
-                ? tasks.filter(task => task.isDone) || []
-                : tasks || []
+                ? tasks.filter(task => task.isDone)
+                : tasks
 
     const removeTaskHandler = (todolistId: string, taskId: string) => {
         removeTask(todolistId, taskId)

@@ -4,12 +4,12 @@ import { FilterType } from "../Todolist";
 
 
 
-let todolistID1 = v4()
-let todolistID2 = v4()
+/*let todolistID1 = v4()
+let todolistID2 = v4()*/
 
 const initialState: TodolistsType[] = [
-	{ id: todolistID1, title: 'What to learn', filter: 'all' },
-	{ id: todolistID2, title: 'What to buy', filter: 'all' },
+	/*{ id: todolistID1, title: 'What to learn', filter: 'all' },
+	{ id: todolistID2, title: 'What to buy', filter: 'all' },*/
 ]
 
 
