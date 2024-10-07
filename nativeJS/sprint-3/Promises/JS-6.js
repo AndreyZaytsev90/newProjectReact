@@ -75,3 +75,7 @@ const promiseFetch = (url) => {
 const promise = promiseFetch('yandex.ru') // promise - это объект промиса
 
 console.log(promise)
+
+promise.then((data)=> {
+    setState(data)
+})
