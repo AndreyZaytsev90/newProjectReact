@@ -1,4 +1,4 @@
-import './App.css';
+import './app/App.css';
 import Button from '@mui/material/Button';
 //import { ChangeEvent, KeyboardEvent, useState } from "react";
 import {AddItemForm} from "./AddItemForm";
@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Checkbox from "@mui/material/Checkbox";
-import {TasksStateType, TodolistsType} from "./AppWithRedux";
+import {TasksStateType, TodolistsType} from "./app/AppWithRedux";
 import {RootStateType} from "./app/store";
 import {useDispatch, useSelector} from "react-redux";
 import {addTaskAC, changeTaskStatusAC, removeTaskAC, updateTaskTitleAC} from "./state/tasks-reducer";

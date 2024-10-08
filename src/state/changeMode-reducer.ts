@@ -1,4 +1,4 @@
-import {ThemeMode} from "../App";
+import {ThemeMode} from "../app/App";
 
 const initialState : ThemeMode = 'light'
 

@@ -1,4 +1,4 @@
-import { TodolistsType } from "../App";
+import { TodolistsType } from "../app/App";
 import { v4 } from "uuid";
 import { FilterType } from "../Todolist";
 

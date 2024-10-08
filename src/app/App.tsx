@@ -1,8 +1,8 @@
 import './App.css';
-import { FilterType, TasksType, Todolist } from "./Todolist";
+import { FilterType, TasksType, Todolist } from "../Todolist";
 import { v4 } from 'uuid';
 import {Reducer, useReducer} from "react";
-import { AddItemForm } from "./AddItemForm";
+import { AddItemForm } from "../AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -22,7 +22,7 @@ import {
 	removeTaskAC,
 	tasksReducer,
 	updateTaskTitleAC
-} from "./state/tasks-reducer";
+} from "../state/tasks-reducer";
 import {
 	ActionTodolistsType,
 	addTodolistAC,
@@ -30,8 +30,8 @@ import {
 	removeTodolistAC,
 	todolistsReducer,
 	updateTodolistTitleAC
-} from "./state/todolists-reducer";
-import {ActionModeType, changeModeAC, changeModeReducer} from "./state/changeMode-reducer";
+} from "../state/todolists-reducer";
+import {ActionModeType, changeModeAC, changeModeReducer} from "../state/changeMode-reducer";
 
 export type ThemeMode = 'dark' | 'light'
 

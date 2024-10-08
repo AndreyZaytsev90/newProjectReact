@@ -1,4 +1,4 @@
-import {ThemeMode} from "../App";
+import {ThemeMode} from "../app/App";
 import {changeModeAC, changeModeReducer} from "./changeMode-reducer";
 
 test('The color theme of the Todolist app must be changed', () => {

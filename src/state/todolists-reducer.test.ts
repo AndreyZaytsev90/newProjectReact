@@ -6,7 +6,7 @@ import {
     updateTodolistTitleAC
 } from './todolists-reducer'
 import {v4} from 'uuid'
-import {TodolistsType} from "../App";
+import {TodolistsType} from "../app/App";
 
 
 let todolistID1: string
