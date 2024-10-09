@@ -1,157 +1,25 @@
 import './App.css';
-import {FilterType, TasksType} from "../Todolist";
-import Grid from "@mui/material/Grid";
 import {ThemeProvider} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {RootStateType} from "./store";
 import {getTheme} from "../common/theme/getTheme";
 import {Header} from "../components/Header";
 import {Main} from "../components/Main";
+import {ThemeModeType} from "./app-reducer";
 
-export type ThemeModeType = 'dark' | 'light'
-
-export type  TodolistsType = { id: string, title: string, filter: FilterType }
-
-export type TasksStateType = {
-    [key: string]: TasksType[]
-}
 
 function AppWithRedux() {
 
-   let themeMode = useSelector<RootStateType, ThemeModeType>(state => state.themes)
-    /*let [themeMode, dispatchThemeMode] = useReducer<Reducer<ThemeMode, ActionModeType>>(changeModeReducer, 'light')*/
+    let themeMode = useSelector<RootStateType, ThemeModeType>(state => state.themes)
+
     const theme = getTheme(themeMode)
-    /*let todolistID1 = v4()
-    let todolistID2 = v4()*/
-
-    /*let todolists = useSelector<RootStateType, TodolistsType[]>(state => state.todolists)*/
-
-    /*let [todolists, dispatchTodolists] = useReducer<Reducer<TodolistsType[], ActionTodolistsType>>(todolistsReducer, [
-        { id: todolistID1, title: 'What to learn', filter: 'all' },
-        { id: todolistID2, title: 'What to buy', filter: 'all' },
-    ])*/
-
-    // Теперь таски забираем из store прямо в компоненте TodolistWithRedux
-    //let tasks = useSelector<RootStateType,TasksStateType>(state => state.tasks)
-
-    /*let [tasks, dispatchTasks] = useReducer<Reducer<TasksStateType, ActionTasksType>>(tasksReducer, {
-        [todolistID1]: [
-            { id: v4(), title: "HTML&CSS", isDone: true },
-            { id: v4(), title: "JS", isDone: true },
-            { id: v4(), title: "ReactJS", isDone: false },
-            { id: v4(), title: "Rest API", isDone: false },
-            { id: v4(), title: "GraphQL", isDone: false },
-        ],
-        [todolistID2]: [
-            { id: v4(), title: "HTML&CSS2", isDone: true },
-            { id: v4(), title: "JS2", isDone: true },
-            { id: v4(), title: "ReactJS2", isDone: false },
-            { id: v4(), title: "Rest API2", isDone: false },
-            { id: v4(), title: "GraphQL2", isDone: false },
-        ]
-    })*/
-
-    const dispatch = useDispatch()
-
-    /* const removeTask = (todolistId: string, taskId: string) => {
-         //dispatchTasks(removeTaskAC(todolistId, taskId))
-         dispatch(removeTaskAC(todolistId, taskId))
-     }
-     const addTask = (todolistId: string, title: string) => {
-         dispatch(addTaskAC(todolistId, title))
-     }
-     const changeTaskStatus = (todolistId: string, taskId: string, taskStatus: boolean) => {
-         dispatch(changeTaskStatusAC(todolistId, taskId, taskStatus))
-     }
-     const updateTaskTitle = (todolistId: string, taskId: string, title: string) => {
-         dispatch(updateTaskTitleAC(todolistId, taskId, title))
-     }
-
-     const removeTodolist = (todolistId: string) => {
-         let action = removeTodolistAC(todolistId)
-         // dispatch передает action во все reducers
-         dispatch(action)
-         //dispatchTodolists(action)
-         //dispatchTasks(action)
-     }*/
-
-
-    /*const addTodolist = (title: string) => {
-        let action = addTodolistAC(title)
-        dispatch(action)
-
-    }*/
-    /*   const changeTodolistFilter = (todolistId: string, filteredTasks: FilterType) => {
-           dispatch(changeTodolistFilterAC(todolistId, filteredTasks))
-       }
-       const updateTodolistTitle = (todolistId: string, title: string) => {
-           dispatch(updateTodolistTitleAC(todolistId, title))
-       }*/
-
-    /* const theme = createTheme({
-         palette: {
-             mode: themeMode === 'light' ? 'light' : 'dark',
-             primary: {
-                 main: '#087EA4',
-             },
-         },
-     })*/
-    /*const changeThemeHandler = () => {
-        dispatch(changeThemeAC(themeMode))
-    }*/
 
 
     return <ThemeProvider theme={theme}>
         <CssBaseline/>
-        <Grid item>
-            <div className="App">
-               {/* <AppBar>
-                    <Toolbar sx={{display: 'flex', justifyContent: 'space-between'}}>
-                        <IconButton color="inherit">
-                            <MenuIcon/>
-                        </IconButton>
-                        <div>
-                            <Button color="inherit">Login</Button>
-                            <Button color="inherit">Logout</Button>
-                            <Button color="inherit">Faq</Button>
-                            <Switch color={'default'} onChange={changeThemeHandler}/>
-                        </div>
-                    </Toolbar>
-                </AppBar>*/}
-                <Header/>
-                {/*<Container fixed>
-                    <Grid container style={{padding: '10px', margin: '70px 0 0 0'}}>
-                        <AddItemForm addItem={addTodolist}/>
-                    </Grid>
-                    <Grid container spacing={3}>
-                        {todolists.map((el) => {
-
-                            return <Grid item key={el.id}>
-                                <Paper elevation={3} style={{padding: '10px', margin: '10px'}}>
-                                    <Todolist
-										key={el.id} // для VirtualDOM
-										todolistId={el.id}
-										title={el.title}
-										tasks={tasks[el.id]}
-										removeTask={removeTask}
-										changeTodolistFilter={changeTodolistFilter}
-										addTask={addTask}
-										changeTaskStatus={changeTaskStatus}
-										removeTodolist={removeTodolist}
-										updateTaskTitle={updateTaskTitle}
-										updateTodolistTitle={updateTodolistTitle}
-										filter={el.filter}
-									/>
-                                    <TodolistWithRedux todolist={el}/>
-                                </Paper>
-                            </Grid>
-                        })}
-                    </Grid>
-                </Container>*/}
-                <Main/>
-            </div>
-        </Grid>
+        <Header/>
+        <Main/>
     </ThemeProvider>
 }
 

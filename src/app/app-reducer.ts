@@ -1,6 +1,4 @@
-import {TasksStateType} from "./App";
-import {ThemeModeType} from "./AppWithRedux";
-
+export type ThemeModeType = 'dark' | 'light'
 
 const initialState : ThemeModeType = 'light'
 

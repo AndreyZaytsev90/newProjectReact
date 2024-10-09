@@ -1,13 +1,20 @@
-import {TasksStateType} from "../app/App";
 import {v4} from "uuid";
-import {TasksType} from "../Todolist";
 import {AddTodolistType, RemoveTodolistType} from "./todolists-reducer";
 
+export type TasksStateType = {
+    [key: string]: TasksType[]
+}
+
+export type TasksType = {
+    id: string,
+    title: string,
+    isDone: boolean
+}
 
 const initialState: TasksStateType = {}
 
 
-export const tasksReducer = (state= initialState, action: ActionTasksType): TasksStateType => {
+export const tasksReducer = (state = initialState, action: ActionTasksType): TasksStateType => {
     switch (action.type) {
         case 'REMOVE-TASK':
             return {
@@ -18,8 +25,7 @@ export const tasksReducer = (state= initialState, action: ActionTasksType): Task
             let newTask: TasksType = {id: v4(), title: action.payload.title, isDone: false}
             return {
                 ...state,
-                /*[action.payload.todolistId]: [newTask, ...state[action.payload.todolistId] || []]*/
-                    [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
+                [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
             }
         case "CHANGE-TASK-STATUS":
             return {
@@ -43,11 +49,11 @@ export const tasksReducer = (state= initialState, action: ActionTasksType): Task
                 [action.payload.todolistId]: []
             }
         case "REMOVE-TODOLIST": {
-           /* let copyState = {...state}
-            delete copyState[action.payload.todolistId]
-            return copyState*/
-			const { [action.payload.todolistId]: [], ...rest } = state;
-			return rest;
+            /* let copyState = {...state}
+             delete copyState[action.payload.todolistId]
+             return copyState*/
+            const {[action.payload.todolistId]: [], ...rest} = state;
+            return rest;
         }
         /*case "ADD-TODOLIST-TASKS":
         // @ts-ignore
