@@ -1,3 +1,4 @@
+/*
 import {ThemeMode} from "../app/App";
 import {changeModeAC, changeModeReducer} from "./changeMode-reducer";
 
@@ -10,4 +11,4 @@ test('The color theme of the Todolist app must be changed', () => {
 
     // 3. Проверяем, что наши действия (изменения state) соответствуют ожиданию
     expect(endState).toBe("dark")
-})
+})*/

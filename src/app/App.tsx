@@ -31,7 +31,7 @@ import {
 	todolistsReducer,
 	updateTodolistTitleAC
 } from "../state/todolists-reducer";
-import {ActionModeType, changeModeAC, changeModeReducer} from "../state/changeMode-reducer";
+//import {ActionModeType, changeModeAC, changeModeReducer} from "../state/changeMode-reducer";
 
 export type ThemeMode = 'dark' | 'light'
 

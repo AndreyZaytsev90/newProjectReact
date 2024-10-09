@@ -1,7 +1,8 @@
 import {combineReducers, legacy_createStore} from "redux";
 import {tasksReducer} from "../state/tasks-reducer";
 import {todolistsReducer} from "../state/todolists-reducer";
-import {changeModeReducer} from "../state/changeMode-reducer";
+import {appReducer} from "./app-reducer";
+
 
 
 // объединяя reducer-ы с помощью combineReducers,
@@ -9,7 +10,7 @@ import {changeModeReducer} from "../state/changeMode-reducer";
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
-    themes: changeModeReducer
+    themes: appReducer
 })
 
 // непосредственно создаём объект store

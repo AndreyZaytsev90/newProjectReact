@@ -1,34 +1,21 @@
-/*import {TasksStateType} from "./App";
+import {TasksStateType} from "./App";
 import {ThemeModeType} from "./AppWithRedux";
 
 
-const initialState: ThemeModeType = {
-    themeMode: 'light'
-}*/
+const initialState : ThemeModeType = 'light'
 
-/*
-export const tasksReducer = (state= initialState, action: ActionTasksType): TasksStateType => {
+export const appReducer = (state = initialState, action: ActionAppReducerType)=> {
     switch (action.type) {
-        case 'REMOVE-TASK':
-            return {
-                ...state,
-                [action.payload.todolistId]: state[action.payload.todolistId].filter((task) => task.id !== action.payload.taskId)
-            }
-        default:
-            return state
+        case "CHANGE-THEME": return action.payload.themeMode === "light" ? "dark" : "light"
+        default: return state
     }
 }
 
+export type ActionAppReducerType = ReturnType<typeof changeThemeAC>
 
-//export type ActionTasksType = RemoveTaskType
-
-//type RemoveTaskType = ReturnType<typeof removeTaskAC>
-
-/!*export const removeTaskAC = (todolistId: string, taskId: string) => {
+export const changeThemeAC = (themeMode: ThemeModeType) => {
     return {
-        type: 'REMOVE-TASK',
-        payload: {todolistId, taskId}
-    } as const
-}*!/*/
-
-
+        type: "CHANGE-THEME",
+        payload: {themeMode}
+    }
+}

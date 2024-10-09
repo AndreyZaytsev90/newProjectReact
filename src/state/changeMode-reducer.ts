@@ -1,3 +1,4 @@
+/*
 import {ThemeMode} from "../app/App";
 
 const initialState : ThemeMode = 'light'
@@ -18,4 +19,4 @@ export const changeModeAC = (themeMode: ThemeMode) => {
         type: "CHANGE-MODE",
         payload: {themeMode}
     } as const
-}
+}*/
