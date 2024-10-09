@@ -33,7 +33,6 @@ interface TodolistType {
 export const Todolist = ({
                              todolistId,
                              title,
-                             //tasks = [],
                              tasks,
                              removeTask,
                              changeTodolistFilter,

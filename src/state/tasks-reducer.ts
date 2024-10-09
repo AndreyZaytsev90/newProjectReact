@@ -55,12 +55,6 @@ export const tasksReducer = (state = initialState, action: ActionTasksType): Tas
             const {[action.payload.todolistId]: [], ...rest} = state;
             return rest;
         }
-        /*case "ADD-TODOLIST-TASKS":
-        // @ts-ignore
-        return {
-            ...state,
-            [action.payload.todolistId]: action.payload.tasks
-        }*/
         default:
             return state
     }
@@ -79,7 +73,6 @@ type RemoveTaskType = ReturnType<typeof removeTaskAC>
 type AddTaskType = ReturnType<typeof addTaskAC>
 type ChangeTaskStatusType = ReturnType<typeof changeTaskStatusAC>
 type UpdateTaskTitleType = ReturnType<typeof updateTaskTitleAC>
-/*type AddTodolistTaskType = ReturnType<typeof addTodolistTasksAC>*/
 
 export const removeTaskAC = (todolistId: string, taskId: string) => {
     return {
@@ -105,16 +98,3 @@ export const updateTaskTitleAC = (todolistId: string, taskId: string, title: str
         payload: {todolistId, taskId, title}
     } as const
 }
-
-/*export const addTodolistTasksAC = (todolistId: string) => {
-	return {
-		type: 'ADD-TODOLIST-TASKS',
-		payload: {
-			todolistId: todolistId,
-			tasks: [
-				{ id: v4(), title: "HTML&CSS", isDone: false },
-				{ id: v4(), title: "JS", isDone: false },
-			]
-		}
-	} as const
-}*/
