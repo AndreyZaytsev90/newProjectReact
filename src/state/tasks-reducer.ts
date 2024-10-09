@@ -2,10 +2,10 @@ import {v4} from "uuid";
 import {AddTodolistType, RemoveTodolistType} from "./todolists-reducer";
 
 export type TasksStateType = {
-    [key: string]: TasksType[]
+    [key: string]: TaskType[]
 }
 
-export type TasksType = {
+export type TaskType = {
     id: string,
     title: string,
     isDone: boolean
@@ -22,7 +22,7 @@ export const tasksReducer = (state = initialState, action: ActionTasksType): Tas
                 [action.payload.todolistId]: state[action.payload.todolistId].filter((task) => task.id !== action.payload.taskId)
             }
         case "ADD-TASK":
-            let newTask: TasksType = {id: v4(), title: action.payload.title, isDone: false}
+            let newTask: TaskType = {id: v4(), title: action.payload.title, isDone: false}
             return {
                 ...state,
                 [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
