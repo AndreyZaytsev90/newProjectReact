@@ -1,9 +1,9 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import {TodolistWithRedux} from "./TodolistWithRedux";
+import {TodolistWithRedux} from "./todolist/TodolistWithRedux";
 import {useSelector} from "react-redux";
-import {RootStateType} from "../app/store";
-import {TodolistsType} from "../state/todolists-reducer";
+import {RootStateType} from "../../../../app/store";
+import {TodolistsType} from "../../model/todolists-reducer";
 
 export const Todolists = () => {
 

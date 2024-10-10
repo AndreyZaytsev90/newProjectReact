@@ -1,10 +1,10 @@
-import {changeTaskStatusAC, removeTaskAC, TaskType, changeTaskTitleAC} from "../state/tasks-reducer";
+import {changeTaskStatusAC, removeTaskAC, TaskType, changeTaskTitleAC} from "../../../../model/tasks-reducer";
 import Checkbox from "@mui/material/Checkbox";
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "../../../../../../common/components/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useDispatch} from "react-redux";
-import {TodolistsType} from "../state/todolists-reducer";
+import {TodolistsType} from "../../../../model/todolists-reducer";
 import {ChangeEvent} from "react";
 
 type TaskComponentType = {

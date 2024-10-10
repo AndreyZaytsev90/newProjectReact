@@ -1,6 +1,6 @@
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
-import {changeTodolistFilterAC, FilterType, TodolistsType} from "../state/todolists-reducer";
+import {changeTodolistFilterAC, FilterType, TodolistsType} from "../../../model/todolists-reducer";
 import {useDispatch} from "react-redux";
 
 

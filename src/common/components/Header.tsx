@@ -4,9 +4,9 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
-import {changeThemeAC, ThemeModeType} from "../app/app-reducer";
+import {changeThemeAC, ThemeModeType} from "../../app/app-reducer";
 import {useDispatch, useSelector} from "react-redux";
-import {RootStateType} from "../app/store";
+import {RootStateType} from "../../app/store";
 
 
 export const Header = () => {

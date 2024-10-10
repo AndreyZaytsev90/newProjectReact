@@ -1,8 +1,8 @@
-import './App.css';
-import { FilterType, TasksType, Todolist } from "../Todolist";
+/*import './App.css';
+//import { FilterType, TasksType, Todolist } from "../Todolist";
 import { v4 } from 'uuid';
 import {Reducer, useReducer} from "react";
-import { AddItemForm } from "../components/AddItemForm";
+import { AddItemForm } from "../common/components/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -22,7 +22,7 @@ import {
 	removeTaskAC,
 	tasksReducer,
 	changeTaskTitleAC
-} from "../state/tasks-reducer";
+} from "../features/model/tasks-reducer";
 import {
 	ActionTodolistsType,
 	addTodolistAC,
@@ -30,7 +30,7 @@ import {
 	removeTodolistAC,
 	todolistsReducer,
 	updateTodolistTitleAC
-} from "../state/todolists-reducer";
+} from "../features/model/todolists-reducer";
 //import {ActionModeType, changeModeAC, changeModeReducer} from "../state/changeMode-reducer";
 
 export type ThemeMode = 'dark' | 'light'
@@ -54,16 +54,16 @@ function App() {
 	let todolistID1 = v4()
 	let todolistID2 = v4()
 
-	/* let [todolists, setTodolists] = useState<Array<TodolistsType>>([
+	/!* let [todolists, setTodolists] = useState<Array<TodolistsType>>([
 			 {id: todolistID1, title: 'What to learn', filter: 'all'},
 			 {id: todolistID2, title: 'What to buy', filter: 'all'},
-	 ])*/
+	 ])*!/
 	let [todolists, dispatchTodolists] = useReducer<Reducer<TodolistsType[], ActionTodolistsType>>(todolistsReducer, [
 		{ id: todolistID1, title: 'What to learn', filter: 'all' },
 		{ id: todolistID2, title: 'What to buy', filter: 'all' },
 	])
 
-	/*  let [tasks, setTasks] = useState<TasksStateType>({
+	/!*  let [tasks, setTasks] = useState<TasksStateType>({
 				[todolistID1]: [
 						{id: v4(), title: "HTML&CSS", isDone: true},
 						{id: v4(), title: "JS", isDone: true},
@@ -78,7 +78,7 @@ function App() {
 						{id: v4(), title: "Rest API2", isDone: false},
 						{id: v4(), title: "GraphQL2", isDone: false},
 				]
-		})*/
+		})*!/
 	let [tasks, dispatchTasks] = useReducer<Reducer<TasksStateType, ActionTasksType>>(tasksReducer, {
 		[todolistID1]: [
 			{ id: v4(), title: "HTML&CSS", isDone: true },
@@ -135,9 +135,9 @@ function App() {
 			},
 		},
 	})
-	/*const changeModeHandler = () => {
+	/!*const changeModeHandler = () => {
 		dispatchThemeMode(changeModeAC(themeMode))
-	}*/
+	}*!/
 
 	return <ThemeProvider theme={theme}>
 		<CssBaseline />
@@ -152,7 +152,7 @@ function App() {
 							<Button color="inherit">Login</Button>
 							<Button color="inherit">Logout</Button>
 							<Button color="inherit">Faq</Button>
-							{/*<Switch color={'default'} onChange={changeModeHandler} />*/}
+							{/!*<Switch color={'default'} onChange={changeModeHandler} />*!/}
 						</div>
 					</Toolbar>
 				</AppBar>
@@ -189,4 +189,4 @@ function App() {
 	</ThemeProvider>
 }
 
-export default App;
+export default App;*/

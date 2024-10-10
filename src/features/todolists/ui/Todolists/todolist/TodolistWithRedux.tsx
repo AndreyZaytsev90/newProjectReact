@@ -1,11 +1,10 @@
-import '../app/App.css';
-import {AddItemForm} from "./AddItemForm";
+import {AddItemForm} from "../../../../../common/components/AddItemForm";
 import {useDispatch} from "react-redux";
-import {addTaskAC} from "../state/tasks-reducer";
-import {TodolistsType} from "../state/todolists-reducer";
-import {TodolistTitle} from "./TodolistTitle";
-import {Tasks} from "./Tasks";
-import {FilterTasksButtons} from "./FilterTasksButtons";
+import {addTaskAC} from "../../../model/tasks-reducer";
+import {TodolistsType} from "../../../model/todolists-reducer";
+import {TodolistTitle} from "../TodolistTitle/TodolistTitle";
+import {Tasks} from "../Tasks/Tasks";
+import {FilterTasksButtons} from "../FilterTasksButtons/FilterTasksButtons";
 
 
 type TodolistWithReduxType = {

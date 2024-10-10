@@ -1,13 +1,12 @@
-import './app/App.css';
-import Button from '@mui/material/Button';
-import {AddItemForm} from "./components/AddItemForm";
-import {EditableSpan} from './components/EditableSpan';
+/*import Button from '@mui/material/Button';
+import {AddItemForm} from "./common/components/AddItemForm";
+import {EditableSpan} from './common/components/EditableSpan';
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from '@mui/icons-material/Delete';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import Checkbox from "@mui/material/Checkbox";
+import Checkbox from "@mui/material/Checkbox";*/
 
-export type FilterType = "all" | "active" | "completed"
+/*export type FilterType = "all" | "active" | "completed"
 
 export interface TasksType {
     id: string,
@@ -27,10 +26,10 @@ interface TodolistType {
     updateTaskTitle: (todolistId: string, taskId: string, title: string) => void
     updateTodolistTitle: (todolistId: string, title: string) => void
     filter: FilterType
-}
+}*/
 
 
-export const Todolist = ({
+/*export const Todolist = ({
                              todolistId,
                              title,
                              tasks,
@@ -138,4 +137,4 @@ export const Todolist = ({
             </div>
         </div>
     );
-};
+};*/

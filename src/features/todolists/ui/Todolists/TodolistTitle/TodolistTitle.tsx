@@ -1,9 +1,9 @@
-import {EditableSpan} from "./EditableSpan";
+import {EditableSpan} from "../../../../../common/components/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {removeTodolistAC, TodolistsType, updateTodolistTitleAC} from "../state/todolists-reducer";
+import {removeTodolistAC, TodolistsType, updateTodolistTitleAC} from "../../../model/todolists-reducer";
 import {useDispatch} from "react-redux";
-
+import styles from "./TodolistTitle.module.css"
 
 type TodolistTitleType = {
     todolist: TodolistsType
@@ -22,12 +22,12 @@ export const TodolistTitle = ({todolist}: TodolistTitleType) => {
     }
 
     return (
-        <>
+        <div className={styles.container}>
             <h3><EditableSpan globalTitle={title} callback={updateTodolistHandler}/></h3>
 
             <IconButton aria-label="delete" size="small" onClick={removeTodolistHandler}>
                 <DeleteIcon style={{color: '#B00909FF'}}/>
             </IconButton>
-        </>
+        </div>
     );
 };
