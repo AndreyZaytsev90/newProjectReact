@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import {AddItemForm} from "../AddItemForm";
+import {AddItemForm} from "./AddItemForm";
 import Container from "@mui/material/Container";
 import {useDispatch} from "react-redux";
 import {addTodolistAC} from "../state/todolists-reducer";
