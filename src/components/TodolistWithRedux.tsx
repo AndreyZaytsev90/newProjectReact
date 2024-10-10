@@ -17,8 +17,8 @@ export const TodolistWithRedux = ({todolist}: TodolistWithReduxType) => {
     const {id} = todolist
     const dispatch = useDispatch()
 
-    const addTaskHandler = (title: string) => {
-        dispatch(addTaskAC(id, title))
+    const addTaskHandler = (newTitle: string) => {
+        dispatch(addTaskAC(id, newTitle))
     }
 
     return (
@@ -26,13 +26,9 @@ export const TodolistWithRedux = ({todolist}: TodolistWithReduxType) => {
             <div className={'todolist-title-container'}>
                 <TodolistTitle todolist={todolist}/>
             </div>
-            <div>
-                <AddItemForm addItem={addTaskHandler}/>
-            </div>
+            <AddItemForm addItem={addTaskHandler}/>
             <Tasks todolist={todolist}/>
-            <div>
-                <FilterTasksButtons todolist={todolist}/>
-            </div>
+            <FilterTasksButtons todolist={todolist}/>
         </div>
     );
 };

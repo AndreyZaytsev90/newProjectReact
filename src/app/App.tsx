@@ -21,7 +21,7 @@ import {
 	changeTaskStatusAC,
 	removeTaskAC,
 	tasksReducer,
-	updateTaskTitleAC
+	changeTaskTitleAC
 } from "../state/tasks-reducer";
 import {
 	ActionTodolistsType,
@@ -106,7 +106,7 @@ function App() {
 		dispatchTasks(changeTaskStatusAC(todolistId, taskId, taskStatus))
 	}
 	const updateTaskTitle = (todolistId: string, taskId: string, title: string) => {
-		dispatchTasks(updateTaskTitleAC(todolistId, taskId, title))
+		dispatchTasks(changeTaskTitleAC(todolistId, taskId, title))
 	}
 
 	const removeTodolist = (todolistId: string) => {

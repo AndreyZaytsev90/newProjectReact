@@ -1,4 +1,4 @@
-import {addTaskAC, changeTaskStatusAC, removeTaskAC, tasksReducer, updateTaskTitleAC} from './tasks-reducer'
+import {addTaskAC, changeTaskStatusAC, removeTaskAC, tasksReducer, changeTaskTitleAC} from './tasks-reducer'
 import {TasksStateType} from '../app/App'
 import {addTodolistAC, removeTodolistAC} from "./todolists-reducer";
 
@@ -59,7 +59,7 @@ test('status of specified task should be changed', () => {
 test('current title of specified task should be updated', () => {
 
     let newTitle = 'newTitle'
-    const endState = tasksReducer(startState, updateTaskTitleAC('todolistId1', '3', newTitle))
+    const endState = tasksReducer(startState, changeTaskTitleAC('todolistId1', '3', newTitle))
 
     expect(endState['todolistId1'][2].title).toBeDefined()
     expect(endState['todolistId1'][2].title).toBe(newTitle)

@@ -29,7 +29,7 @@ export const Tasks = ({todolist}: TasksType) => {
             ) : (
                 <ul>
                     {filteredTodolistTasks.map((task: TaskType) => {
-                        return <Task key={task.id} task={task}/>
+                        return <Task key={task.id} todolist={todolist} task={task}/>
                     })}
                 </ul>
             )}

@@ -13,13 +13,13 @@ export const FilterTasksButtons = ({todolist}: FilterTasksButtonsType) => {
 
     const dispatch = useDispatch()
 
-    const changeTodolistFilterHandler = (todolistId: string, filteredTasks: FilterType) => {
-        dispatch(changeTodolistFilterAC(todolistId, filteredTasks))
+    const changeTodolistFilterHandler = (filteredTasks: FilterType) => {
+        dispatch(changeTodolistFilterAC(id, filteredTasks))
     }
 
-    const onAllClickHandler = () => changeTodolistFilterHandler(id, 'all')
-    const onActiveClickHandler = () => changeTodolistFilterHandler(id, 'active')
-    const onCompletedClickHandler = () => changeTodolistFilterHandler(id, 'completed')
+    const onAllClickHandler = () => changeTodolistFilterHandler('all')
+    const onActiveClickHandler = () => changeTodolistFilterHandler('active')
+    const onCompletedClickHandler = () => changeTodolistFilterHandler('completed')
 
     return (
         <>

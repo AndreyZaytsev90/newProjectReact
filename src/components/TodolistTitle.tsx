@@ -17,15 +17,15 @@ export const TodolistTitle = ({todolist}: TodolistTitleType) => {
         dispatch(updateTodolistTitleAC(id, newTitle))
     }
 
-    const removeTodolistHandler = (todolistId: string) => {
-        dispatch(removeTodolistAC(todolistId))
+    const removeTodolistHandler = () => {
+        dispatch(removeTodolistAC(id))
     }
 
     return (
         <>
             <h3><EditableSpan globalTitle={title} callback={updateTodolistHandler}/></h3>
 
-            <IconButton aria-label="delete" size="small" onClick={() => removeTodolistHandler(id)}>
+            <IconButton aria-label="delete" size="small" onClick={removeTodolistHandler}>
                 <DeleteIcon style={{color: '#B00909FF'}}/>
             </IconButton>
         </>

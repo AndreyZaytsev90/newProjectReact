@@ -32,7 +32,7 @@ export const EditableSpan: React.FC<EditableSpanType> = ({globalTitle, callback}
     return (
         edit
             ? <input value={newTitle}
-                     onChange={(e) => onChangeHandler(e)}
+                     onChange={onChangeHandler}
                      onBlur={editHandler}
                      onKeyUp={onKeyUpHandler}
                      autoFocus/>
