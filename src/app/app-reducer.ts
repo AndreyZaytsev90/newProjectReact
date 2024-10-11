@@ -1,10 +1,14 @@
 export type ThemeModeType = 'dark' | 'light'
 
-const initialState : ThemeModeType = 'light'
+type InitialState = typeof initialState
 
-export const appReducer = (state = initialState, action: ActionAppReducerType)=> {
+const initialState = {
+    themeMode: 'light' as ThemeModeType,
+}
+
+export const appReducer = (state = initialState, action: ActionAppReducerType) : InitialState => {
     switch (action.type) {
-        case "CHANGE-THEME": return action.payload.themeMode === "light" ? "dark" : "light"
+        case "CHANGE-THEME": return {...state, themeMode: action.payload.themeMode === "light" ? "dark" : "light"}
         default: return state
     }
 }

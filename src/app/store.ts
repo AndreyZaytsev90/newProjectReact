@@ -10,7 +10,7 @@ import {appReducer} from "./app-reducer";
 const rootReducer = combineReducers({
     tasks: tasksReducer,
     todolists: todolistsReducer,
-    themes: appReducer
+    app: appReducer
 })
 
 // непосредственно создаём объект store
@@ -18,6 +18,8 @@ export const store = legacy_createStore(rootReducer)
 
 // определить автоматически тип всего объекта состояния
 export type RootStateType = ReturnType<typeof store.getState>
+
+export type AppDispatch = typeof store.dispatch
 
 // а это, чтобы можно было в консоли браузера обращаться к store в любой момент
 // @ts-ignore

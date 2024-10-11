@@ -1,11 +1,11 @@
-import {changeTaskStatusAC, removeTaskAC, TaskType, changeTaskTitleAC} from "../../../../model/tasks-reducer";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TaskType} from "../../../../model/tasks-reducer";
 import Checkbox from "@mui/material/Checkbox";
 import {EditableSpan} from "../../../../../../common/components/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {useDispatch} from "react-redux";
 import {TodolistsType} from "../../../../model/todolists-reducer";
 import {ChangeEvent} from "react";
+import {useAppDispatch} from "../../../../../../common/hooks/useAppDispatch";
 
 type TaskComponentType = {
     task: TaskType
@@ -13,7 +13,7 @@ type TaskComponentType = {
 }
 export const Task = ({task, todolist}:TaskComponentType) => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const changeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>)=> {
         const newTaskStatus = event.currentTarget.checked

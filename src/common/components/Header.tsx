@@ -4,16 +4,16 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import Switch from "@mui/material/Switch";
-import {changeThemeAC, ThemeModeType} from "../../app/app-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {RootStateType} from "../../app/store";
+import {changeThemeAC} from "../../app/app-reducer";
+import {useAppDispatch} from "../hooks/useAppDispatch";
+import {useAppSelector} from "../hooks/useAppSelector";
 
 
 export const Header = () => {
 
-    let themeMode = useSelector<RootStateType, ThemeModeType>(state => state.themes)
+    let themeMode = useAppSelector(state => state.app.themeMode)
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const changeThemeHandler = () => {
         dispatch(changeThemeAC(themeMode))

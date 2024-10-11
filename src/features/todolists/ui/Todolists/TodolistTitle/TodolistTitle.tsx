@@ -2,8 +2,8 @@ import {EditableSpan} from "../../../../../common/components/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {removeTodolistAC, TodolistsType, updateTodolistTitleAC} from "../../../model/todolists-reducer";
-import {useDispatch} from "react-redux";
 import styles from "./TodolistTitle.module.css"
+import {useAppDispatch} from "../../../../../common/hooks/useAppDispatch";
 
 type TodolistTitleType = {
     todolist: TodolistsType
@@ -12,7 +12,7 @@ export const TodolistTitle = ({todolist}: TodolistTitleType) => {
 
     const {id, title} = todolist
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const updateTodolistHandler = (newTitle: string) => {
         dispatch(updateTodolistTitleAC(id, newTitle))
     }

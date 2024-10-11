@@ -1,7 +1,7 @@
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import {changeTodolistFilterAC, FilterType, TodolistsType} from "../../../model/todolists-reducer";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../../../../../common/hooks/useAppDispatch";
 
 
 type FilterTasksButtonsType = {
@@ -11,7 +11,7 @@ export const FilterTasksButtons = ({todolist}: FilterTasksButtonsType) => {
 
     const {id, filter} = todolist
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const changeTodolistFilterHandler = (filteredTasks: FilterType) => {
         dispatch(changeTodolistFilterAC(id, filteredTasks))
