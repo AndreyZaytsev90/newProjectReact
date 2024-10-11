@@ -2,11 +2,12 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {TodolistWithRedux} from "./todolist/TodolistWithRedux";
 import {useAppSelector} from "../../../../common/hooks/useAppSelector";
+import {selectTodolists} from "../../model/todolistsSelectors";
 
 export const Todolists = () => {
 
     /*let todolists = useSelector<RootStateType, TodolistsType[]>(state => state.todolists)*/
-    let todolists = useAppSelector(state => state.todolists)
+    let todolists = useAppSelector(selectTodolists) //используем селектор
 
     return (
         <>
