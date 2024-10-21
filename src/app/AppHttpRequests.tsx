@@ -1,21 +1,39 @@
 import Checkbox from '@mui/material/Checkbox'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, {ChangeEvent, useEffect, useState} from 'react'
 import {AddItemForm} from "../common/components/AddItemForm";
 import {EditableSpan} from "../common/components/EditableSpan";
 import axios from "axios";
 
+export type Todolists = {
+    "id": string,
+    "title": string,
+    "addedDate": string,
+    "order": number
+}
+
 export const AppHttpRequests = () => {
-    const [todolists, setTodolists] = useState<any>([])
+    const [todolists, setTodolists] = useState<Todolists[]>([])
     const [tasks, setTasks] = useState<any>({})
 
     useEffect(() => {
         // get todolists
-        axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists')
+        axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists', {
+            headers: {
+                Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+            }
+        })
+            .then((data) => console.log(data))
 
     }, [])
 
     const createTodolistHandler = (title: string) => {
         // create todolist
+        axios.post<any>('https://social-network.samuraijs.com/api/1.1/todo-lists', {
+            headers: {
+                Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+            }
+        })
+            .then((data) => console.log(data))
     }
 
     const removeTodolistHandler = (id: string) => {
@@ -43,8 +61,8 @@ export const AppHttpRequests = () => {
     }
 
     return (
-        <div style={{ margin: '20px' }}>
-            <AddItemForm addItem={createTodolistHandler} />
+        <div style={{margin: '20px'}}>
+            <AddItemForm addItem={createTodolistHandler}/>
 
             {/* Todolists */}
             {todolists.map((tl: any) => {
@@ -57,7 +75,7 @@ export const AppHttpRequests = () => {
                             />
                             <button onClick={() => removeTodolistHandler(tl.id)}>x</button>
                         </div>
-                        <AddItemForm addItem={title => createTaskHandler(title, tl.id)} />
+                        <AddItemForm addItem={title => createTaskHandler(title, tl.id)}/>
 
                         {/* Tasks */}
                         {!!tasks[tl.id] &&
