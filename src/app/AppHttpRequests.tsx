@@ -2,6 +2,7 @@ import Checkbox from '@mui/material/Checkbox'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import {AddItemForm} from "../common/components/AddItemForm";
 import {EditableSpan} from "../common/components/EditableSpan";
+import axios from "axios";
 
 export const AppHttpRequests = () => {
     const [todolists, setTodolists] = useState<any>([])
@@ -9,6 +10,8 @@ export const AppHttpRequests = () => {
 
     useEffect(() => {
         // get todolists
+        axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists')
+
     }, [])
 
     const createTodolistHandler = (title: string) => {
