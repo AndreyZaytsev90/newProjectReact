@@ -5,16 +5,18 @@ import './index.css';
 import {AppWithRedux} from "./app/AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./app/store";
+import {AppHttpRequests} from "./app/AppHttpRequests";
 
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement
 );
 root.render(
-  <Provider store={store}>
-     {/* <App/>*/}
-    <AppWithRedux />
-  </Provider>
+    <Provider store={store}>
+        {/* <App/>*/}
+        {/*<AppWithRedux />*/}
+        <AppHttpRequests/>
+    </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
