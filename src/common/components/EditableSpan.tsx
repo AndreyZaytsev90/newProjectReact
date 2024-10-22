@@ -1,14 +1,14 @@
 import React, {useState, ChangeEvent, KeyboardEvent} from "react";
 
 type EditableSpanType = {
-    globalTitle: string
+    title: string
     callback: (title: string) => void
 }
 
-export const EditableSpan: React.FC<EditableSpanType> = ({globalTitle, callback}) => {
+export const EditableSpan: React.FC<EditableSpanType> = ({title, callback}) => {
 
     const [edit, setEdit] = useState(false)
-    let [newTitle, setNewTitle] = useState<string>(globalTitle)
+    let [newTitle, setNewTitle] = useState<string>(title)
 
     const editHandler = () => {
         setEdit(!edit)
@@ -36,6 +36,6 @@ export const EditableSpan: React.FC<EditableSpanType> = ({globalTitle, callback}
                      onBlur={editHandler}
                      onKeyUp={onKeyUpHandler}
                      autoFocus/>
-            : <span onDoubleClick={editHandler}>{globalTitle}</span>
+            : <span onDoubleClick={editHandler}>{title}</span>
     );
 };

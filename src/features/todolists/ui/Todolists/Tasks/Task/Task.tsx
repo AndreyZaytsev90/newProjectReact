@@ -33,7 +33,7 @@ export const Task = ({task, todolist}:TaskComponentType) => {
             <Checkbox checked={task.isDone}
                       onChange={changeTaskStatusHandler}
             />
-            <EditableSpan globalTitle={task.title}
+            <EditableSpan title={task.title}
                           callback={changeTaskTitleHandler}
             />
             <IconButton aria-label="delete" size="small"

@@ -11,6 +11,35 @@ export type Todolists = {
     "order": number
 }
 
+type FieldError = {
+    error: string
+    field: string
+}
+
+export type Response = {
+    resultCode: number
+    messages: string[],
+    fieldsErrors: FieldError[],
+    data: {
+        item: Todolists
+    }
+}
+
+export type DeleteTodolistResponse = {
+    resultCode: number
+    messages: string[],
+    fieldsErrors: FieldError[],
+    data: {}
+}
+
+export type UpdateTodolistResponse = {
+    resultCode: number
+    messages: string[],
+    fieldsErrors: FieldError[],
+    data: {}
+}
+
+
 export const AppHttpRequests = () => {
     const [todolists, setTodolists] = useState<Todolists[]>([])
     const [tasks, setTasks] = useState<any>({})
@@ -19,29 +48,59 @@ export const AppHttpRequests = () => {
         // get todolists
         axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists', {
             headers: {
-                Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+                //Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+                Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787'
             }
-        })
-            .then((data) => console.log(data))
-
+        }).then((res) => setTodolists(res.data))
     }, [])
 
     const createTodolistHandler = (title: string) => {
         // create todolist
-        axios.post<any>('https://social-network.samuraijs.com/api/1.1/todo-lists', {
-            headers: {
-                Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+        axios.post<Response>('https://social-network.samuraijs.com/api/1.1/todo-lists',
+            {title}, {
+                headers: {
+                    // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+                    Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
+                    'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
+                }
+            }).then((res) => {
+                const newTodolist = res.data.data.item
+                setTodolists([newTodolist, ...todolists])
             }
-        })
-            .then((data) => console.log(data))
+        )
     }
 
     const removeTodolistHandler = (id: string) => {
         // remove todolist
+        axios.delete<DeleteTodolistResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
+            {
+                headers: {
+                    // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+                    Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
+                    'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
+                }
+            }).then((res) => {
+                console.log(res.data)
+                setTodolists(todolists.filter((tl) => tl.id !== id))
+            }
+        )
     }
 
     const updateTodolistHandler = (id: string, title: string) => {
         // update todolist title
+        axios.put<UpdateTodolistResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
+            {title},
+            {
+                headers: {
+                    // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+                    Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
+                    'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
+                }
+            }).then((res) => {
+                console.log(res.data)
+                setTodolists(todolists.map((tl) => tl.id === id ? {...tl, title} : tl))
+            }
+        )
     }
 
     const createTaskHandler = (title: string, todolistId: string) => {
@@ -70,7 +129,7 @@ export const AppHttpRequests = () => {
                     <div key={tl.id} style={todolist}>
                         <div>
                             <EditableSpan
-                                globalTitle={tl.title}
+                                title={tl.title}
                                 callback={(title: string) => updateTodolistHandler(tl.id, title)}
                             />
                             <button onClick={() => removeTodolistHandler(tl.id)}>x</button>
@@ -87,7 +146,7 @@ export const AppHttpRequests = () => {
                                             onChange={e => changeTaskStatusHandler(e, task)}
                                         />
                                         <EditableSpan
-                                            globalTitle={task.title}
+                                            title={task.title}
                                             callback={title => changeTaskTitleHandler(title, task)}
                                         />
                                         <button onClick={() => removeTaskHandler(task.id, tl.id)}>x</button>

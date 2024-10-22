@@ -23,7 +23,7 @@ export const TodolistTitle = ({todolist}: TodolistTitleType) => {
 
     return (
         <div className={styles.container}>
-            <h3><EditableSpan globalTitle={title} callback={updateTodolistHandler}/></h3>
+            <h3><EditableSpan title={title} callback={updateTodolistHandler}/></h3>
 
             <IconButton aria-label="delete" size="small" onClick={removeTodolistHandler}>
                 <DeleteIcon style={{color: '#B00909FF'}}/>
