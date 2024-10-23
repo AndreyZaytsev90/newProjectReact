@@ -3,46 +3,72 @@ import React, {ChangeEvent, useEffect, useState} from 'react'
 import {AddItemForm} from "../common/components/AddItemForm";
 import {EditableSpan} from "../common/components/EditableSpan";
 import axios from "axios";
+import {PartyMode} from "@mui/icons-material";
 
-export type Todolists = {
+export type Todolist = {
     "id": string,
     "title": string,
     "addedDate": string,
     "order": number
 }
 
+export type GetTasksResponse = {
+    error: string | null
+    items: DomainTask[]
+    totalCount: number
+}
+
+enum Enum {
+    New,
+    Part,
+    Completed
+}
+
+//console.log(Enum.New)
+
+export type DomainTask = {
+    description: string
+    title: string
+    status: number // 0 | 2
+    priority: number
+    startDate: string
+    deadline: string
+    id: string
+    todoListId: string
+    order: number
+    addedDate: string
+}
+
+/*export type CreateTaskResponse = {
+    data: {item: DomainTask} | {}
+    fieldsErrors: FieldError[]
+    messages: string[]
+    resultCode: number
+}*/
+
 type FieldError = {
     error: string
     field: string
 }
-
-export type Response = {
+export type Response<T = {}> = {
     resultCode: number
     messages: string[],
     fieldsErrors: FieldError[],
-    data: {
-        item: Todolists
-    }
+    data: T
 }
 
-export type DeleteTodolistResponse = {
-    resultCode: number
-    messages: string[],
-    fieldsErrors: FieldError[],
-    data: {}
+export type UpdateTaskModel = {
+    title: string
+    description: string
+    status: number
+    priority: number
+    startDate: string
+    deadline: string
 }
-
-export type UpdateTodolistResponse = {
-    resultCode: number
-    messages: string[],
-    fieldsErrors: FieldError[],
-    data: {}
-}
-
 
 export const AppHttpRequests = () => {
-    const [todolists, setTodolists] = useState<Todolists[]>([])
-    const [tasks, setTasks] = useState<any>({})
+    const [todolists, setTodolists] = useState<Todolist[]>([])
+    const [tasks, setTasks] = useState<{ [key: string]: DomainTask[] }>({})
 
     useEffect(() => {
         // get todolists
@@ -51,12 +77,30 @@ export const AppHttpRequests = () => {
                 //Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
                 Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787'
             }
-        }).then((res) => setTodolists(res.data))
+        })
+            .then((res) => {
+                const todolists = res.data
+                setTodolists(todolists)
+                //console.log(todolists)
+                todolists.forEach((tl: Todolist) => {
+                    return axios.get<GetTasksResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${tl.id}/tasks`, {
+                        headers: {
+                            //Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+                            Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787'
+                        }
+                    }).then(res => {
+                        setTasks({...tasks, [tl.id]: res.data.items})
+                    })
+                })
+
+            })
+
+
     }, [])
 
     const createTodolistHandler = (title: string) => {
         // create todolist
-        axios.post<Response>('https://social-network.samuraijs.com/api/1.1/todo-lists',
+        axios.post<Response<{ item: Todolist }>>('https://social-network.samuraijs.com/api/1.1/todo-lists',
             {title}, {
                 headers: {
                     // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
@@ -72,7 +116,7 @@ export const AppHttpRequests = () => {
 
     const removeTodolistHandler = (id: string) => {
         // remove todolist
-        axios.delete<DeleteTodolistResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
+        axios.delete<Response>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
             {
                 headers: {
                     // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
@@ -88,7 +132,7 @@ export const AppHttpRequests = () => {
 
     const updateTodolistHandler = (id: string, title: string) => {
         // update todolist title
-        axios.put<UpdateTodolistResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
+        axios.put<Response>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
             {title},
             {
                 headers: {
@@ -105,14 +149,56 @@ export const AppHttpRequests = () => {
 
     const createTaskHandler = (title: string, todolistId: string) => {
         // create task
+        axios.post<Response<{ item: DomainTask }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
+            {title}, {
+                headers: {
+                    // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+                    Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
+                    'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
+                }
+            }).then((res) => {
+                console.log(res.data)
+
+                const newTask = res.data.data.item
+
+                const currentTasks = tasks[todolistId] || [] // проверка
+                setTasks({...tasks, [todolistId]: [newTask, ...currentTasks]})
+            }
+        )
     }
 
     const removeTaskHandler = (taskId: string, todolistId: string) => {
         // remove task
     }
 
-    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>, task: any) => {
+    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>, task: DomainTask, todolistId: string) => {
         // update task status
+        const model: UpdateTaskModel = {
+            title: task.title,
+            description: task.description,
+            status: e.currentTarget.checked ? 2 : 0,
+            priority: task.priority,
+            startDate: task.startDate,
+            deadline: task.deadline,
+        }
+
+        axios.put<Response<{ item: DomainTask }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${task.id}`,
+            model, {
+                headers: {
+                    // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
+                    Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
+                    'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
+                }
+            }).then((res) => {
+                console.log(res.data)
+
+                setTasks({
+                    ...tasks, [todolistId]: tasks[todolistId].map(task => task.id === res.data.data.item.id
+                        ? {...task, status: model.status}
+                        : task)
+                })
+            }
+        )
     }
 
     const changeTaskTitleHandler = (title: string, task: any) => {
@@ -124,7 +210,7 @@ export const AppHttpRequests = () => {
             <AddItemForm addItem={createTodolistHandler}/>
 
             {/* Todolists */}
-            {todolists.map((tl: any) => {
+            {todolists.map(tl => {
                 return (
                     <div key={tl.id} style={todolist}>
                         <div>
@@ -138,12 +224,12 @@ export const AppHttpRequests = () => {
 
                         {/* Tasks */}
                         {!!tasks[tl.id] &&
-                            tasks[tl.id].map((task: any) => {
+                            tasks[tl.id].map((task: DomainTask) => {
                                 return (
                                     <div key={task.id}>
                                         <Checkbox
-                                            checked={task.isDone}
-                                            onChange={e => changeTaskStatusHandler(e, task)}
+                                            checked={task.status === 2}
+                                            onChange={e => changeTaskStatusHandler(e, task, tl.id)}
                                         />
                                         <EditableSpan
                                             title={task.title}
