@@ -3,7 +3,6 @@ import React, {ChangeEvent, useEffect, useState} from 'react'
 import {AddItemForm} from "../common/components/AddItemForm";
 import {EditableSpan} from "../common/components/EditableSpan";
 import axios from "axios";
-import {PartyMode} from "@mui/icons-material";
 
 export type Todolist = {
     "id": string,
@@ -74,7 +73,6 @@ export const AppHttpRequests = () => {
         // get todolists
         axios.get('https://social-network.samuraijs.com/api/1.1/todo-lists', {
             headers: {
-                //Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
                 Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787'
             }
         })
@@ -85,17 +83,14 @@ export const AppHttpRequests = () => {
                 todolists.forEach((tl: Todolist) => {
                     return axios.get<GetTasksResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${tl.id}/tasks`, {
                         headers: {
-                            //Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
                             Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787'
                         }
                     }).then(res => {
-                        setTasks({...tasks, [tl.id]: res.data.items})
+                        setTasks(tasks => ({...tasks, [tl.id]: res.data.items}))
                     })
                 })
 
             })
-
-
     }, [])
 
     const createTodolistHandler = (title: string) => {
@@ -149,7 +144,9 @@ export const AppHttpRequests = () => {
 
     const createTaskHandler = (title: string, todolistId: string) => {
         // create task
-        axios.post<Response<{ item: DomainTask }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
+        axios.post<Response<{
+            item: DomainTask
+        }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
             {title}, {
                 headers: {
                     // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
@@ -182,7 +179,9 @@ export const AppHttpRequests = () => {
             deadline: task.deadline,
         }
 
-        axios.put<Response<{ item: DomainTask }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${task.id}`,
+        axios.put<Response<{
+            item: DomainTask
+        }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${task.id}`,
             model, {
                 headers: {
                     // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
