@@ -38,13 +38,6 @@ export type DomainTask = {
     addedDate: string
 }
 
-/*export type CreateTaskResponse = {
-    data: {item: DomainTask} | {}
-    fieldsErrors: FieldError[]
-    messages: string[]
-    resultCode: number
-}*/
-
 type FieldError = {
     error: string
     field: string
@@ -166,6 +159,15 @@ export const AppHttpRequests = () => {
 
     const removeTaskHandler = (taskId: string, todolistId: string) => {
         // remove task
+        axios.delete<Response>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${taskId}`, {
+            headers: {
+                Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
+                'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
+            }
+        })
+            .then(() => {
+                setTasks({...tasks, [todolistId]: tasks[todolistId].filter((task) => task.id !== taskId)})
+            })
     }
 
     const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>, task: DomainTask, todolistId: string) => {
@@ -179,12 +181,9 @@ export const AppHttpRequests = () => {
             deadline: task.deadline,
         }
 
-        axios.put<Response<{
-            item: DomainTask
-        }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${task.id}`,
+        axios.put<Response<{ item: DomainTask }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${task.id}`,
             model, {
                 headers: {
-                    // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
                     Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
                     'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
                 }
@@ -200,8 +199,33 @@ export const AppHttpRequests = () => {
         )
     }
 
-    const changeTaskTitleHandler = (title: string, task: any) => {
+    const changeTaskTitleHandler = (title: string, task: DomainTask, todolistId: string) => {
         // update task title
+        const model: UpdateTaskModel = {
+            title: title,
+            description: task.description,
+            status: task.status,
+            priority: task.priority,
+            startDate: task.startDate,
+            deadline: task.deadline,
+        }
+
+        axios.put<Response<{ item: DomainTask }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${task.id}`,
+            model, {
+                headers: {
+                    Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
+                    'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
+                }
+            }).then((res) => {
+                console.log(res.data)
+
+                setTasks({
+                    ...tasks, [todolistId]: tasks[todolistId].map(task => task.id === res.data.data.item.id
+                        ? {...task, title: model.title}
+                        : task)
+                })
+            }
+        )
     }
 
     return (
@@ -232,7 +256,7 @@ export const AppHttpRequests = () => {
                                         />
                                         <EditableSpan
                                             title={task.title}
-                                            callback={title => changeTaskTitleHandler(title, task)}
+                                            callback={title => changeTaskTitleHandler(title, task, tl.id)}
                                         />
                                         <button onClick={() => removeTaskHandler(task.id, tl.id)}>x</button>
                                     </div>
