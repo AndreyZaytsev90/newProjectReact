@@ -4,8 +4,9 @@ import {AddItemForm} from "../common/components/AddItemForm";
 import {EditableSpan} from "../common/components/EditableSpan";
 import axios from "axios";
 import {Todolist} from "../features/todolists/api/todolistsApi.types";
-import {DomainTask, GetTasksResponse, Response, UpdateTaskModel} from "../features/todolists/api/tasksApi.types";
+import {DomainTask, Response, UpdateTaskModel} from "../features/todolists/api/tasksApi.types";
 import {todolistsApi} from "../features/todolists/api/todolistsApi";
+import {tasksApi} from "../features/todolists/api/tasksApi";
 
 
 export const AppHttpRequests = () => {
@@ -20,11 +21,8 @@ export const AppHttpRequests = () => {
                 setTodolists(todolists)
                 //console.log(todolists)
                 todolists.forEach((tl: Todolist) => {
-                    return axios.get<GetTasksResponse>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${tl.id}/tasks`, {
-                        headers: {
-                            Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787'
-                        }
-                    }).then(res => {
+                    tasksApi.getTasks(tl.id)
+                    .then(res => {
                         setTasks(tasks => ({...tasks, [tl.id]: res.data.items}))
                     })
                 })
@@ -63,18 +61,10 @@ export const AppHttpRequests = () => {
 
     const createTaskHandler = (title: string, todolistId: string) => {
         // create task
-        axios.post<Response<{ item: DomainTask }>>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks`,
-            {title}, {
-                headers: {
-                    // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
-                    Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
-                    'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
-                }
-            }).then((res) => {
+        tasksApi.createTask(title, todolistId)
+        .then((res) => {
                 console.log(res.data)
-
                 const newTask = res.data.data.item
-
                 const currentTasks = tasks[todolistId] || [] // проверка
                 setTasks({...tasks, [todolistId]: [newTask, ...currentTasks]})
             }
@@ -83,12 +73,7 @@ export const AppHttpRequests = () => {
 
     const removeTaskHandler = (taskId: string, todolistId: string) => {
         // remove task
-        axios.delete<Response>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${todolistId}/tasks/${taskId}`, {
-            headers: {
-                Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
-                'API-KEY': 'e63159f0-e2d8-4a94-a54e-dc4334240e6b'
-            }
-        })
+     tasksApi.removeTask(taskId, todolistId)
             .then(() => {
                 setTasks({...tasks, [todolistId]: tasks[todolistId].filter((task) => task.id !== taskId)})
             })

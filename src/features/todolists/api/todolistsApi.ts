@@ -14,9 +14,9 @@ export const todolistsApi = {
         return promise
     },
 
-    createTodolist(title: string) {
+    createTodolist(value: string) {
         return axios.post<Response<{ item: Todolist }>>('https://social-network.samuraijs.com/api/1.1/todo-lists',
-            {title}, {
+            {title: value}, {
                 headers: {
                     // Authorization: 'Bearer d566b0e8-2fa4-4914-b20e-f29ebf528571'
                     Authorization: 'Bearer 5ab8c412-f4b1-4daa-9b76-ff327c0d6787',
