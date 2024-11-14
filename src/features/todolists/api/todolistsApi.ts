@@ -36,7 +36,9 @@ export const todolistsApi = {
             })
     },
 
-    updateTodolist(id: string, title: string) {
+    updateTodolist(payload: {id: string, title: string}) {
+        //Деструктуризация (далее дергаем ключи из объекта, чтобы не соблюдать очередность передачи параметров)
+        const {id, title} = payload
         return axios.put<Response>(`https://social-network.samuraijs.com/api/1.1/todo-lists/${id}`,
             {title},
             {
