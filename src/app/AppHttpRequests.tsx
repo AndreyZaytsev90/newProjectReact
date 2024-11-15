@@ -3,10 +3,10 @@ import React, {ChangeEvent, useEffect, useState} from 'react'
 import {AddItemForm} from "../common/components/AddItemForm";
 import {EditableSpan} from "../common/components/EditableSpan";
 import {Todolist} from "../features/todolists/api/todolistsApi.types";
-import {DomainTask, Response, UpdateTaskModel} from "../features/todolists/api/tasksApi.types";
+import {DomainTask, UpdateTaskModel} from "../features/todolists/api/tasksApi.types";
 import {todolistsApi} from "../features/todolists/api/todolistsApi";
 import {tasksApi} from "../features/todolists/api/tasksApi";
-
+import {TaskStatus} from "../features/todolists/lib/enums/enums";
 
 export const AppHttpRequests = () => {
     const [todolists, setTodolists] = useState<Todolist[]>([])
@@ -37,17 +37,15 @@ export const AppHttpRequests = () => {
                 }
             )
     }
-
     const removeTodolistHandler = (id: string) => {
         // remove todolist
-        todolistsApi.deleteTodolist(id)
+        todolistsApi.removeTodolist(id)
             .then((res) => {
                     console.log(res.data)
                     setTodolists(todolists.filter((tl) => tl.id !== id))
                 }
             )
     }
-
     const updateTodolistHandler = (id: string, title: string) => {
         // update todolist title
         todolistsApi.updateTodolist({id, title})
@@ -58,9 +56,10 @@ export const AppHttpRequests = () => {
             )
     }
 
+
     const createTaskHandler = (title: string, todolistId: string) => {
         // create task
-        tasksApi.createTask(title, todolistId)
+        tasksApi.createTask({title, todolistId})
             .then((res) => {
                     console.log(res.data)
                     const newTask = res.data.data.item
@@ -69,26 +68,24 @@ export const AppHttpRequests = () => {
                 }
             )
     }
-
     const removeTaskHandler = (taskId: string, todolistId: string) => {
         // remove task
-        tasksApi.removeTask(taskId, todolistId)
+        tasksApi.removeTask({taskId, todolistId})
             .then(() => {
                 setTasks({...tasks, [todolistId]: tasks[todolistId].filter((task) => task.id !== taskId)})
             })
     }
-
     const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>, task: DomainTask, todolistId: string) => {
         // update task status
         const model: UpdateTaskModel = {
             title: task.title,
             description: task.description,
-            status: e.currentTarget.checked ? 2 : 0,
+            status: e.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New,
             priority: task.priority,
             startDate: task.startDate,
             deadline: task.deadline,
         }
-        tasksApi.changeTaskStatus(task, todolistId, model)
+        tasksApi.changeTask({task, todolistId, model})
             .then((res) => {
                     console.log(res.data)
                     setTasks({
@@ -109,7 +106,7 @@ export const AppHttpRequests = () => {
             startDate: task.startDate,
             deadline: task.deadline,
         }
-        tasksApi.changeTaskTitle(task, todolistId, model)
+        tasksApi.changeTask({task, todolistId, model})
             .then((res) => {
                     console.log(res.data)
                     setTasks({

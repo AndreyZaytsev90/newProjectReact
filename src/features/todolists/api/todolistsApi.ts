@@ -1,13 +1,12 @@
-
-import {Response} from "./tasksApi.types";
 import {Todolist} from "./todolistsApi.types";
 import {instance} from "../../../common/instance/instance";
+import {Response} from "../../../common/types/types"
 
 
 export const todolistsApi = {
 
     getTodolists() {
-        const promise = instance.get('todo-lists')
+        const promise = instance.get<Todolist[]>('todo-lists')
         return promise
     },
 
@@ -15,7 +14,7 @@ export const todolistsApi = {
         return instance.post<Response<{ item: Todolist }>>('todo-lists', {title: value})
     },
 
-    deleteTodolist(id: string) {
+    removeTodolist(id: string) {
         return instance.delete<Response>(`todo-lists/${id}`)
     },
 
