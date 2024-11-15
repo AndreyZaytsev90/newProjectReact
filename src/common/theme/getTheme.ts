@@ -1,5 +1,5 @@
 import {createTheme} from "@mui/material/styles";
-import {ThemeModeType} from "../../app/app-reducer";
+import {ThemeModeType} from "app/app-reducer";
 
 export const getTheme = (themeMode: ThemeModeType)=> {
     return createTheme({

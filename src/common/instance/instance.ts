@@ -1,5 +1,5 @@
 import axios from "axios";
-
+//информация из файла .env
 export const instance = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL,
     headers: {

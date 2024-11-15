@@ -1,7 +1,7 @@
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import {changeTodolistFilterAC, FilterType, TodolistsType} from "../../../model/todolists-reducer";
-import {useAppDispatch} from "../../../../../common/hooks/useAppDispatch";
+import {useAppDispatch} from "common/hooks";
 
 
 type FilterTasksButtonsType = {

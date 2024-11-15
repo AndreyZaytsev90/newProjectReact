@@ -1,11 +1,16 @@
 import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TaskType} from "../../../../model/tasks-reducer";
 import Checkbox from "@mui/material/Checkbox";
-import {EditableSpan} from "../../../../../../common/components/EditableSpan";
+//import {EditableSpan} from "../../../../../../common/components/EditableSpan";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {TodolistsType} from "../../../../model/todolists-reducer";
 import {ChangeEvent} from "react";
-import {useAppDispatch} from "../../../../../../common/hooks/useAppDispatch";
+//import {useAppDispatch} from "../../../../../../common/hooks/useAppDispatch";
+// в tsconfig.json добавили baseurl относительно src для сокращения импорта
+//import {EditableSpan} from "common/components/EditableSpan";
+import {useAppDispatch} from "common/hooks";
+//сократили импорт в файле components/index.ts
+import {EditableSpan} from "common/components";
 
 type TaskComponentType = {
     task: TaskType

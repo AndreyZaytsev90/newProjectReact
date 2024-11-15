@@ -1,8 +1,8 @@
 import {TaskType} from "../../../model/tasks-reducer";
 import {TodolistsType} from "../../../model/todolists-reducer";
-import {Task} from "./Task/Task";
-import {useAppSelector} from "../../../../../common/hooks/useAppSelector";
+import {Task} from "./Task";
 import {selectTasks} from "../../../model/tasksSelectors";
+import {useAppSelector} from "common/hooks";
 
 type TasksType = {
     todolist: TodolistsType
