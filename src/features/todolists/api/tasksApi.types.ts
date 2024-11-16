@@ -1,30 +1,30 @@
 //import {TaskPriority, TaskStatus} from "../lib/enums/enums";
-import {TaskPriority, TaskStatus} from "../lib/enums";
+import { TaskPriority, TaskStatus } from "../lib/enums"
 
 export type GetTasksResponse = {
-    error: string | null
-    items: DomainTask[]
-    totalCount: number
+  error: string | null
+  items: DomainTask[]
+  totalCount: number
 }
 
 export type DomainTask = {
-    description: string
-    title: string
-    status: TaskStatus
-    priority: TaskPriority
-    startDate: string
-    deadline: string
-    id: string
-    todoListId: string
-    order: number
-    addedDate: string
+  description: string
+  title: string
+  status: TaskStatus
+  priority: TaskPriority
+  startDate: string
+  deadline: string
+  id: string
+  todoListId: string
+  order: number
+  addedDate: string
 }
 
 export type UpdateTaskModel = {
-    title: string
-    description: string
-    status: TaskStatus
-    priority: TaskPriority
-    startDate: string
-    deadline: string
+  title: string
+  description: string
+  status: TaskStatus
+  priority: TaskPriority
+  startDate: string
+  deadline: string
 }

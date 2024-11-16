@@ -28,7 +28,6 @@ interface TodolistType {
     filter: FilterType
 }*/
 
-
 /*export const Todolist = ({
                              todolistId,
                              title,

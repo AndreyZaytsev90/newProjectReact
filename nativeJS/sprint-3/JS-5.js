@@ -1,7 +1,7 @@
-console.log('js-5')
+console.log("js-5")
 
-    //Евгений Немировский 5 урок
-    
+//Евгений Немировский 5 урок
+
 // Lexical environmentm, closure, recursion
 
 // let car = "bmw";
@@ -12,7 +12,7 @@ console.log('js-5')
    };
  }*/
 // console.log(a);
- //car = "kia";
+//car = "kia";
 
 // const foo = startEngine();
 // foo();
@@ -34,7 +34,7 @@ console.log('js-5')
 // bar()
 // console.log(str)
 
- //const a = 10 // {bar: Function, str: undefined, a: 10}
+//const a = 10 // {bar: Function, str: undefined, a: 10}
 // let b = 20 // {bar: Function, str: undefined, a: 10, b: 20}
 // const foo = () => {} // {bar: Function, str: undefined,, a: 10, b: 20, foo: Function}
 // function bar() {}
