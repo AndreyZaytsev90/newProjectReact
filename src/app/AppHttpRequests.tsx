@@ -6,7 +6,7 @@ import { Todolist } from "../features/todolists/api/todolistsApi.types"
 import { DomainTask, UpdateTaskModel } from "../features/todolists/api/tasksApi.types"
 import { todolistsApi } from "../features/todolists/api/todolistsApi"
 import { tasksApi } from "../features/todolists/api/tasksApi"
-import { TaskStatus } from "../features/todolists/lib/enums/enums"
+import { TaskStatus } from "../features/todolists/lib/enums"
 
 export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([])
