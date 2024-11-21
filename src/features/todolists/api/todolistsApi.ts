@@ -1,15 +1,15 @@
-import { Todolist } from "./todolistsApi.types"
-import { Response } from "common/types"
-import { instance } from "common/instance"
+import {Response} from "common/types"
+import {instance} from "common/instance"
+import {DomainTodolist} from "../model/todolists-reducer";
 
 export const todolistsApi = {
   getTodolists() {
-    const promise = instance.get<Todolist[]>("todo-lists")
+    const promise = instance.get<DomainTodolist[]>("todo-lists")
     return promise
   },
 
   createTodolist(value: string) {
-    return instance.post<Response<{ item: Todolist }>>("todo-lists", { title: value })
+    return instance.post<Response<{ item: DomainTodolist }>>("todo-lists", { title: value })
   },
 
   removeTodolist(id: string) {

@@ -1,13 +1,13 @@
-import { AddItemForm } from "common/components"
-import { addTaskAC } from "../../../model/tasks-reducer"
-import { TodolistsType } from "../../../model/todolists-reducer"
-import { TodolistTitle } from "../TodolistTitle/TodolistTitle"
-import { Tasks } from "../Tasks/Tasks"
-import { FilterTasksButtons } from "../FilterTasksButtons/FilterTasksButtons"
-import { useAppDispatch } from "common/hooks"
+import {AddItemForm} from "common/components"
+import {addTaskAC} from "../../../model/tasks-reducer"
+import {DomainTodolist} from "../../../model/todolists-reducer"
+import {TodolistTitle} from "../TodolistTitle/TodolistTitle"
+import {Tasks} from "../Tasks/Tasks"
+import {FilterTasksButtons} from "../FilterTasksButtons/FilterTasksButtons"
+import {useAppDispatch} from "common/hooks"
 
 type TodolistWithReduxType = {
-  todolist: TodolistsType
+  todolist: DomainTodolist
 }
 
 export const TodolistWithRedux = ({ todolist }: TodolistWithReduxType) => {

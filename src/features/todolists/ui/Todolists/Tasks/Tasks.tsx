@@ -1,11 +1,11 @@
 import { TaskType } from "../../../model/tasks-reducer"
-import { TodolistsType } from "../../../model/todolists-reducer"
+import { DomainTodolist } from "../../../model/todolists-reducer"
 import { Task } from "./Task"
 import { selectTasks } from "../../../model/tasksSelectors"
 import { useAppSelector } from "common/hooks"
 
 type TasksType = {
-  todolist: TodolistsType
+  todolist: DomainTodolist
 }
 
 export const Tasks = ({ todolist }: TasksType) => {
@@ -25,11 +25,12 @@ export const Tasks = ({ todolist }: TasksType) => {
 
   return (
     <>
-      {filteredTodolistTasks.length === 0 ? (
+      {filteredTodolistTasks && filteredTodolistTasks.length === 0 ? (
         <p>Тасок нет</p>
       ) : (
         <ul>
-          {filteredTodolistTasks.map((task: TaskType) => {
+          {/*аналогично filteredTodolistTasks && */}
+          {filteredTodolistTasks?.map((task: TaskType) => {
             return <Task key={task.id} todolist={todolist} task={task} />
           })}
         </ul>

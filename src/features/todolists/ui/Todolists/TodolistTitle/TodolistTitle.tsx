@@ -1,12 +1,12 @@
-import { EditableSpan } from "common/components"
+import {EditableSpan} from "common/components"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { removeTodolistAC, TodolistsType, updateTodolistTitleAC } from "../../../model/todolists-reducer"
+import {DomainTodolist, removeTodolistAC, updateTodolistTitleAC} from "../../../model/todolists-reducer"
 import styles from "./TodolistTitle.module.css"
-import { useAppDispatch } from "common/hooks"
+import {useAppDispatch} from "common/hooks"
 
 type TodolistTitleType = {
-  todolist: TodolistsType
+  todolist: DomainTodolist
 }
 export const TodolistTitle = ({ todolist }: TodolistTitleType) => {
   const { id, title } = todolist
