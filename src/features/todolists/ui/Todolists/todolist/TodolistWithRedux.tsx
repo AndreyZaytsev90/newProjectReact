@@ -1,5 +1,5 @@
 import {AddItemForm} from "common/components"
-import {addTaskAC} from "../../../model/tasks-reducer"
+import {addTaskAC, addTaskTC} from "../../../model/tasks-reducer"
 import {DomainTodolist} from "../../../model/todolists-reducer"
 import {TodolistTitle} from "../TodolistTitle/TodolistTitle"
 import {Tasks} from "../Tasks/Tasks"
@@ -15,7 +15,7 @@ export const TodolistWithRedux = ({ todolist }: TodolistWithReduxType) => {
   const dispatch = useAppDispatch()
 
   const addTaskHandler = (newTitle: string) => {
-    dispatch(addTaskAC(id, newTitle))
+    dispatch(addTaskTC({todolistId: id, title:newTitle}))
   }
 
   return (

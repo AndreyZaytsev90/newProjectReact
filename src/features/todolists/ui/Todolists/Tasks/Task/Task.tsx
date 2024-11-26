@@ -1,4 +1,4 @@
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, TaskType} from "../../../../model/tasks-reducer"
+import {changeTaskStatusAC, changeTaskStatusTC, removeTaskTC,} from "../../../../model/tasks-reducer"
 import Checkbox from "@mui/material/Checkbox"
 //import {EditableSpan} from "../../../../../../common/components/EditableSpan";
 import IconButton from "@mui/material/IconButton"
@@ -11,34 +11,38 @@ import {ChangeEvent} from "react"
 import {useAppDispatch} from "common/hooks"
 //сократили импорт в файле components/index.ts
 import {EditableSpan} from "common/components"
+import {DomainTask} from "../../../../api/tasksApi.types";
+import {TaskStatus} from "../../../../lib/enums";
 
 type TaskComponentType = {
-  task: TaskType
-  todolist: DomainTodolist
+    task: DomainTask
+    todolist: DomainTodolist
 }
-export const Task = ({ task, todolist }: TaskComponentType) => {
-  const dispatch = useAppDispatch()
+export const Task = ({task, todolist}: TaskComponentType) => {
+    const dispatch = useAppDispatch()
 
-  const changeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const newTaskStatus = event.currentTarget.checked
-    dispatch(changeTaskStatusAC(todolist.id, task.id, newTaskStatus))
-  }
+    const changeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        let newTaskStatus = event.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
+        dispatch(changeTaskStatusTC({todolistId: todolist.id, taskId: task.id, taskStatus: newTaskStatus}))
+    }
 
-  const changeTaskTitleHandler = (newTitle: string) => {
-    dispatch(changeTaskTitleAC(todolist.id, task.id, newTitle))
-  }
+    const changeTaskTitleHandler = (newTitle: string) => {
+       // dispatch(changeTaskTitleAC(todolist.id, task.id, newTitle))
+       // dispatch(changeTaskTitleTC({task, todolistId: todolist.id, title: newTitle}))
+    }
 
-  const removeTaskHandler = () => {
-    dispatch(removeTaskAC(todolist.id, task.id))
-  }
+    const removeTaskHandler = () => {
+        //dispatch(removeTaskAC(todolist.id, task.id))
+        dispatch(removeTaskTC({todolistId: todolist.id, taskId: task.id}))
+    }
 
-  return (
-    <li key={task.id} className={task.isDone ? "task-done" : "task"}>
-      <Checkbox checked={task.isDone} onChange={changeTaskStatusHandler} />
-      <EditableSpan title={task.title} callback={changeTaskTitleHandler} />
-      <IconButton aria-label="delete" size="small" onClick={removeTaskHandler}>
-        <DeleteIcon fontSize={"small"} style={{ color: "#B00909FF" }} />
-      </IconButton>
-    </li>
-  )
+    return (
+        <li key={task.id} className={task.status ? "task-done" : "task"}>
+            <Checkbox checked={task.status === TaskStatus.Completed} onChange={changeTaskStatusHandler}/>
+            <EditableSpan title={task.title} callback={changeTaskTitleHandler}/>
+            <IconButton aria-label="delete" size="small" onClick={removeTaskHandler}>
+                <DeleteIcon fontSize={"small"} style={{color: "#B00909FF"}}/>
+            </IconButton>
+        </li>
+    )
 }

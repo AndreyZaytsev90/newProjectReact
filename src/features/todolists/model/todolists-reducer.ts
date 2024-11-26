@@ -1,5 +1,8 @@
 import {v4} from "uuid"
 import {Todolist} from "../api/todolistsApi.types";
+import {todolistsApi} from "../api/todolistsApi";
+import {AppDispatch, RootStateType} from "app/store";
+import {Dispatch} from "redux";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -61,6 +64,14 @@ type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>
 type UpdateTodolistTitleACType = ReturnType<typeof updateTodolistTitleAC>
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 
+//из Reducer(BLL) обращаемся в DAL
+export const fetchTodolistsTC = () => (dispatch: AppDispatch, getState: () => RootStateType) => {
+    // внутри санки можно делать побочные эффекты (запросы на сервер)
+    todolistsApi.getTodolists().then(res => {
+        // и диспатчить экшены (action) или другие санки (thunk)
+        dispatch(setTodolistsAC(res.data))
+    })
+}
 export const removeTodolistAC = (todolistId: string) => {
     return {
         type: "REMOVE-TODOLIST",
@@ -92,3 +103,5 @@ export const setTodolistsAC = (todolists: DomainTodolist[]) => {
         payload: {todolists}
     } as const
 }
+
+

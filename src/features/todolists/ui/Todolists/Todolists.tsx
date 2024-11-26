@@ -4,9 +4,8 @@ import {TodolistWithRedux} from "./todolist/TodolistWithRedux"
 import {selectTodolists} from "../../model/todolistsSelectors"
 import {useAppSelector} from "common/hooks"
 import {useEffect} from "react";
-import {todolistsApi} from "../../api/todolistsApi";
 import {useDispatch} from "react-redux";
-import {setTodolistsAC} from "../../model/todolists-reducer";
+import {fetchTodolistsTC} from "../../model/todolists-reducer";
 
 export const Todolists = () => {
     /*let todolists = useSelector<RootStateType, TodolistsType[]>(state => state.todolists)*/
@@ -15,9 +14,11 @@ export const Todolists = () => {
     let dispatch = useDispatch()
 
     useEffect(() => {
-        todolistsApi.getTodolists().then(res => {
+        /*todolistsApi.getTodolists().then(res => {
             dispatch(setTodolistsAC(res.data))
-        })
+        })*/
+        // @ts-ignore
+        dispatch(fetchTodolistsTC())
     }, [])
 
     return (
