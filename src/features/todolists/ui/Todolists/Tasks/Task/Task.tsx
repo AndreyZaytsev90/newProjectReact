@@ -1,4 +1,4 @@
-import {changeTaskStatusAC, changeTaskStatusTC, removeTaskTC,} from "../../../../model/tasks-reducer"
+import {changeTaskTC, removeTaskTC,} from "../../../../model/tasks-reducer"
 import Checkbox from "@mui/material/Checkbox"
 //import {EditableSpan} from "../../../../../../common/components/EditableSpan";
 import IconButton from "@mui/material/IconButton"
@@ -22,13 +22,16 @@ export const Task = ({task, todolist}: TaskComponentType) => {
     const dispatch = useAppDispatch()
 
     const changeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        let newTaskStatus = event.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
-        dispatch(changeTaskStatusTC({todolistId: todolist.id, taskId: task.id, taskStatus: newTaskStatus}))
+        let newStatus = event.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
+        //dispatch(changeTaskStatusTC({todolistId: todolist.id, taskId: task.id, taskStatus: newTaskStatus}))
+        //console.log("New status:", newStatus); // Логирование нового статуса
+        dispatch(changeTaskTC({task, newStatus}))
     }
 
     const changeTaskTitleHandler = (newTitle: string) => {
        // dispatch(changeTaskTitleAC(todolist.id, task.id, newTitle))
        // dispatch(changeTaskTitleTC({task, todolistId: todolist.id, title: newTitle}))
+        dispatch(changeTaskTC({task, newTitle}))
     }
 
     const removeTaskHandler = () => {

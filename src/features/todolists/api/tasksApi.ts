@@ -1,6 +1,16 @@
-import { DomainTask, GetTasksResponse, UpdateTaskModel } from "./tasksApi.types"
-import { Response } from "common/types/types"
-import { instance } from "common/instance/instance"
+import {DomainTask, GetTasksResponse} from "./tasksApi.types"
+import {Response} from "common/types/types"
+import {instance} from "common/instance/instance"
+import {TaskPriority, TaskStatus} from "../lib/enums";
+
+export type UpdateTaskDomainModel = {
+  title?: string
+  description?: string
+  status?: TaskStatus
+  priority?: TaskPriority
+  startDate?: string
+  deadline?: string
+}
 
 export const tasksApi = {
   getTasks(todolistId: string) {
@@ -18,7 +28,7 @@ export const tasksApi = {
   /*changeTaskStatus(task: DomainTask, todolistId: string, model: UpdateTaskModel) {
         return instance.put<Response<{ item: DomainTask }>>(`todo-lists/${todolistId}/tasks/${task.id}`, model)
     },*/
-  changeTask(payload: { task: DomainTask; todolistId: string; model: UpdateTaskModel }) {
+  changeTask(payload: { task: DomainTask; todolistId: string; model: UpdateTaskDomainModel }) {
     const { task, todolistId, model } = payload
     return instance.put<Response<{ item: DomainTask }>>(`todo-lists/${todolistId}/tasks/${task.id}`, model)
   },
