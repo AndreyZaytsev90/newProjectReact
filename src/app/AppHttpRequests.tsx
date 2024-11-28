@@ -1,4 +1,4 @@
-import Checkbox from "@mui/material/Checkbox"
+/*import Checkbox from "@mui/material/Checkbox"
 import React, { ChangeEvent, useEffect, useState } from "react"
 import { AddItemForm } from "common/components"
 import { EditableSpan } from "common/components"
@@ -6,9 +6,9 @@ import { Todolist } from "../features/todolists/api/todolistsApi.types"
 import { DomainTask, UpdateTaskModel } from "../features/todolists/api/tasksApi.types"
 import { todolistsApi } from "../features/todolists/api/todolistsApi"
 import { tasksApi } from "../features/todolists/api/tasksApi"
-import { TaskStatus } from "../features/todolists/lib/enums"
+import { TaskStatus } from "../features/todolists/lib/enums"*/
 
-export const AppHttpRequests = () => {
+/*export const AppHttpRequests = () => {
   const [todolists, setTodolists] = useState<Todolist[]>([])
   const [tasks, setTasks] = useState<{ [key: string]: DomainTask[] }>({})
 
@@ -108,7 +108,7 @@ export const AppHttpRequests = () => {
     <div style={{ margin: "20px" }}>
       <AddItemForm addItem={createTodolistHandler} />
 
-      {/* Todolists */}
+      {/!* Todolists *!/}
       {todolists.map((tl) => {
         return (
           <div key={tl.id} style={todolist}>
@@ -118,7 +118,7 @@ export const AppHttpRequests = () => {
             </div>
             <AddItemForm addItem={(title) => createTaskHandler(title, tl.id)} />
 
-            {/* Tasks */}
+            {/!* Tasks *!/}
             {!!tasks[tl.id] &&
               tasks[tl.id].map((task: DomainTask) => {
                 return (
@@ -134,10 +134,10 @@ export const AppHttpRequests = () => {
       })}
     </div>
   )
-}
+}*/
 
 // Styles
-const todolist: React.CSSProperties = {
+/*const todolist: React.CSSProperties = {
   border: "1px solid black",
   margin: "20px 0",
   padding: "10px",
@@ -145,4 +145,4 @@ const todolist: React.CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   flexDirection: "column",
-}
+}*/

@@ -26,7 +26,7 @@ beforeEach(() => {
 test("correct todolist should be removed", () => {
     // 2. Действие
     /* const action = {type: 'REMOVE-TODOLIST',payload: {id:todolistID1}}*/
-    const endState = todolistsReducer(startState, removeTodolistAC(todolistID1))
+    const endState = todolistsReducer(startState, removeTodolistAC({todoListId:todolistID1}))
 
     // 3. Проверяем, что наши действия (изменения state) соответствуют ожиданию
     // в массиве останется один тудулист
@@ -37,7 +37,7 @@ test("correct todolist should be removed", () => {
 test("correct todolist should be added", () => {
     let newTitle = "New Todolist"
 
-    const endState = todolistsReducer(startState, addTodolistAC(newTitle))
+    const endState = todolistsReducer(startState, addTodolistAC({ todoListId:todolistID1,title:newTitle}))
 
     expect(endState.length).toBe(3)
     expect(endState[0].title).toBe(newTitle)
@@ -51,7 +51,7 @@ test("correct filter of todolist should be changed", () => {
 test("correct todolist should change its name", () => {
     let newTitle = "New Todolist"
 
-    const endState = todolistsReducer(startState, updateTodolistTitleAC(todolistID2, newTitle))
+    const endState = todolistsReducer(startState, updateTodolistTitleAC({todoListId:todolistID2, title:newTitle}))
 
     expect(endState[0].title).toBe("What to learn")
     expect(endState[1].title).toBe(newTitle)

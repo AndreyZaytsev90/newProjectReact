@@ -67,14 +67,14 @@ export const tasksReducer = (state = initialState, action: ActionTasksType): Tas
         case "ADD-TODOLIST":
             return {
                 ...state,
-                [action.payload.todolistId]: [],
+                [action.payload.todoListId]: [],
             }
         case "REMOVE-TODOLIST": {
             /* let copyState = {...state}
                    delete copyState[action.payload.todolistId]
                    return copyState*/
             const {
-                [action.payload.todolistId]: [],
+                [action.payload.todoListId]: [],
                 ...rest
             } = state
             return rest
@@ -163,7 +163,7 @@ export const changeTaskTC = (payload: { task: DomainTask, newStatus?: TaskStatus
     //с использование getState: () => RootStateType
     /*const tasksForCurrentTodolist = getState().tasks[todolistId].find(t => t.id === taskId)
     console.log(tasksForCurrentTodolist)*/
-    console.log("New status:", newStatus)
+    //console.log("New status:", newStatus)
     //if (tasksForCurrentTodolist) {}
     const model: UpdateTaskDomainModel = {
         title: newTitle ? newTitle : task.title,
@@ -174,13 +174,13 @@ export const changeTaskTC = (payload: { task: DomainTask, newStatus?: TaskStatus
         deadline: task.deadline,
     }
 
-    console.log("Sending model:", model); // Логирование модели
+    //console.log("Sending model:", model); // Логирование модели
 
     tasksApi.changeTask({task, todolistId: task.todoListId, model}).then((res) => {
         //console.log(res)
         // dispatch(changeTaskStatusAC({taskId, todolistId, taskStatus}))
         //dispatch(changeTaskStatusAC({task: res.data.data.item}))
-        console.log("Response from API:", res); // Логирование ответа от API
+       // console.log("Response from API:", res); // Логирование ответа от API
         dispatch(changeTaskAC({task: res.data.data.item}))
     })
 }
