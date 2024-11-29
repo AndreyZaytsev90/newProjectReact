@@ -19,3 +19,5 @@ console.log(u2)
 u1.hello()
 
 console.log(u1.hello === User.prototype.hello) //true
+
+//43-53
