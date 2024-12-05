@@ -2,7 +2,7 @@ import {applyMiddleware, combineReducers, legacy_createStore, UnknownAction} fro
 import { tasksReducer } from "../features/todolists/model/tasks-reducer"
 import { todolistsReducer } from "../features/todolists/model/todolists-reducer"
 import { appReducer } from "./app-reducer"
-import {thunk, ThunkDispatch} from "redux-thunk";
+import {thunk, ThunkAction, ThunkDispatch} from "redux-thunk";
 
 // объединяя reducer-ы с помощью combineReducers,
 // мы задаём структуру нашего единственного объекта-состояния
@@ -19,6 +19,7 @@ export const store = legacy_createStore(rootReducer, {}, applyMiddleware(thunk))
 // определить автоматически тип всего объекта состояния
 export type RootStateType = ReturnType<typeof store.getState>
 
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootStateType, unknown, UnknownAction>;
 //export type AppDispatch = typeof store.dispatch
 export type AppDispatch = ThunkDispatch<RootStateType, unknown, UnknownAction>
 

@@ -1,6 +1,6 @@
 import {v4} from "uuid"
 import {AddTodolistType, RemoveTodolistType} from "./todolists-reducer"
-import {AppDispatch, RootStateType} from "app/store";
+import {AppDispatch, AppThunk, RootStateType} from "app/store";
 import {tasksApi, UpdateTaskDomainModel} from "../api/tasksApi";
 import {DomainTask, UpdateTaskModel} from "../api/tasksApi.types";
 import {TaskPriority, TaskStatus} from "../lib/enums";
@@ -133,14 +133,10 @@ export const changeTaskAC = (payload: { task: DomainTask }) => {
 }*/
 
 //Thunks
-export const fetchTasksTC = (todolistId: string) => {
-    return (dispatch: AppDispatch) => {
-        tasksApi.getTasks(todolistId).then((res) => {
+export const fetchTasksTC = (todolistId: string) : AppThunk => async (dispatch: AppDispatch) => {
+        const res = await tasksApi.getTasks(todolistId)
             const tasks = res.data.items
-            //console.log(res)
             dispatch(setTasksAC({todolistId, tasks}))
-        })
-    }
 }
 
 export const removeTaskTC = (payload: { todolistId: string, taskId: string }) => (dispatch: AppDispatch) => {

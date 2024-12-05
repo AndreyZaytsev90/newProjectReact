@@ -1,7 +1,7 @@
 import {v4} from "uuid"
 import {Todolist} from "../api/todolistsApi.types";
 import {todolistsApi} from "../api/todolistsApi";
-import {AppDispatch, RootStateType} from "app/store";
+import {AppDispatch, AppThunk, RootStateType} from "app/store";
 import {Dispatch} from "redux";
 
 export type FilterType = "all" | "active" | "completed"
@@ -101,15 +101,24 @@ export const updateTodolistTitleAC = (payload: { todoListId: string, title: stri
 
 //Thunks
 //из Reducer(BLL) обращаемся в DAL
-export const fetchTodolistsTC = () => (dispatch: AppDispatch, getState: () => RootStateType) => {
-
-
+/*export const fetchTodolistsTC = () => (dispatch: AppDispatch, getState: () => RootStateType) => {
     // внутри санки можно делать побочные эффекты (запросы на сервер)
     todolistsApi.getTodolists().then(res => {
         // и диспатчить экшены (action) или другие санки (thunk)
         console.log(res.data)
         dispatch(setTodolistsAC(res.data))
     })
+}*/
+export const fetchTodolistsTC = () : AppThunk => async (dispatch: AppDispatch) => {
+    try {
+        const res = await todolistsApi.getTodolists()
+        console.log(res.data)
+        dispatch(setTodolistsAC(res.data))
+    } catch (e) {
+        throw new Error()
+    }
+
+
 }
 
 export const addTodolistTC = (payload: { title: string }) => (dispatch: AppDispatch, getState: () => RootStateType) => {
@@ -122,16 +131,16 @@ export const addTodolistTC = (payload: { title: string }) => (dispatch: AppDispa
     })
 }
 
-export const removeTodolistTC = (payload: { id: string }) => (dispatch: Dispatch) => {
+export const removeTodolistTC = (payload: { id: string }) => (dispatch: AppDispatch) => {
     const {id} = payload
     todolistsApi.removeTodolist(id).then((res) => {
         dispatch(removeTodolistAC({todoListId: id}))
     })
 }
 
-export const updateTodolistTitleTC = (payload: { id: string; title: string }) => (dispatch: Dispatch) => {
+export const updateTodolistTitleTC = (payload: { id: string; title: string }) => (dispatch: AppDispatch) => {
     const {id, title} = payload
-    todolistsApi.updateTodolist(payload).then(()=> {
+    todolistsApi.updateTodolist(payload).then(() => {
         dispatch(updateTodolistTitleAC({todoListId: id, title}))
     })
 
