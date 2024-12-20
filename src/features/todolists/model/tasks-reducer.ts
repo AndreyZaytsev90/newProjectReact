@@ -4,6 +4,7 @@ import {AppDispatch, AppThunk, RootStateType} from "app/store";
 import {tasksApi, UpdateTaskDomainModel} from "../api/tasksApi";
 import {DomainTask, UpdateTaskModel} from "../api/tasksApi.types";
 import {TaskPriority, TaskStatus} from "../lib/enums";
+import {setAppStatusAC} from "app/app-reducer";
 
 export type TasksStateType = {
     [key: string]: DomainTask[]
@@ -57,13 +58,13 @@ export const tasksReducer = (state = initialState, action: ActionTasksType): Tas
                 ),
 
             }
-       /* case "CHANGE-TASK-TITLE":
-            return {
-                ...state,
-                [action.payload.todolistId]: state[action.payload.todolistId].map((task) =>
-                    task.id === action.payload.taskId ? {...task, title: action.payload.title} : task,
-                ),
-            }*/
+        /* case "CHANGE-TASK-TITLE":
+             return {
+                 ...state,
+                 [action.payload.todolistId]: state[action.payload.todolistId].map((task) =>
+                     task.id === action.payload.taskId ? {...task, title: action.payload.title} : task,
+                 ),
+             }*/
         case "ADD-TODOLIST":
             return {
                 ...state,
@@ -133,52 +134,76 @@ export const changeTaskAC = (payload: { task: DomainTask }) => {
 }*/
 
 //Thunks
-export const fetchTasksTC = (todolistId: string) : AppThunk => async (dispatch: AppDispatch) => {
+export const fetchTasksTC = (todolistId: string): AppThunk => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
         const res = await tasksApi.getTasks(todolistId)
-            const tasks = res.data.items
-            dispatch(setTasksAC({todolistId, tasks}))
-}
-
-export const removeTaskTC = (payload: { todolistId: string, taskId: string }) => (dispatch: AppDispatch) => {
-    tasksApi.removeTask(payload).then(() => {
-        dispatch(removeTaskAC(payload))
-    })
-}
-
-export const addTaskTC = (payload: { todolistId: string, title: string }) => (dispatch: AppDispatch) => {
-    tasksApi.createTask(payload).then((res) => {
-        dispatch(addTaskAC({task: res.data.data.item}))
-    })
-}
-
-export const changeTaskTC = (payload: { task: DomainTask, newStatus?: TaskStatus, newTitle?: string }) => (dispatch: AppDispatch, /*getState: () => RootStateType*/) => {
-
-    //const {todolistId, taskId, taskStatus} = payload
-    const {task, newStatus, newTitle} = payload
-
-    //с использование getState: () => RootStateType
-    /*const tasksForCurrentTodolist = getState().tasks[todolistId].find(t => t.id === taskId)
-    console.log(tasksForCurrentTodolist)*/
-    //console.log("New status:", newStatus)
-    //if (tasksForCurrentTodolist) {}
-    const model: UpdateTaskDomainModel = {
-        title: newTitle ? newTitle : task.title,
-        description: task.description,
-        status: newStatus !== undefined ? newStatus : task.status,
-        priority: task.priority,
-        startDate: task.startDate,
-        deadline: task.deadline,
+        const tasks = res.data.items
+        dispatch(setTasksAC({todolistId, tasks}))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
     }
 
-    //console.log("Sending model:", model); // Логирование модели
+}
 
-    tasksApi.changeTask({task, todolistId: task.todoListId, model}).then((res) => {
+export const removeTaskTC = (payload: { todolistId: string, taskId: string }) => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        await tasksApi.removeTask(payload)
+        dispatch(removeTaskAC(payload))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
+    }
+}
+
+export const addTaskTC = (payload: { todolistId: string, title: string }) => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        const res = await tasksApi.createTask(payload)
+        dispatch(addTaskAC({task: res.data.data.item}))
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
+    }
+
+}
+
+export const changeTaskTC = (payload: { task: DomainTask, newStatus?: TaskStatus, newTitle?: string }) => async (dispatch: AppDispatch, /*getState: () => RootStateType*/) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        //const {todolistId, taskId, taskStatus} = payload
+        const {task, newStatus, newTitle} = payload
+
+        //с использование getState: () => RootStateType
+        /*const tasksForCurrentTodolist = getState().tasks[todolistId].find(t => t.id === taskId)
+        console.log(tasksForCurrentTodolist)*/
+        //console.log("New status:", newStatus)
+        //if (tasksForCurrentTodolist) {}
+        const model: UpdateTaskDomainModel = {
+            title: newTitle ? newTitle : task.title,
+            description: task.description,
+            status: newStatus !== undefined ? newStatus : task.status,
+            priority: task.priority,
+            startDate: task.startDate,
+            deadline: task.deadline,
+        }
+        //console.log("Sending model:", model); // Логирование модели
+        const res = await tasksApi.changeTask({task, todolistId: task.todoListId, model})
         //console.log(res)
         // dispatch(changeTaskStatusAC({taskId, todolistId, taskStatus}))
         //dispatch(changeTaskStatusAC({task: res.data.data.item}))
-       // console.log("Response from API:", res); // Логирование ответа от API
+        // console.log("Response from API:", res); // Логирование ответа от API
         dispatch(changeTaskAC({task: res.data.data.item}))
-    })
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
+    }
 }
 
 /*

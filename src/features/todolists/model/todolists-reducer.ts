@@ -3,6 +3,7 @@ import {Todolist} from "../api/todolistsApi.types";
 import {todolistsApi} from "../api/todolistsApi";
 import {AppDispatch, AppThunk, RootStateType} from "app/store";
 import {Dispatch} from "redux";
+import {setAppStatusAC} from "app/app-reducer";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -109,39 +110,60 @@ export const updateTodolistTitleAC = (payload: { todoListId: string, title: stri
         dispatch(setTodolistsAC(res.data))
     })
 }*/
-export const fetchTodolistsTC = () : AppThunk => async (dispatch: AppDispatch) => {
+export const fetchTodolistsTC = (): AppThunk => async (dispatch: AppDispatch) => {
     try {
+        dispatch(setAppStatusAC('loading'))
         const res = await todolistsApi.getTodolists()
         console.log(res.data)
         dispatch(setTodolistsAC(res.data))
+        dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
+        dispatch(setAppStatusAC('failed'))
         throw new Error()
     }
 
 
 }
 
-export const addTodolistTC = (payload: { title: string }) => (dispatch: AppDispatch, getState: () => RootStateType) => {
-    const state = getState()
-    console.log(state)
-    const {title} = payload
-    todolistsApi.createTodolist(title).then((res) => {
+export const addTodolistTC = (payload: { title: string }) => async (dispatch: AppDispatch, getState: () => RootStateType) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        const state = getState()
+        console.log(state)
+        const {title} = payload
+        const res = await todolistsApi.createTodolist(title)
         const todoListId = res.data.data.item.id
         dispatch(addTodolistAC({todoListId, title}))
-    })
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
+    }
+
 }
 
-export const removeTodolistTC = (payload: { id: string }) => (dispatch: AppDispatch) => {
-    const {id} = payload
-    todolistsApi.removeTodolist(id).then((res) => {
+export const removeTodolistTC = (payload: { id: string }) => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        const {id} = payload
+        await todolistsApi.removeTodolist(id)
         dispatch(removeTodolistAC({todoListId: id}))
-    })
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
+    }
 }
 
-export const updateTodolistTitleTC = (payload: { id: string; title: string }) => (dispatch: AppDispatch) => {
-    const {id, title} = payload
-    todolistsApi.updateTodolist(payload).then(() => {
+export const updateTodolistTitleTC = (payload: { id: string; title: string }) => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        const {id, title} = payload
+        await todolistsApi.updateTodolist(payload)
         dispatch(updateTodolistTitleAC({todoListId: id, title}))
-    })
-
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
+    }
 }
