@@ -5,6 +5,7 @@ import {Main} from "./Main"
 import {selectTheme} from "./appSelectors"
 import {useAppSelector} from "common/hooks"
 import {getTheme} from "common/theme"
+import {ErrorSnackbar} from "common/components";
 
 export const AppWithRedux = () => {
     /*let themeMode = useSelector<RootStateType, ThemeModeType>(state => state.themes)*/
@@ -17,6 +18,7 @@ export const AppWithRedux = () => {
             <CssBaseline/>
             <Header/>
             <Main/>
+            <ErrorSnackbar/>
         </ThemeProvider>
     )
 }

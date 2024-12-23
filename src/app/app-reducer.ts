@@ -6,6 +6,7 @@ type InitialState = typeof initialState
 const initialState = {
     themeMode: "light" as ThemeModeType,
     status: 'idle' as RequestStatus,
+    error: null as string | null
 }
 
 export const appReducer = (state = initialState, action: ActionAppReducerType): InitialState => {
@@ -14,6 +15,8 @@ export const appReducer = (state = initialState, action: ActionAppReducerType): 
             return {...state, themeMode: action.payload.themeMode}
         case 'SET_STATUS':
             return {...state, status: action.payload.status}
+        case "SET_ERROR":
+            return {...state, error: action.payload.error}
         default:
             return state
     }
@@ -34,7 +37,15 @@ export const setAppStatusAC = (status: RequestStatus) => {
     } as const
 }
 
-export type ActionAppReducerType = ChangeThemeActionType | SetAppStatusActionType
+export const setAppErrorAC = (error: string | null) => {
+    return {
+        type: 'SET_ERROR',
+        payload: { error },
+    } as const
+}
+
+export type ActionAppReducerType = ChangeThemeActionType | SetAppStatusActionType | SetAppErrorActionType
 
 type ChangeThemeActionType = ReturnType<typeof changeThemeAC>
 type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
+type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
