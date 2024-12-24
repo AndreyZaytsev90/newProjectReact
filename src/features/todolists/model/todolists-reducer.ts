@@ -1,16 +1,16 @@
-import {v4} from "uuid"
 import {Todolist} from "../api/todolistsApi.types";
 import {todolistsApi} from "../api/todolistsApi";
 import {AppDispatch, AppThunk, RootStateType} from "app/store";
-import {Dispatch} from "redux";
-import {setAppStatusAC} from "app/app-reducer";
+import {RequestStatus, setAppErrorAC, setAppStatusAC} from "app/app-reducer";
+import {ResultCode} from "../lib/enums";
 
 export type FilterType = "all" | "active" | "completed"
 
 //export type TodolistsType = { id: string; title: string; filter: FilterType }
 
 export type DomainTodolist = Todolist & {
-    filter: FilterType
+    filter: FilterType,
+    entityStatus: RequestStatus
 }
 
 const initialState: DomainTodolist[] = []
@@ -31,9 +31,9 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
                 //id: newTodolistId,
                 title: action.payload.title,
                 filter: "all",
+                entityStatus: 'idle',
                 order: 1,
                 addedDate: ''
-
             }
             return [newTodolist, ...state]
 
@@ -128,18 +128,22 @@ export const fetchTodolistsTC = (): AppThunk => async (dispatch: AppDispatch) =>
 export const addTodolistTC = (payload: { title: string }) => async (dispatch: AppDispatch, getState: () => RootStateType) => {
     try {
         dispatch(setAppStatusAC('loading'))
-        const state = getState()
-        console.log(state)
+        //const state = getState()
+        //console.log(state)
         const {title} = payload
         const res = await todolistsApi.createTodolist(title)
-        const todoListId = res.data.data.item.id
-        dispatch(addTodolistAC({todoListId, title}))
-        dispatch(setAppStatusAC('succeeded'))
+        if (res.data.resultCode === ResultCode.Success) {
+            const todoListId = res.data.data.item.id
+            dispatch(setAppStatusAC('succeeded'))
+            dispatch(addTodolistAC({todoListId, title}))
+        } else {
+            dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : 'Some error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        }
     } catch (e) {
         dispatch(setAppStatusAC('failed'))
         throw new Error()
     }
-
 }
 
 export const removeTodolistTC = (payload: { id: string }) => async (dispatch: AppDispatch) => {
