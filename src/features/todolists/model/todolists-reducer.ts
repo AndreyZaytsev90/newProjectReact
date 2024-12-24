@@ -18,7 +18,7 @@ const initialState: DomainTodolist[] = []
 export const todolistsReducer = (state: DomainTodolist[] = initialState, action: ActionTodolistsType,): DomainTodolist[] => {
     switch (action.type) {
         case 'SET-TODOLISTS': {
-            return action.payload.todolists.map(tl => ({...tl, filter: "all"}))
+            return action.payload.todolists.map(tl => ({...tl, filter: "all", entityStatus: "idle"}))
         }
 
         case "REMOVE-TODOLIST":
