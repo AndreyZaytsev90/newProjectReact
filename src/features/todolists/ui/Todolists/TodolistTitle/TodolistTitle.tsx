@@ -2,38 +2,41 @@ import {EditableSpan} from "common/components"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import {
-    DomainTodolist,
-    removeTodolistAC,
+    changeTodolistTC, DomainTodolist,
     removeTodolistTC,
-    updateTodolistTitleAC, updateTodolistTitleTC
+    /*updateTodolistTitleTC*/
 } from "../../../model/todolists-reducer"
 import styles from "./TodolistTitle.module.css"
 import {useAppDispatch} from "common/hooks"
 
 type TodolistTitleType = {
-  todolist: DomainTodolist
+    todolist: DomainTodolist
 }
-export const TodolistTitle = ({ todolist }: TodolistTitleType) => {
-  const { id, title } = todolist
+export const TodolistTitle = ({todolist}: TodolistTitleType) => {
+    const {id, title, entityStatus} = todolist
 
-  const dispatch = useAppDispatch()
-  const updateTodolistHandler = (title: string) => {
-    dispatch(updateTodolistTitleTC({id, title}))
-  }
+    console.log(todolist)
 
-  const removeTodolistHandler = () => {
-    dispatch(removeTodolistTC({id}))
-  }
+    const dispatch = useAppDispatch()
+    const updateTodolistHandler = (newTitle: string) => {
+        //dispatch(updateTodolistTitleTC({id, title}))
+        dispatch(changeTodolistTC({todolist, newTitle}))
+    }
 
-  return (
-    <div className={styles.container}>
-      <h3>
-        <EditableSpan title={title} callback={updateTodolistHandler} />
-      </h3>
+    const removeTodolistHandler = () => {
+        //dispatch(removeTodolistTC({id, entityStatus}))
+        dispatch(removeTodolistTC({todolist, entityStatus}))
+    }
 
-      <IconButton aria-label="delete" size="small" onClick={removeTodolistHandler}>
-        <DeleteIcon style={{ color: "#B00909FF" }} />
-      </IconButton>
-    </div>
-  )
+    return (
+        <div className={styles.container}>
+            <h3>
+                <EditableSpan title={title} callback={updateTodolistHandler}/>
+            </h3>
+
+            <IconButton aria-label="delete" size="small" onClick={removeTodolistHandler} disabled={entityStatus === 'loading'}>
+                <DeleteIcon/>
+            </IconButton>
+        </div>
+    )
 }

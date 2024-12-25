@@ -2,7 +2,7 @@ import {Todolist} from "../api/todolistsApi.types";
 import {todolistsApi} from "../api/todolistsApi";
 import {AppDispatch, AppThunk, RootStateType} from "app/store";
 import {RequestStatus, setAppErrorAC, setAppStatusAC} from "app/app-reducer";
-import {ResultCode} from "../lib/enums";
+import {ResultCode, TaskPriority, TaskStatus} from "../lib/enums";
 
 export type FilterType = "all" | "active" | "completed"
 
@@ -14,6 +14,15 @@ export type DomainTodolist = Todolist & {
 }
 
 const initialState: DomainTodolist[] = []
+
+export type UpdateTodolistDomainModel = {
+    addedDate?: string
+    entityStatus?: RequestStatus
+    filter?: FilterType
+    id?: string
+    order?: number
+    title?: string
+}
 
 export const todolistsReducer = (state: DomainTodolist[] = initialState, action: ActionTodolistsType,): DomainTodolist[] => {
     switch (action.type) {
@@ -37,9 +46,9 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
             }
             return [newTodolist, ...state]
 
-        case "CHANGE-TODOLIST-FILTER":
+     /*   case "CHANGE-TODOLIST-FILTER":
             return state.map((todo) =>
-                todo.id === action.payload.todolistId ? {...todo, filter: action.payload.filteredTasks} : todo,
+                todo.id === action.payload.todoListId ? {...todo, filter: action.payload.filteredTasks} : todo,
             )
 
         case "UPDATE-TODOLIST-TITLE":
@@ -47,6 +56,16 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
                 todo.id === action.payload.todoListId ? {...todo, title: action.payload.title} : todo,
             )
 
+        case "CHANGE-TODOLIST-ICON":
+            return state.map((todo) =>
+                todo.id === action.payload.todoListId ? {...todo, entityStatus: action.payload.entityStatus} : todo,
+            )*/
+        ////////////////////////
+        case "CHANGE-TODOLIST":
+            return state.map((todo) =>
+                todo.id === action.payload.todolist.id ? { ...todo, ...action.payload.todolistModel } : todo,
+            )
+        //////////////////////////
         default:
             return state
     }
@@ -55,15 +74,19 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
 export type ActionTodolistsType =
     | RemoveTodolistType
     | AddTodolistType
-    | ChangeTodolistFilterACType
-    | UpdateTodolistTitleACType
+    /*| ChangeTodolistFilterACType
+    | UpdateTodolistTitleACType*/
     | SetTodolistsActionType
+   /* | ChangeTodolistIconActionType*/
+    | ChangeTodolistActionType //тест
 
 export type RemoveTodolistType = ReturnType<typeof removeTodolistAC>
 export type AddTodolistType = ReturnType<typeof addTodolistAC>
-type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>
-type UpdateTodolistTitleACType = ReturnType<typeof updateTodolistTitleAC>
+//type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>
+//type UpdateTodolistTitleACType = ReturnType<typeof updateTodolistTitleAC>
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
+//export type ChangeTodolistIconActionType = ReturnType<typeof changeTodolistIconAC>
+export type ChangeTodolistActionType = ReturnType<typeof changeTodolistAC> //тест
 
 export const setTodolistsAC = (todolists: DomainTodolist[]) => {
     return {
@@ -86,10 +109,10 @@ export const removeTodolistAC = (payload: { todoListId: string }) => {
     } as const
 }
 
-export const changeTodolistFilterAC = (todolistId: string, filteredTasks: FilterType) => {
+/*export const changeTodolistFilterAC = (todoListId: string, filteredTasks: FilterType) => {
     return {
         type: "CHANGE-TODOLIST-FILTER",
-        payload: {todolistId, filteredTasks},
+        payload: {todoListId, filteredTasks},
     } as const
 }
 export const updateTodolistTitleAC = (payload: { todoListId: string, title: string }) => {
@@ -99,6 +122,20 @@ export const updateTodolistTitleAC = (payload: { todoListId: string, title: stri
     } as const
 }
 
+export const changeTodolistIconAC = (payload: { todoListId: string, entityStatus: RequestStatus }) => {
+    return {
+        type: "CHANGE-TODOLIST-ICON",
+        payload
+    } as const
+}*/
+//////////////////
+export const changeTodolistAC = (payload: {todolist: DomainTodolist, todolistModel?: UpdateTodolistDomainModel}) => {
+    return {
+        type: "CHANGE-TODOLIST",
+        payload
+    } as const
+}
+/////////////////////
 
 //Thunks
 //из Reducer(BLL) обращаемся в DAL
@@ -146,20 +183,47 @@ export const addTodolistTC = (payload: { title: string }) => async (dispatch: Ap
     }
 }
 
-export const removeTodolistTC = (payload: { id: string }) => async (dispatch: AppDispatch) => {
+/*export const removeTodolistTC = (payload: { id: string, entityStatus: RequestStatus }) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const {id} = payload
+        dispatch(changeTodolistIconAC({todoListId: id, entityStatus: 'loading'}))
+
         await todolistsApi.removeTodolist(id)
         dispatch(removeTodolistAC({todoListId: id}))
         dispatch(setAppStatusAC('succeeded'))
+        dispatch(changeTodolistIconAC({todoListId: id, entityStatus: 'idle'}))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
+    }
+}*/
+export const removeTodolistTC = (payload: { todolist : DomainTodolist , entityStatus: RequestStatus}) => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        const {todolist} = payload
+
+        dispatch(changeTodolistAC({
+            todolist: { ...todolist, entityStatus: 'loading' },
+            todolistModel: { entityStatus: 'loading' },
+        }));
+
+        await todolistsApi.removeTodolist(todolist.id)
+        dispatch(removeTodolistAC({todoListId: todolist.id}))
+        dispatch(setAppStatusAC('succeeded'))
+
+        dispatch(changeTodolistAC({
+            todolist: { ...todolist, entityStatus: 'idle' },
+            todolistModel: { entityStatus: 'idle' },
+        }));
+
     } catch (e) {
         dispatch(setAppStatusAC('failed'))
         throw new Error()
     }
 }
 
-export const updateTodolistTitleTC = (payload: { id: string; title: string }) => async (dispatch: AppDispatch) => {
+/*export const updateTodolistTitleTC = (payload: { id: string; title: string }) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const {id, title} = payload
@@ -170,4 +234,29 @@ export const updateTodolistTitleTC = (payload: { id: string; title: string }) =>
         dispatch(setAppStatusAC('failed'))
         throw new Error()
     }
+}*/
+/////////////////////////////////////////////////////////////////
+export const changeTodolistTC = (payload: {todolist: DomainTodolist, entityStatus?: RequestStatus, newTitle?: string, filteredTasks?: FilterType}) => async (dispatch: AppDispatch) => {
+    try {
+        dispatch(setAppStatusAC('loading'))
+        const {todolist, entityStatus, newTitle, filteredTasks} = payload
+
+        const todolistModel :UpdateTodolistDomainModel = {
+            addedDate: todolist.addedDate,
+            entityStatus: entityStatus? entityStatus :todolist.entityStatus,
+            filter: filteredTasks? filteredTasks: todolist.filter,
+            id: todolist.id,
+            order: todolist.order,
+            title: newTitle? newTitle: todolist.title
+        }
+
+        await todolistsApi.changeTodolist({todolist, todolistModel})
+        //dispatch(changeTodolistAC({todolist}))
+        dispatch(changeTodolistAC({ todolist, todolistModel }));
+        dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+        dispatch(setAppStatusAC('failed'))
+        throw new Error()
+    }
 }
+//////////////////////////////////////////////////////////////////

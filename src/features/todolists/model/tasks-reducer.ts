@@ -194,7 +194,7 @@ export const changeTaskTC = (payload: { task: DomainTask, newStatus?: TaskStatus
         }
         //console.log("Sending model:", model); // Логирование модели
         const res = await tasksApi.changeTask({task, todolistId: task.todoListId, model})
-        //console.log(res)
+        console.log(res)
         // dispatch(changeTaskStatusAC({taskId, todolistId, taskStatus}))
         //dispatch(changeTaskStatusAC({task: res.data.data.item}))
         // console.log("Response from API:", res); // Логирование ответа от API

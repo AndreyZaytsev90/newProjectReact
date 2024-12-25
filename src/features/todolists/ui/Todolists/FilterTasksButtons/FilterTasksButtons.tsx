@@ -1,6 +1,10 @@
 import ButtonGroup from "@mui/material/ButtonGroup"
 import Button from "@mui/material/Button"
-import { changeTodolistFilterAC, FilterType, DomainTodolist } from "../../../model/todolists-reducer"
+import {
+  /*changeTodolistFilterAC, */
+  FilterType,
+  DomainTodolist,
+  changeTodolistTC} from "../../../model/todolists-reducer"
 import { useAppDispatch } from "common/hooks"
 
 type FilterTasksButtonsType = {
@@ -12,7 +16,8 @@ export const FilterTasksButtons = ({ todolist }: FilterTasksButtonsType) => {
   const dispatch = useAppDispatch()
 
   const changeTodolistFilterHandler = (filteredTasks: FilterType) => {
-    dispatch(changeTodolistFilterAC(id, filteredTasks))
+    //dispatch(changeTodolistFilterAC(id, filteredTasks))
+    dispatch(changeTodolistTC({todolist, filteredTasks}))
   }
 
   const onAllClickHandler = () => changeTodolistFilterHandler("all")
