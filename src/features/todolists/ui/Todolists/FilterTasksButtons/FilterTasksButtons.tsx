@@ -3,8 +3,9 @@ import Button from "@mui/material/Button"
 import {
   /*changeTodolistFilterAC, */
   FilterType,
-  DomainTodolist,
-  changeTodolistTC} from "../../../model/todolists-reducer"
+  DomainTodolist, changeTodolistFilterAC,
+  /*changeTodolistTC*/
+} from "../../../model/todolists-reducer"
 import { useAppDispatch } from "common/hooks"
 
 type FilterTasksButtonsType = {
@@ -16,8 +17,10 @@ export const FilterTasksButtons = ({ todolist }: FilterTasksButtonsType) => {
   const dispatch = useAppDispatch()
 
   const changeTodolistFilterHandler = (filteredTasks: FilterType) => {
-    //dispatch(changeTodolistFilterAC(id, filteredTasks))
-    dispatch(changeTodolistTC({todolist, filteredTasks}))
+    dispatch(changeTodolistFilterAC(id, filteredTasks))
+
+    ////Тест с общей санкой
+    //dispatch(changeTodolistTC({todolist, filteredTasks}))
   }
 
   const onAllClickHandler = () => changeTodolistFilterHandler("all")

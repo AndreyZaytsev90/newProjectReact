@@ -11,7 +11,7 @@ type TodolistWithReduxType = {
 }
 
 export const TodolistWithRedux = ({ todolist }: TodolistWithReduxType) => {
-  const { id } = todolist
+  const { id , entityStatus} = todolist
   const dispatch = useAppDispatch()
 
   const addTaskHandler = (newTitle: string) => {
@@ -23,7 +23,7 @@ export const TodolistWithRedux = ({ todolist }: TodolistWithReduxType) => {
       <div className={"todolist-title-container"}>
         <TodolistTitle todolist={todolist} />
       </div>
-      <AddItemForm addItem={addTaskHandler} />
+      <AddItemForm addItem={addTaskHandler} disabled={entityStatus === 'loading'} />
       <Tasks todolist={todolist} />
       <FilterTasksButtons todolist={todolist} />
     </div>

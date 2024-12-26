@@ -2,8 +2,9 @@ import {EditableSpan} from "common/components"
 import IconButton from "@mui/material/IconButton"
 import DeleteIcon from "@mui/icons-material/Delete"
 import {
-    changeTodolistTC, DomainTodolist,
-    removeTodolistTC,
+    /*changeTodolistTC,*/
+    DomainTodolist,
+    removeTodolistTC, updateTodolistTitleTC,
     /*updateTodolistTitleTC*/
 } from "../../../model/todolists-reducer"
 import styles from "./TodolistTitle.module.css"
@@ -19,13 +20,17 @@ export const TodolistTitle = ({todolist}: TodolistTitleType) => {
 
     const dispatch = useAppDispatch()
     const updateTodolistHandler = (newTitle: string) => {
-        //dispatch(updateTodolistTitleTC({id, title}))
-        dispatch(changeTodolistTC({todolist, newTitle}))
+        dispatch(updateTodolistTitleTC({id, newTitle}))
+
+        ////Тест с общей санкой
+        //dispatch(changeTodolistTC({todolist, newTitle}))
     }
 
     const removeTodolistHandler = () => {
-        //dispatch(removeTodolistTC({id, entityStatus}))
-        dispatch(removeTodolistTC({todolist, entityStatus}))
+        dispatch(removeTodolistTC({id, entityStatus}))
+
+        ////Тест с общей санкой и экшнм внутри
+        //dispatch(removeTodolistTC({todolist, entityStatus}))
     }
 
     return (

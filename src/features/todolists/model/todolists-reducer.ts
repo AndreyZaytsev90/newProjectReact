@@ -15,14 +15,14 @@ export type DomainTodolist = Todolist & {
 
 const initialState: DomainTodolist[] = []
 
-export type UpdateTodolistDomainModel = {
+/*export type UpdateTodolistDomainModel = {
     addedDate?: string
     entityStatus?: RequestStatus
     filter?: FilterType
     id?: string
     order?: number
     title?: string
-}
+}*/
 
 export const todolistsReducer = (state: DomainTodolist[] = initialState, action: ActionTodolistsType,): DomainTodolist[] => {
     switch (action.type) {
@@ -46,26 +46,29 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
             }
             return [newTodolist, ...state]
 
-     /*   case "CHANGE-TODOLIST-FILTER":
+        case "CHANGE-TODOLIST-FILTER":
             return state.map((todo) =>
                 todo.id === action.payload.todoListId ? {...todo, filter: action.payload.filteredTasks} : todo,
             )
 
         case "UPDATE-TODOLIST-TITLE":
             return state.map((todo) =>
-                todo.id === action.payload.todoListId ? {...todo, title: action.payload.title} : todo,
+                todo.id === action.payload.todoListId ? {...todo, title: action.payload.newTitle} : todo,
             )
 
-        case "CHANGE-TODOLIST-ICON":
+        case "CHANGE-TODOLIST-ENTITY-STATUS":
             return state.map((todo) =>
                 todo.id === action.payload.todoListId ? {...todo, entityStatus: action.payload.entityStatus} : todo,
-            )*/
+            )
+
         ////////////////////////
-        case "CHANGE-TODOLIST":
+            //Тест (с общим кейсом, санкой и action) (работает)
+       /* case "CHANGE-TODOLIST":
             return state.map((todo) =>
                 todo.id === action.payload.todolist.id ? { ...todo, ...action.payload.todolistModel } : todo,
-            )
+            )*/
         //////////////////////////
+
         default:
             return state
     }
@@ -74,19 +77,19 @@ export const todolistsReducer = (state: DomainTodolist[] = initialState, action:
 export type ActionTodolistsType =
     | RemoveTodolistType
     | AddTodolistType
-    /*| ChangeTodolistFilterACType
-    | UpdateTodolistTitleACType*/
+    | ChangeTodolistFilterACType
+    | UpdateTodolistTitleACType
     | SetTodolistsActionType
-   /* | ChangeTodolistIconActionType*/
-    | ChangeTodolistActionType //тест
+    | ChangeTodolistIconActionType
+   /* | ChangeTodolistActionType //тест*/
 
 export type RemoveTodolistType = ReturnType<typeof removeTodolistAC>
 export type AddTodolistType = ReturnType<typeof addTodolistAC>
-//type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>
-//type UpdateTodolistTitleACType = ReturnType<typeof updateTodolistTitleAC>
+type ChangeTodolistFilterACType = ReturnType<typeof changeTodolistFilterAC>
+type UpdateTodolistTitleACType = ReturnType<typeof updateTodolistTitleAC>
 export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
-//export type ChangeTodolistIconActionType = ReturnType<typeof changeTodolistIconAC>
-export type ChangeTodolistActionType = ReturnType<typeof changeTodolistAC> //тест
+export type ChangeTodolistIconActionType = ReturnType<typeof changeTodolistEntityStatusAC>
+//export type ChangeTodolistActionType = ReturnType<typeof changeTodolistAC> //тест
 
 export const setTodolistsAC = (todolists: DomainTodolist[]) => {
     return {
@@ -109,32 +112,35 @@ export const removeTodolistAC = (payload: { todoListId: string }) => {
     } as const
 }
 
-/*export const changeTodolistFilterAC = (todoListId: string, filteredTasks: FilterType) => {
+export const changeTodolistFilterAC = (todoListId: string, filteredTasks: FilterType) => {
     return {
         type: "CHANGE-TODOLIST-FILTER",
         payload: {todoListId, filteredTasks},
     } as const
 }
-export const updateTodolistTitleAC = (payload: { todoListId: string, title: string }) => {
+export const updateTodolistTitleAC = (payload: { todoListId: string, newTitle: string }) => {
     return {
         type: "UPDATE-TODOLIST-TITLE",
         payload
     } as const
 }
 
-export const changeTodolistIconAC = (payload: { todoListId: string, entityStatus: RequestStatus }) => {
+export const changeTodolistEntityStatusAC = (payload: { todoListId: string, entityStatus: RequestStatus }) => {
     return {
-        type: "CHANGE-TODOLIST-ICON",
+        type: "CHANGE-TODOLIST-ENTITY-STATUS",
         payload
     } as const
-}*/
+}
+
+
 //////////////////
-export const changeTodolistAC = (payload: {todolist: DomainTodolist, todolistModel?: UpdateTodolistDomainModel}) => {
+//Тест с общим АС (работает)
+/*export const changeTodolistAC = (payload: {todolist: DomainTodolist, todolistModel?: UpdateTodolistDomainModel}) => {
     return {
         type: "CHANGE-TODOLIST",
         payload
     } as const
-}
+}*/
 /////////////////////
 
 //Thunks
@@ -183,22 +189,25 @@ export const addTodolistTC = (payload: { title: string }) => async (dispatch: Ap
     }
 }
 
-/*export const removeTodolistTC = (payload: { id: string, entityStatus: RequestStatus }) => async (dispatch: AppDispatch) => {
+export const removeTodolistTC = (payload: { id: string, entityStatus: RequestStatus }) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const {id} = payload
-        dispatch(changeTodolistIconAC({todoListId: id, entityStatus: 'loading'}))
+        dispatch(changeTodolistEntityStatusAC({todoListId: id, entityStatus: 'loading'}))
 
         await todolistsApi.removeTodolist(id)
         dispatch(removeTodolistAC({todoListId: id}))
         dispatch(setAppStatusAC('succeeded'))
-        dispatch(changeTodolistIconAC({todoListId: id, entityStatus: 'idle'}))
+        // TODO
+        //dispatch(changeTodolistEntityStatusAC({todoListId: id, entityStatus: 'idle'}))
     } catch (e) {
         dispatch(setAppStatusAC('failed'))
         throw new Error()
     }
-}*/
-export const removeTodolistTC = (payload: { todolist : DomainTodolist , entityStatus: RequestStatus}) => async (dispatch: AppDispatch) => {
+}
+
+//тест с общим changeTodolistAC (работает)
+/*export const removeTodolistTC = (payload: { todolist : DomainTodolist , entityStatus: RequestStatus}) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const {todolist} = payload
@@ -221,27 +230,31 @@ export const removeTodolistTC = (payload: { todolist : DomainTodolist , entitySt
         dispatch(setAppStatusAC('failed'))
         throw new Error()
     }
-}
+}*/
 
-/*export const updateTodolistTitleTC = (payload: { id: string; title: string }) => async (dispatch: AppDispatch) => {
+export const updateTodolistTitleTC = (payload: { id: string; newTitle: string }) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatusAC('loading'))
-        const {id, title} = payload
+        const {id, newTitle} = payload
         await todolistsApi.updateTodolist(payload)
-        dispatch(updateTodolistTitleAC({todoListId: id, title}))
+        dispatch(updateTodolistTitleAC({todoListId: id, newTitle}))
         dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
         dispatch(setAppStatusAC('failed'))
         throw new Error()
     }
-}*/
+}
+
 /////////////////////////////////////////////////////////////////
-export const changeTodolistTC = (payload: {todolist: DomainTodolist, entityStatus?: RequestStatus, newTitle?: string, filteredTasks?: FilterType}) => async (dispatch: AppDispatch) => {
+
+// Тест с одной санкой для изменений статуса, заголовка и фильтра (работает)
+
+/*export const changeTodolistTC = (payload: {todolist: DomainTodolist, entityStatus?: RequestStatus, newTitle?: string, filteredTasks?: FilterType}) => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatusAC('loading'))
         const {todolist, entityStatus, newTitle, filteredTasks} = payload
 
-        const todolistModel :UpdateTodolistDomainModel = {
+        const todolistModel: UpdateTodolistDomainModel = {
             addedDate: todolist.addedDate,
             entityStatus: entityStatus? entityStatus :todolist.entityStatus,
             filter: filteredTasks? filteredTasks: todolist.filter,
@@ -258,5 +271,5 @@ export const changeTodolistTC = (payload: {todolist: DomainTodolist, entityStatu
         dispatch(setAppStatusAC('failed'))
         throw new Error()
     }
-}
+}*/
 //////////////////////////////////////////////////////////////////

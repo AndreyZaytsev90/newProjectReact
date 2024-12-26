@@ -1,6 +1,8 @@
 import {Response} from "common/types"
 import {instance} from "common/instance"
-import {DomainTodolist, UpdateTodolistDomainModel} from "../model/todolists-reducer";
+import {DomainTodolist,
+  /*UpdateTodolistDomainModel*/
+} from "../model/todolists-reducer";
 
 export const todolistsApi = {
   getTodolists() {
@@ -16,15 +18,16 @@ export const todolistsApi = {
     return instance.delete<Response>(`todo-lists/${id}`)
   },
 
-/*  updateTodolist(payload: { id: string; title: string }) {
+  updateTodolist(payload: { id: string; newTitle: string }) {
     //Деструктуризация (далее дергаем ключи из объекта, чтобы не соблюдать очередность передачи параметров)
-    const { id, title } = payload
-    return instance.put<Response>(`todo-lists/${id}`, { title })
-  },*/
+    const { id, newTitle } = payload
+    return instance.put<Response>(`todo-lists/${id}`, { newTitle })
+  },
 
-  changeTodolist(payload: {todolist: DomainTodolist, todolistModel: UpdateTodolistDomainModel }) {
+  //Тест с общей санкгой и запросом (работает)
+ /* changeTodolist(payload: {todolist: DomainTodolist, todolistModel: UpdateTodolistDomainModel }) {
     //Деструктуризация (далее дергаем ключи из объекта, чтобы не соблюдать очередность передачи параметров)
     const { todolist, todolistModel } = payload
     return instance.put<Response>(`todo-lists/${todolist.id}`, todolistModel)
-  },
+  },*/
 }
