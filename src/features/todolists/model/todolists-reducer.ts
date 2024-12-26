@@ -183,9 +183,12 @@ export const addTodolistTC = (payload: { title: string }) => async (dispatch: Ap
             dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : 'Some error occurred'))
             dispatch(setAppStatusAC('failed'))
         }
-    } catch (e) {
-        dispatch(setAppStatusAC('failed'))
-        throw new Error()
+    } catch (err) {
+        if (err instanceof Error) {
+            dispatch(setAppErrorAC(err.message));
+        } else {
+            dispatch(setAppErrorAC('An unknown error occurred'));
+        }
     }
 }
 

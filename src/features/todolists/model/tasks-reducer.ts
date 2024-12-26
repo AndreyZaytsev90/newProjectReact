@@ -3,8 +3,8 @@ import {AddTodolistType, RemoveTodolistType} from "./todolists-reducer"
 import {AppDispatch, AppThunk, RootStateType} from "app/store";
 import {tasksApi, UpdateTaskDomainModel} from "../api/tasksApi";
 import {DomainTask, UpdateTaskModel} from "../api/tasksApi.types";
-import {TaskPriority, TaskStatus} from "../lib/enums";
-import {setAppStatusAC} from "app/app-reducer";
+import {ResultCode, TaskPriority, TaskStatus} from "../lib/enums";
+import {setAppErrorAC, setAppStatusAC} from "app/app-reducer";
 
 export type TasksStateType = {
     [key: string]: DomainTask[]
@@ -141,8 +141,13 @@ export const fetchTasksTC = (todolistId: string): AppThunk => async (dispatch: A
         const tasks = res.data.items
         dispatch(setTasksAC({todolistId, tasks}))
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
+    } catch (err) {
         dispatch(setAppStatusAC('failed'))
+        if (err instanceof Error) {
+            dispatch(setAppErrorAC(err.message));
+        } else {
+            dispatch(setAppErrorAC('An unknown error occurred'));
+        }
         throw new Error()
     }
 
@@ -154,8 +159,13 @@ export const removeTaskTC = (payload: { todolistId: string, taskId: string }) =>
         await tasksApi.removeTask(payload)
         dispatch(removeTaskAC(payload))
         dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
+    } catch (err) {
         dispatch(setAppStatusAC('failed'))
+        if (err instanceof Error) {
+            dispatch(setAppErrorAC(err.message));
+        } else {
+            dispatch(setAppErrorAC('An unknown error occurred'));
+        }
         throw new Error()
     }
 }
@@ -164,13 +174,22 @@ export const addTaskTC = (payload: { todolistId: string, title: string }) => asy
     try {
         dispatch(setAppStatusAC('loading'))
         const res = await tasksApi.createTask(payload)
-        dispatch(addTaskAC({task: res.data.data.item}))
-        dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
+        if (res.data.resultCode === ResultCode.Success) {
+            dispatch(addTaskAC({task: res.data.data.item}))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : 'Some error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        }
+    } catch (err: unknown) {
         dispatch(setAppStatusAC('failed'))
-        throw new Error()
+        if (err instanceof Error) {
+            dispatch(setAppErrorAC(err.message));
+        } else {
+            dispatch(setAppErrorAC('An unknown error occurred'));
+        }
+       /* throw new Error()*/
     }
-
 }
 
 export const changeTaskTC = (payload: { task: DomainTask, newStatus?: TaskStatus, newTitle?: string }) => async (dispatch: AppDispatch, /*getState: () => RootStateType*/) => {
@@ -198,10 +217,20 @@ export const changeTaskTC = (payload: { task: DomainTask, newStatus?: TaskStatus
         // dispatch(changeTaskStatusAC({taskId, todolistId, taskStatus}))
         //dispatch(changeTaskStatusAC({task: res.data.data.item}))
         // console.log("Response from API:", res); // Логирование ответа от API
-        dispatch(changeTaskAC({task: res.data.data.item}))
-        dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
+        if (res.data.resultCode === ResultCode.Success) {
+            dispatch(changeTaskAC({task: res.data.data.item}))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : 'Some error occurred'))
+            dispatch(setAppStatusAC('failed'))
+        }
+    } catch (err) {
         dispatch(setAppStatusAC('failed'))
+        if (err instanceof Error) {
+            dispatch(setAppErrorAC(err.message));
+        } else {
+            dispatch(setAppErrorAC('An unknown error occurred'));
+        }
         throw new Error()
     }
 }
