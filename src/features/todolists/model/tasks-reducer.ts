@@ -5,6 +5,8 @@ import {tasksApi, UpdateTaskDomainModel} from "../api/tasksApi";
 import {DomainTask, UpdateTaskModel} from "../api/tasksApi.types";
 import {ResultCode, TaskPriority, TaskStatus} from "../lib/enums";
 import {setAppErrorAC, setAppStatusAC} from "app/app-reducer";
+import {handleNetworkError} from "common/utils/handleNetworkError";
+import {handleServerAppError} from "common/utils/handleServerAppError";
 
 export type TasksStateType = {
     [key: string]: DomainTask[]
@@ -141,14 +143,9 @@ export const fetchTasksTC = (todolistId: string): AppThunk => async (dispatch: A
         const tasks = res.data.items
         dispatch(setTasksAC({todolistId, tasks}))
         dispatch(setAppStatusAC('succeeded'))
-    } catch (err) {
+    } catch (err: unknown) {
         dispatch(setAppStatusAC('failed'))
-        if (err instanceof Error) {
-            dispatch(setAppErrorAC(err.message));
-        } else {
-            dispatch(setAppErrorAC('An unknown error occurred'));
-        }
-        throw new Error()
+        handleNetworkError(err, dispatch)
     }
 
 }
@@ -159,14 +156,9 @@ export const removeTaskTC = (payload: { todolistId: string, taskId: string }) =>
         await tasksApi.removeTask(payload)
         dispatch(removeTaskAC(payload))
         dispatch(setAppStatusAC('succeeded'))
-    } catch (err) {
+    } catch (err: unknown) {
         dispatch(setAppStatusAC('failed'))
-        if (err instanceof Error) {
-            dispatch(setAppErrorAC(err.message));
-        } else {
-            dispatch(setAppErrorAC('An unknown error occurred'));
-        }
-        throw new Error()
+        handleNetworkError(err, dispatch)
     }
 }
 
@@ -178,16 +170,11 @@ export const addTaskTC = (payload: { todolistId: string, title: string }) => asy
             dispatch(addTaskAC({task: res.data.data.item}))
             dispatch(setAppStatusAC('succeeded'))
         } else {
-            dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : 'Some error occurred'))
-            dispatch(setAppStatusAC('failed'))
+            handleServerAppError<{item: DomainTask}>(dispatch, res.data)
         }
     } catch (err: unknown) {
         dispatch(setAppStatusAC('failed'))
-        if (err instanceof Error) {
-            dispatch(setAppErrorAC(err.message));
-        } else {
-            dispatch(setAppErrorAC('An unknown error occurred'));
-        }
+        handleNetworkError(err, dispatch)
        /* throw new Error()*/
     }
 }
@@ -221,17 +208,11 @@ export const changeTaskTC = (payload: { task: DomainTask, newStatus?: TaskStatus
             dispatch(changeTaskAC({task: res.data.data.item}))
             dispatch(setAppStatusAC('succeeded'))
         } else {
-            dispatch(setAppErrorAC(res.data.messages.length ? res.data.messages[0] : 'Some error occurred'))
-            dispatch(setAppStatusAC('failed'))
+            handleServerAppError(dispatch, res.data)
         }
-    } catch (err) {
+    } catch (err: unknown) {
         dispatch(setAppStatusAC('failed'))
-        if (err instanceof Error) {
-            dispatch(setAppErrorAC(err.message));
-        } else {
-            dispatch(setAppErrorAC('An unknown error occurred'));
-        }
-        throw new Error()
+        handleNetworkError(err, dispatch)
     }
 }
 
