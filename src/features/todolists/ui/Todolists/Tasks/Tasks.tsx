@@ -10,10 +10,11 @@ import {DomainTask} from "../../../api/tasksApi.types";
 
 type TasksType = {
   todolist: DomainTodolist
+  disabled?: boolean
 }
 
-export const Tasks = ({ todolist }: TasksType) => {
-  const { id, filter } = todolist
+export const Tasks = ({ todolist, disabled }: TasksType) => {
+  const { id, filter, } = todolist
 
   /*let tasks = useSelector<RootStateType, TaskType[]>(state => state.tasks[id])*/
   let tasks = useAppSelector(selectTasks)
@@ -41,7 +42,7 @@ export const Tasks = ({ todolist }: TasksType) => {
         <ul>
           {/*аналогично filteredTodolistTasks && */}
           {filteredTodolistTasks?.map((task: DomainTask) => {
-            return <Task key={task.id} todolist={todolist} task={task} />
+            return <Task key={task.id} todolist={todolist} task={task} disabled={disabled}/>
           })}
         </ul>
       )}

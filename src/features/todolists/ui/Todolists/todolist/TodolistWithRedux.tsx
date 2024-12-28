@@ -24,7 +24,7 @@ export const TodolistWithRedux = ({ todolist }: TodolistWithReduxType) => {
         <TodolistTitle todolist={todolist} />
       </div>
       <AddItemForm addItem={addTaskHandler} disabled={entityStatus === 'loading'} />
-      <Tasks todolist={todolist} />
+      <Tasks todolist={todolist} disabled={entityStatus === 'loading'}/>
       <FilterTasksButtons todolist={todolist} />
     </div>
   )

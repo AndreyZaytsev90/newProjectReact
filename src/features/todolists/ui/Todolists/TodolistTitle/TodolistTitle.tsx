@@ -36,7 +36,7 @@ export const TodolistTitle = ({todolist}: TodolistTitleType) => {
     return (
         <div className={styles.container}>
             <h3>
-                <EditableSpan title={title} callback={updateTodolistHandler}/>
+                <EditableSpan title={title} callback={updateTodolistHandler} disabled={entityStatus === 'loading'}/>
             </h3>
 
             <IconButton aria-label="delete" size="small" onClick={removeTodolistHandler} disabled={entityStatus === 'loading'}>

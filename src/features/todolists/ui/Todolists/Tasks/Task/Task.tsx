@@ -17,10 +17,10 @@ import {TaskStatus} from "../../../../lib/enums";
 type TaskComponentType = {
     task: DomainTask
     todolist: DomainTodolist
+    disabled?: boolean
 }
-export const Task = ({task, todolist}: TaskComponentType) => {
+export const Task = ({task, todolist, disabled}: TaskComponentType) => {
     const dispatch = useAppDispatch()
-
     const changeTaskStatusHandler = (event: ChangeEvent<HTMLInputElement>) => {
         let newStatus = event.currentTarget.checked ? TaskStatus.Completed : TaskStatus.New
         //dispatch(changeTaskStatusTC({todolistId: todolist.id, taskId: task.id, taskStatus: newTaskStatus}))
@@ -41,10 +41,10 @@ export const Task = ({task, todolist}: TaskComponentType) => {
 
     return (
         <li key={task.id} className={task.status ? "task-done" : "task"}>
-            <Checkbox checked={task.status === TaskStatus.Completed} onChange={changeTaskStatusHandler}/>
-            <EditableSpan title={task.title} callback={changeTaskTitleHandler}/>
-            <IconButton aria-label="delete" size="small" onClick={removeTaskHandler}>
-                <DeleteIcon fontSize={"small"} style={{color: "#B00909FF"}}/>
+            <Checkbox checked={task.status === TaskStatus.Completed} onChange={changeTaskStatusHandler} disabled={disabled}/>
+            <EditableSpan title={task.title} callback={changeTaskTitleHandler} disabled={disabled}/>
+            <IconButton aria-label="delete" size="small" onClick={removeTaskHandler} disabled={disabled}>
+                <DeleteIcon fontSize={"small"} style={disabled? {color: "#B0090980"}: {color: "#B00909F0"}}/>
             </IconButton>
         </li>
     )
